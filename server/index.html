@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html> 
+	<head>
+		<meta charset="utf-8">
+		<meta name="description" content="ADAMANT-pool">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+		<title>ADAMANT-pool</title>
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+		<script src="https://use.fontawesome.com/ecd0a414f6.js"></script>
+		<script	src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+		<script src="http://momentjs.com/downloads/moment-with-locales.min.js"></script>
+		<style>
+			body{
+			font-family:roboto;
+			}
+			.preloader{
+			font-weight: 200;
+			font-size:1.5em;
+			color:white;
+			width: 100%;
+			background: #2d364a;
+			height: 100%;
+			position: fixed;
+			top: 0;
+			left: 0;
+			display:flex;
+			z-index:1;
+			}
+			.preloader span{
+			font-size: 1.5em;
+			margin: auto;
+			text-align: center;
+			}
+			.preloader img{
+			width:250px;
+			height:250px;
+			margin:auto;
+			}
+		</style>
+	</head> 
+	<body>
+		<div class="preloader">
+			<span>
+				<img src="https://msg.adamant.im/img/adamant-logo-transparent-512x512.png"/>
+				<div>ADAMANT Pool</div>
+			</span>
+		</div>
+		<div id="panel">
+			<div class="topnav content">
+				<div class="row header">
+					<h1 class="h1_header"><img src="https://msg.adamant.im/img/adamant-logo-transparent-512x512.png" class="logo"/>
+					ADAMANT POOL </h1>
+					<a :href="'https://explorer.adamant.im/delegate/'+delegate.address" target="_blank">{{delegate.delegate.username}}</a>
+				</div>
+			</div>
+			<div class="content main">
+				<h2>Delegate {{delegate.delegate.username}} rewards {{system.reward_percentage}}% forged every {{system.payoutperiod}}, min payout {{system.minpayout}} ADM</h2>
+				<div id="cards" class="row">
+					<div class="card" style="background-color:#dff0d8; color:#3c763d;">	<span>
+						Total forged: {{(delegate.delegate.forged/100000000).toFixed(0)}} ADM<br>
+						Votes weight: {{(delegate.delegate.votesWeight/100000000).toFixed(0)}} ADM
+					</span></div>
+					<div class="card" style="background-color:#f2dede; color:#a94442;"><span>
+						Productivity: {{delegate.delegate.productivity}}<br>
+						Rank: {{delegate.delegate.rank}}
+					</span></div>
+					<div class="card" style="background-color:#d9edf7; color:#31708f;">	<span>
+						Last payout:<br> {{lastPayOut}}
+					</span></div>
+					<div class="card" style="background-color:#fcf8e3; color:#8a6d3b;">	<span>
+					Next payout:<br> {{nextPayOut}}</div>
+					</span></div>
+					
+					<div class="container row"> 
+						<h1><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> Voites</h2>
+						<table>
+							<tr>
+								<th>#</th>
+								<th>Address</th>
+								<th @click="sortRows('voters','pending')">Pending ADM 
+									<i class="fa fa-sort" aria-hidden="true"></i>
+								</th>
+								<th @click="sortRows('voters', 'received')">Received ADM
+									<i class="fa fa-sort" aria-hidden="true"></i>
+								</th>
+								<th @click="sortRows('voters','userADM')">Balance ADM
+									<i class="fa fa-sort" aria-hidden="true"></i>
+								</th>
+								<th @click="sortRows('voters','userWeight')">Weight
+									<i class="fa fa-sort" aria-hidden="true"></i>
+								</th>
+								<th @click="sortRows('voters','userVotesNumber')">Votes
+									<i class="fa fa-sort" aria-hidden="true"></i>
+								</th>
+							</tr>
+							<tr v-for="(v,i) in voters" :key="i">
+								<td>{{i+1}}</td>
+								<td><a :href="'https://explorer.adamant.im/address/'+v.address" target="_blank">{{v.address}}</a></td>
+								<td>{{v.pending}}</td>
+								<td>{{v.received}}</td>
+								<td>{{(v.userADM).toFixed(0)}}</td>
+								<td>{{(v.userWeight).toFixed(0)}}</td>
+								<td>{{v.userVotesNumber}}</td>
+							</tr>
+							
+						</table>	
+					</div>
+					<div class="container row"> 
+						<h1><i class="fa fa-diamond" aria-hidden="true"></i> Transactions</h2>
+						<table>
+							<tr>
+								<th>#</th>
+								<th>Address</th>
+								<th>TransactionId</th>
+								<th  @click="sortRows('transactions','payoutcount')">Received ADM
+									<i class="fa fa-sort" aria-hidden="true"></i>
+								</th>
+								<th @click="sortRows('transactions','timeStamp')">Date
+									<i class="fa fa-sort" aria-hidden="true"></i>
+								</th>
+							</tr>
+							<tr v-for="(t,i) in transactions" :key="i">
+								<td>{{i+1}}</td>
+								<td>{{t.address}}</td>
+								<td>{{t.transactionId}}</td>
+								<td>{{t.payoutcount}}</td>
+								<td>{{moment(t.timeStamp).format(FORMAT_TRANS)}}</td>
+							</tr>
+						</table>
+						
+					</div>
+			</div>
+		</div>
+		<div class="bottomnav"></div>
+		<script src="/assets/view.js"></script> 
+		<link rel="stylesheet" href="/assets/styles.css">
+	</body>	
+	
+</html>											
