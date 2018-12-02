@@ -1,3 +1,5 @@
 node_modules/
 logs/
-adamant-rest-api/
+adamant-rest-api_/
+db/
+cross.js

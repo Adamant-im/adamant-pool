@@ -1,6 +1,6 @@
 const {SAT} = require('./const');
 const config = require('../config.json');
-const adamant = require('../adamant-rest-api')(config);
+const adamant = require('adamant-rest-api')(config);
 const log = require('./log');
 const _ = require('underscore');
 const syncNedb = require('./syncNedb');

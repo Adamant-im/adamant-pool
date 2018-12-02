@@ -9,7 +9,7 @@
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
-		"adamant-rest-api": "file:adamant-rest-api",
+		"adamant-rest-api": "0.0.1",
 		"express": "^4.16.4",
 		"lodash": "^4.17.11",
 		"nedb": "^1.8.0",

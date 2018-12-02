@@ -46,7 +46,7 @@ module.exports = async() => {
 				trans.timeStamp = new Date().getTime();
 				trans.address = address;
 				trans.received =received;
-				trans.pending = pending;
+				// trans.pending = pending;
 				trans.payoutcount = pending;
 				received += pending;
 				const resUpdateRecived = await dbVoters.syncUpdate({address}, {$set: {pending: 0,received}});
