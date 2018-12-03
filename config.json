@@ -9,8 +9,8 @@
 	"passPhrase": "passphrase for your delegate needed for payouts",
 	/** Percentage to distribute to voters. Amount left will go to maintenace wallet */
 	"reward_percentage": 80,
-	/** Maintenace wallet to receive */
-	"maintenancewallet": "U9466395914658764774",
+	/** Maintenace wallet to receive amount of (100-reward_percentage) to cover pool expenses*/
+	"maintenancewallet": "U15034821354995029193",
 	/** How often pool will do payouts. All at 00:00.
 	* 1h -> every hour
 	* 1d -> every day
