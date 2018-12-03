@@ -7,7 +7,7 @@ const {
 	dbTrans
 } = require('../helpers/DB');
 const log = require('../helpers/log');
-const port = config.port;
+const port = config.port || 36668;
 const DIR_NAME = __dirname + '/';
 
 app.use('/assets', express.static(__dirname + '/public'));

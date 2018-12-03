@@ -12,20 +12,14 @@ const delegate = adamant.get('full_account', config.address);
 let delegateForged = +delegate.delegate.forged;
 
 
-setInterval(() => {
-	
+setInterval(() => {	
 	const newForged=+adamant.get('delegate_forged', delegate.publicKey).forged;
 	
 	if (delegateForged < newForged) {
-		
-        const forged = (newForged - delegateForged);
+		const forged = (newForged - delegateForged);
         log.info('New Forged: ' + forged/SAT + ' ADM.');
         delegateForged = newForged;
 		
         rewardUsers(forged, delegateForged);
 	}
 }, TIME_RATE * 1000);
-
-// setInterval(() => {
-// delegateForged -= 3*SAT;
-// }, 5000)

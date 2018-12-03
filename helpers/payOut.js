@@ -1,14 +1,9 @@
-const {
-	SAT
-} = require('./const');
+const {SAT, FEE} = require('./const');
 const config = require('../config.json');
 const adamant = require('adamant-rest-api')(config);
 const log = require('./log');
 const _ = require('lodash');
-const {
-	dbVoters,
-	dbTrans
-} = require('./DB');
+const {dbVoters, dbTrans} = require('./DB');
 
 module.exports = async() => {
 	log.info('Pay out period!');
@@ -61,10 +56,8 @@ module.exports = async() => {
 				lastPayOut = trans.nodeTimestamp;
 				} catch (e) {
 				log.error(' Set transaction: ' + e);
-			}
-			
-		}
-		
+			}			
+		}		
 		if (config.maintenancewallet) {}
 		
 		} catch (e) {
