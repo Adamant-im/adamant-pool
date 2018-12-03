@@ -20,6 +20,31 @@ var panel = new Vue({
 		system: {},
 		lastPayOut: 0,
 		nextPayOut: 0,
+		th_voters:[{
+			field:'pending', 
+			title:'Pending ADM'
+			},{
+			field:'received',
+			title:'Received ADM'
+			},{
+			field:'userADM',
+			title:'Balance'
+			},{
+			field:'userWeight',
+			title:'Weight'
+			},{
+			field:'userVotesNumber',
+			title:'Votes'
+		}],
+		th_trans:[{
+			field:'payoutcount', 
+			title:'Received ADM'
+			},{
+			field:'timeStamp',
+			title:'Date'
+			}],
+		
+		
 		sorted: -1,
 		sorted_field:''
 	},
@@ -67,6 +92,7 @@ var panel = new Vue({
 			this.getDelegate();
 		},
 		sortRows(table, field) {
+			console.log(field)
 			this.sorted_field=field;
 			this.sorted *= -1;
 			if (table == 'voters')
