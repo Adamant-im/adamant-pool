@@ -50,20 +50,30 @@
 							<tr>
 								<th>#</th>
 								<th>Address</th>
-								<th @click="sortRows('voters','pending')">Pending ADM 
-									<i class="fa fa-sort" aria-hidden="true"></i>
+								<th @click="sortRows('voters','pending')" :class="{active:sorted_field=='pending'}">Pending ADM 
+									<i class="fa fa-sort" aria-hidden="true" v-if="sorted_field!='pending'"></i>
+									<i class="fa fa-sort-asc" aria-hidden="true" v-if="sorted_field=='pending' && sorted>0"></i>
+									<i class="fa fa-sort-desc" aria-hidden="true" v-if="sorted_field=='pending' && sorted<0"></i>
 								</th>
-								<th @click="sortRows('voters', 'received')">Received ADM
-									<i class="fa fa-sort" aria-hidden="true"></i>
+								<th @click="sortRows('voters', 'received')" :class="{active:sorted_field=='received'}">Received ADM
+									<i class="fa fa-sort" aria-hidden="true" v-if="sorted_field!='received'"></i>
+									<i class="fa fa-sort-asc" aria-hidden="true" v-if="sorted_field=='received' && sorted>0"></i>
+									<i class="fa fa-sort-desc" aria-hidden="true" v-if="sorted_field=='received' && sorted<0"></i>
 								</th>
-								<th @click="sortRows('voters','userADM')">Balance ADM
-									<i class="fa fa-sort" aria-hidden="true"></i>
+								<th @click="sortRows('voters','userADM')" :class="{active:sorted_field=='userADM'}">Balance ADM
+									<i class="fa fa-sort" aria-hidden="true" v-if="sorted_field!='userADM'"></i>
+									<i class="fa fa-sort-asc" aria-hidden="true" v-if="sorted_field=='userADM' && sorted>0"></i>
+									<i class="fa fa-sort-desc" aria-hidden="true" v-if="sorted_field=='userADM' && sorted<0"></i>
 								</th>
-								<th @click="sortRows('voters','userWeight')">Weight
-									<i class="fa fa-sort" aria-hidden="true"></i>
+								<th @click="sortRows('voters','userWeight')" :class="{active:sorted_field=='userWeight'}">Weight
+									<i class="fa fa-sort" aria-hidden="true" v-if="sorted_field!='userWeight'"></i>
+									<i class="fa fa-sort-asc" aria-hidden="true" v-if="sorted_field=='userWeight' && sorted>0"></i>
+									<i class="fa fa-sort-desc" aria-hidden="true" v-if="sorted_field=='userWeight' && sorted<0"></i>
 								</th>
-								<th @click="sortRows('voters','userVotesNumber')">Votes
-									<i class="fa fa-sort" aria-hidden="true"></i>
+								<th @click="sortRows('voters','userVotesNumber')" :class="{active:sorted_field=='userVotesNumber'}">Votes
+									<i class="fa fa-sort" aria-hidden="true" v-if="sorted_field!='userVotesNumber'"></i>
+									<i class="fa fa-sort-asc" aria-hidden="true" v-if="sorted_field=='userVotesNumber' && sorted>0"></i>
+									<i class="fa fa-sort-desc" aria-hidden="true" v-if="sorted_field=='userVotesNumber' && sorted<0"></i>
 								</th>
 							</tr>
 							<tr v-for="(v,i) in voters" :key="i">
@@ -86,10 +96,14 @@
 								<th>Address</th>
 								<th>TransactionId</th>
 								<th  @click="sortRows('transactions','payoutcount')">Received ADM
-									<i class="fa fa-sort" aria-hidden="true"></i>
+									<i class="fa fa-sort" aria-hidden="true" v-if="sorted_field!='payoutcount'"></i>
+									<i class="fa fa-sort-asc" aria-hidden="true" v-if="sorted_field=='payoutcount' && sorted>0"></i>
+									<i class="fa fa-sort-desc" aria-hidden="true" v-if="sorted_field=='payoutcount' && sorted<0"></i>
 								</th>
 								<th @click="sortRows('transactions','timeStamp')">Date
-									<i class="fa fa-sort" aria-hidden="true"></i>
+									<i class="fa fa-sort" aria-hidden="true" v-if="sorted_field!='timeStamp'"></i>
+									<i class="fa fa-sort-asc" aria-hidden="true" v-if="sorted_field=='timeStamp' && sorted>0"></i>
+									<i class="fa fa-sort-desc" aria-hidden="true" v-if="sorted_field=='timeStamp' && sorted<0"></i>
 								</th>
 							</tr>
 							<tr v-for="(t,i) in transactions" :key="i">
@@ -118,4 +132,4 @@
 		<link rel="stylesheet" href="/assets/styles.css">
 	</body>	
 	
-</html>											
+</html>													

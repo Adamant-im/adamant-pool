@@ -20,7 +20,8 @@ var panel = new Vue({
 		system: {},
 		lastPayOut: 0,
 		nextPayOut: 0,
-		sorted: -1
+		sorted: -1,
+		sorted_field:''
 	},
 	methods: {
 		getTransactions() {
@@ -66,6 +67,7 @@ var panel = new Vue({
 			this.getDelegate();
 		},
 		sortRows(table, field) {
+			this.sorted_field=field;
 			this.sorted *= -1;
 			if (table == 'voters')
 			panel.voters.sort((a, b) => (a[field] - b[field]) * this.sorted);
