@@ -1,17 +1,18 @@
 body{
-	font-family:roboto;
+	font-family: roboto;
+	margin: 0px;
 }
 .preloader{
 	font-weight: 200;
-	font-size:1.5em;
+	font-size: 1.5em;
 	width: 100%;
 	background: rgb(238, 238, 238);
 	height: 100%;
 	position: fixed;
 	top: 0;
 	left: 0;
-	display:flex;
-	z-index:1;
+	display: flex;
+	z-index: 1;
 }
 .preloader span{
 	font-size: 1.5em;
@@ -19,15 +20,15 @@ body{
 	text-align: center;
 }
 .preloader img{
-	width:250px;
-	height:250px;
-	margin:auto;
+	width: 250px;
+	height: 250px;
+	margin: auto;
 }
 h1, h2
 {
 	color: #444;
 	font-weight: 300;
-	margin: 40px 0px;
+	margin: 40px 0px 20px 0px;
 }
 a 
 {
@@ -68,7 +69,6 @@ a:hover
 }
 #panel
 {
-	padding: 60px 30px 90px;
 	border: 1px solid #eee;
 	background: #fff;
 }
@@ -142,15 +142,18 @@ th.is-sorted.active
 	justify-content: center;
 }
 .row{
-	width:1000px;
+	width: 90%;
 }
 .main{
-	flex-direction:column;
+	flex-direction: column;
+	background-image: url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0 0 6 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23eeeeee' fill-opacity='1' fill-rule='evenodd'%3E%3Cpath d='M5 0h1L0 6V5zM6 5v1H5z'/%3E%3C/g%3E%3C/svg%3E");
+	margin: 30px 30px 0px 30px;
 }	
 .header{
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+	padding: 20px 0;
 }
 #cards{
 	display:flex;
