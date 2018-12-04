@@ -1,5 +1,5 @@
 const request = require('request');
-const url='https://hooks.slack.com/services/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';
+const url='https://hooks.slack.com/services/';
 
 module.exports=(message, error)=>{
 	var color = '#36a64f';
