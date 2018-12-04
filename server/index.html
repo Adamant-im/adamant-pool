@@ -9,6 +9,7 @@
 		<script src="https://use.fontawesome.com/ecd0a414f6.js"></script>
 		<script	src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+		<script src="http://underscorejs.ru/underscore.js"></script>
 		<script src="http://momentjs.com/downloads/moment-with-locales.min.js"></script>
 		<link rel="stylesheet" href="/assets/styles.css">
 	</head> 
@@ -28,7 +29,7 @@
 				</div>
 			</div>
 			<div class="content main">
-				<h2>Delegate {{delegate.delegate.username}} rewards {{system.reward_percentage}}% forged every {{system.payoutperiod}}, min payout {{system.minpayout}} ADM</h2>
+				<h2>Delegate {{delegate.delegate.username}} rewards {{system.reward_percentage}}% forged every {{system.payoutperiod}}, min payout {{system.minpayout}} ADM <i class="fa fa-refresh refresh" aria-hidden="true" @click="fRefresh"></i></h2>
 				<div id="cards" class="row">
 					<div class="card" style="background-color:#dff0d8; color:#3c763d;">	<span>
 						Total forged: {{(delegate.delegate.forged/100000000).toFixed(0)}} ADM<br>
@@ -39,10 +40,13 @@
 						Rank: {{delegate.delegate.rank}}
 					</span></div>
 					<div class="card" style="background-color:#d9edf7; color:#31708f;">	<span>
-						Last payout:<br> {{lastPayOut}}
+						Balance: {{(delegate.balance/100000000 || 0).toFixed(8)}}<br>
+						Pending: {{totalPending}}
 					</span></div>
 					<div class="card" style="background-color:#fcf8e3; color:#8a6d3b;">	<span>
-					Next payout:<br> {{nextPayOut}}</div>
+						Last payout: {{lastPayOut}}<br>
+						Next payout: {{nextPayOut}}
+					</div>
 					</span></div>
 					
 					<div class="container row"> 

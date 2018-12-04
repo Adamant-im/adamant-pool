@@ -110,7 +110,9 @@ th.is-sorted{
 	cursor:pointer;	
 }
 
-th.is-sorted:hover{
+th.is-sorted:hover,
+th.is-sorted.active
+{
 	background:#eee;
 }
 
@@ -192,4 +194,11 @@ ul li{
 ul li.active{
 	text-decoration:underline;
 	font-weight: 500;
+}
+.refresh{
+	cursor:pointer;
+	transition:.7s;	
+}
+.refresh:active{
+	color:#31708f;
 }
