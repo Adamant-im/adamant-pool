@@ -140,6 +140,7 @@ th.is-sorted.active
 	align-items: center;
 	display: flex;
 	justify-content: center;
+	padding: 20px 0;
 }
 .row{
 	width: 90%;
