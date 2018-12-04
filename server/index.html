@@ -23,12 +23,12 @@
 		<div id="panel">
 			<div class="topnav content">
 				<div class="row header">
-					<h1 class="h1_header"><img src="https://msg.adamant.im/img/adamant-logo-transparent-512x512.png" class="logo"/>ADAMANT Forging Pool <i class="fa fa-refresh refresh" aria-hidden="true" @click="fRefresh"></i></h1>
-					<a :href="'https://explorer.adamant.im/delegate/'+delegate.address" target="_blank" style="margin-top: 20px;">{{delegate.delegate.username}}</a>
+					<h1 class="h1_header"><img src="https://msg.adamant.im/img/adamant-logo-transparent-512x512.png" class="logo"/>ADAMANT Forging Pool&nbsp;<i class="fa fa-refresh refresh" style="font-size: 20px; color: rgb(221, 221, 221);" aria-hidden="true" @click="fRefresh"></i></h1>
+					<a :href="'https://explorer.adamant.im/delegate/'+delegate.address" target="_blank" style="margin-top: 30px;">{{delegate.delegate.username}}</a>
 				</div>
 			</div>
 			<div class="content main">
-				<div class="row" style="100px 0px 15px 0px">Delegate <i>{{delegate.delegate.username}}</i> distributes <i>{{system.reward_percentage}}%</i> rewards with payouts every <i>{{system.payoutperiod}}</i>. Minimum payout is <i>{{system.minpayout}}</i> ADM.</div>
+				<div class="row" style="margin: 120px 0px 25px 0px">Delegate <i>{{delegate.delegate.username}}</i> distributes <i>{{system.reward_percentage}}%</i> rewards with payouts every <i>{{system.payoutperiod}}</i>. Minimum payout is <i>{{system.minpayout}}</i> ADM.</div>
 				
 				<div id="cards" class="row">
 					<div class="card" style="background-color: rgb(238, 238, 238);">	<span>
