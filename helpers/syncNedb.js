@@ -48,5 +48,6 @@ module.exports = (db, compact) => {
 	}
 	
 	if(compact) db.persistence.setAutocompactionInterval(compact * 1000*60);	
+	
 	return db;
 }

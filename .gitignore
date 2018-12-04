@@ -3,3 +3,4 @@ logs/
 adamant-rest-api_/
 db/
 cross.js
+config.json

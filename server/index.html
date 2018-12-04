@@ -33,19 +33,23 @@
 				<div id="cards" class="row">
 					<div class="card" style="background-color: rgb(238, 238, 238);">	<span>
 						Total forged: {{(delegate.delegate.forged/100000000).toFixed(1)}} ADM<br>
-						Votes weight: {{(delegate.delegate.votesWeight/100000000).toFixed(0)}} ADM
+						Votes weight: {{(delegate.delegate.votesWeight/100000000).toFixed(0)}} ADM<br>
+						Votes count: {{delegate.voters.length}}
 					</span></div>
 					<div class="card" style="background-color: rgb(221, 221, 221);"><span>
 						Productivity: {{delegate.delegate.productivity}}%<br>
+						Approval: {{delegate.delegate.approval}}<br>
 						Rank: {{delegate.delegate.rank}}
 					</span></div>
 					<div class="card" style="background-color: rgb(238, 238, 238);">	<span>
 						Balance: {{(delegate.balance/100000000 || 0).toFixed(3)}}<br>
+						Period forge: {{(system.payoutperiodForged || 0).toFixed(3)}}<br>
 						Pending: {{totalPending}}
 					</span></div>
 					<div class="card" style="background-color: rgb(221, 221, 221);">	<span>
 						Last payout: {{lastPayOut}}<br>
-						Next payout: {{nextPayOut}}
+						Next payout: {{nextPayOut}}</br>
+						Payout period: {{system.payoutperiod}}
 					</div>
 					</span></div>
 					
@@ -62,7 +66,7 @@
 									:class="{'fa-sort-asc':sorted_field==th.field && sorted>0, 'fa-sort-desc':sorted_field==th.field && sorted<0}" aria-hidden="true" ></i>
 								</th>
 							</tr>
-							<tr v-for="(v,i) in voters" :key="i" v-if="v.isPaginVisible">
+							<tr v-for="(v,i) in voters" :key="i" v-if="v.isPaginVisible!==false">
 								<td>{{i+1}}</td>
 								<td><a :href="'https://explorer.adamant.im/address/'+v.address" target="_blank">{{v.address}}</a></td>
 								<td>{{v.pending.toFixed(4)}}</td>
@@ -89,7 +93,7 @@
 									:class="{'fa-sort-asc':sorted_field==th.field && sorted>0, 'fa-sort-desc':sorted_field==th.field && sorted<0}" aria-hidden="true" ></i>
 								</th>
 							</tr>
-							<tr v-for="(t,i) in transactions" :key="i" v-if="t.isPaginVisible">
+							<tr v-for="(t,i) in transactions" :key="i" v-if="t.isPaginVisible!==false"> 
 								<td>{{i+1}}</td>
 								<td>{{t.address}}</td>
 								<td>{{t.transactionId}}</td>
@@ -97,7 +101,7 @@
 								<td>{{moment(t.timeStamp).format(FORMAT_TRANS)}}</td>
 							</tr>
 						</table>
-						<pagin :options="{rows:transactions}"></pagin>
+						<pagin :options="{rows:transactions}" ></pagin>
 					</div>
 			</div>
 		</div>

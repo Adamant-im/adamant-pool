@@ -4,10 +4,11 @@ const express = require('express');
 const app = express();
 const {dbVoters, dbTrans} = require('../helpers/DB');
 const log = require('../helpers/log');
-
+const getForgeFromPayoutPeriod=require('../helpers/getForgeFromPayoutPeriod');
 const port = config.port || 36668;
 const DIR_NAME = __dirname + '/';
 
+let Forged=0;
 app.use('/assets', express.static(__dirname + '/public'));
 
 app.get('/', (req, res) => res.sendFile(DIR_NAME + '/index.html'));
@@ -30,7 +31,20 @@ app.get('/api/get-delegate', async(req, res) => res.send(adamant.get('full_accou
 app.get('/api/get-config', async(req, res) => res.send({
 	reward_percentage: config.reward_percentage,
 	minpayout: config.minpayout, 
-	payoutperiod: config.payoutperiod
+	payoutperiod: config.payoutperiod,
+	payoutperiodForged:getForgeFromPayoutPeriod.forged
 }));
 
 app.listen(port, () => log.info('ADAMANT-pool server listening on port ' + port));
+
+
+
+// async function refreshForged(){
+// Forged=await getForgeFromPayoutPeriod();
+// }
+
+// refreshForged();
+
+// setInterval(()=>{
+// refreshForged();
+// }, 300*1000);

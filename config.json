@@ -3,9 +3,10 @@
     "address": "U9466395914658764774", 
 	"passPhrase":"random phrase",
     "reward_percentage": 80,
-	"minpayout":1,
+	"minpayout":0.1,
 	"payoutperiod":"1h",
 	"considerownvote": 1,
 	"maintenancewallet":false,
+	"slack":"https://hooks.slack.com/services/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",
 	"port":36667
 } 

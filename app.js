@@ -23,3 +23,4 @@ setInterval(() => {
         rewardUsers(forged, delegateForged);
 	}
 }, TIME_RATE * 1000);
+

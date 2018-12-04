@@ -104,7 +104,7 @@ var panel = new Vue({
 		fRefresh(e){
 			this.refresh(); 
 			var el=e.target;
-			el.rotate = (el.rotate || 0)+360;
+			el.rotate = (el.rotate || 0)+400;
 			el.style.transform = "rotate("+el.rotate+"grad)";
 		},
 		sortRows(table, field) {

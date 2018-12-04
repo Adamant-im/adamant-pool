@@ -4,10 +4,13 @@ const adamant = require('adamant-rest-api')(config);
 const log = require('./log');
 const _ = require('underscore');
 const syncNedb = require('./syncNedb');
-const {dbVoters, dbBlocks, dbRewards}= require('./DB');
+const {dbVoters, dbBlocks, dbRewards, dbTrans}= require('./DB');
 const notifier=require('./slackNotifier');
+const getForgeFromPayoutPeriod = require('./getForgeFromPayoutPeriod');
 
 module.exports = async(forged, delegateForged) => {
+	
+	getForgeFromPayoutPeriod.forged+=forged;
 	
 	const delegate = adamant.get('full_account', config.address)
 	const blocks101=adamant.get('blocks');
@@ -94,14 +97,20 @@ module.exports = async(forged, delegateForged) => {
 	*/
 	usertotalreward=+usertotalreward.toFixed(8);
 	const username=delegate.delegate.username;
+	
+	let msg='Forged: ' + forged/SAT + ' User total reward:' + usertotalreward;
+	
 	if (forged * config.reward_percentage < usertotalreward) {
-		let msg='Forged: ' + forged/SAT + ' User total reward:' + usertotalreward;
 		log.warn(msg);
 		notifier('Delegate:'+username+' '+msg, 1);
 		} else {
-		let msg='Forged: ' + forged/SAT + ' User total reward:' + usertotalreward
 		log.info(msg);	
-		notifier('Delegate:'+username+' '+msg, 'green');
 	}
 	
-}					
+}			
+
+// a();
+// async function a(){
+
+// console.log(last)
+// }
