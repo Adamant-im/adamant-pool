@@ -3,9 +3,9 @@ const config = require('../config.json');
 const adamant = require('adamant-rest-api')(config);
 const log = require('./log');
 const _ = require('lodash');
-const {dbVoters, dbTrans, dbBlocks} = require('./DB');
+const {dbVoters, dbTrans, dbBlocks, dbRewards} = require('./DB');
 const notifier=require('./slackNotifier');
-const getForgeFromPayoutPeriod=require('./getForgeFromPayoutPeriod');
+const periodData=require('./periodData');
 
 
 
@@ -16,7 +16,11 @@ module.exports = async() => {
 		let delegate=adamant.get('full_account', config.address);
 		let balance=+delegate.balance/SAT;
 		const poolname=delegate.delegate.username;	
-		const totalforged =	getForgeFromPayoutPeriod.forged;
+		
+		const totalforged =	periodData.forged;
+		const usertotalreward=periodData.rewards;
+		periodData.zero();
+		
 		const voters = await dbVoters.syncFind({});
 		const votersToReceived = voters.filter((v)=>v.pending >= (config.minpayout || 10));
 		const votersMinPayout = voters.filter((v)=>v.pending < (config.minpayout || 10));
@@ -34,7 +38,7 @@ module.exports = async() => {
 		},0);
 		
 		
-		let msg1=`Pool ${poolname} is ready to make payouts. Values: payoutcount — ${totalPayNeed}, totalforged — ${totalforged} ADM, sum of usertotalreward — ???? ADM, balance of delegate — ${balance} ADM.`;
+		let msg1=`Pool ${poolname} is ready to make payouts. Values: payoutcount — ${totalPayNeed}, totalforged — ${totalforged} ADM, sum of usertotalreward — ${usertotalreward} ADM, balance of delegate — ${balance} ADM.`;
 		
 		let color='green';
 		if(totalPayNeed > balance) color=1;
@@ -79,7 +83,6 @@ module.exports = async() => {
 				if (!resCreateTrans)
 				log.error(" Create  transaction " + address + ' ' + pending);
 				
-				// lastPayOut = trans.nodeTimestamp;
 				} catch (e) {
 				log.error(' Set transaction: ' + e);
 			}			

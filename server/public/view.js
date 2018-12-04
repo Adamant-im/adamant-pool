@@ -45,11 +45,11 @@ var panel = new Vue({
 			},{
 			field:'timeStamp',
 			title:'Date'
-		}],
-		
-		
-		sorted: -1,
-		sorted_field:''
+		}],		
+		sorted_voters: -1,
+		sorted_transactions: -1,
+		sorted_field_voters:'userWeight',
+		sorted_field_transactions:'timeStamp'
 	},
 	computed:{
 		totalPending:function(){
@@ -60,24 +60,19 @@ var panel = new Vue({
 	},
 	methods: {
 		getTransactions() {
+			var this_=this;
 			$.get('/api/get-transactions', function (res) {
-				res.sort((a, b) => {
-					return b.timeStamp - a.timeStamp
-				});
 				if (typeof res == 'object')
-				panel.transactions = res;
-				var lastTrans = panel.transactions[0];
-				if (!lastTrans) {
-					panel.lastPayOut = '-';
-					} else {
-					panel.lastPayOut = moment(lastTrans.timeStamp).format(FORMAT_PAYOUT);
-					panel.nextPayOut = moment(lastTrans.timeStamp + parseInt(panel.system.payoutperiod) * 3600 * 24 * 1000).format(FORMAT_PAYOUT); 
-				}
+				panel.transactions = res;			
+				if(this_.system.payoutperiodStart){
+					let start=this_.system.payoutperiodStart; 
+					this_.lastPayOut = moment(start).format(FORMAT_PAYOUT);
+					this_.nextPayOut = moment(start + parseInt(this_.system.payoutperiod) * 3600 * 24 * 1000).format(FORMAT_PAYOUT); 
+				}				
 			});
 		},
 		getVoters() {
 			$.get('/api/get-voters', function (res) {
-				res.sort((a, b) => b.userWeight - a.userWeight);
 				if (typeof res == 'object')
 				panel.voters = res;
 			});
@@ -108,18 +103,10 @@ var panel = new Vue({
 			el.style.transform = "rotate("+el.rotate+"grad)";
 		},
 		sortRows(table, field) {
-			console.log(field)
-			this.sorted_field=field;
-			this.sorted *= -1;
-			if (table == 'voters')
-			panel.voters.sort((a, b) => (a[field] - b[field]) * this.sorted);
-			if (table == 'transactions')
-			panel.transactions.sort((a, b) => (a[field] - b[field]) * this.sorted);
-			
-		},
-		
+			this['sorted_field_'+table]=field;
+			this['sorted_'+table] *= -1;
+			panel[table].sort((a, b) => (a[field] - b[field]) * this['sorted_'+table]);			
+		},		
 		moment: moment
-		
 	}
-	
 });

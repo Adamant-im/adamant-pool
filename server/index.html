@@ -43,8 +43,8 @@
 					</span></div>
 					<div class="card" style="background-color: rgb(238, 238, 238);">	<span>
 						Balance: {{(delegate.balance/100000000 || 0).toFixed(3)}}<br>
-						Period forge: {{(system.payoutperiodForged || 0).toFixed(3)}}<br>
-						Pending: {{totalPending}}
+						Period forged: {{(system.payoutperiodForged || 0).toFixed(3)}}<br>
+						Period pending: {{(system.payoutperiodRewards || 0).toFixed(3)}}
 					</span></div>
 					<div class="card" style="background-color: rgb(221, 221, 221);">	<span>
 						Last payout: {{lastPayOut}}<br>
@@ -54,16 +54,16 @@
 					</span></div>
 					
 					<div class="container row"> 
-						<h1><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> Voters</h2>
+						<h1><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> Voters ({{voters.length}})</h2>
 						<table>
 							<tr>
 								<th>#</th>
 								<th>Address</th>
 								<th v-for="th in th_voters" 
 								@click="sortRows('voters',th.field)" 
-								:class="{'active':sorted_field==th.field}" class="is-sorted">
+								:class="{'active':sorted_field_voters==th.field}" class="is-sorted">
 									{{th.title}} <i class="fa" 
-									:class="{'fa-sort-asc':sorted_field==th.field && sorted>0, 'fa-sort-desc':sorted_field==th.field && sorted<0}" aria-hidden="true" ></i>
+									:class="{'fa-sort-asc':sorted_field_voters==th.field && sorted_voters>0, 'fa-sort-desc':sorted_field_voters==th.field && sorted_voters<0}" aria-hidden="true" ></i>
 								</th>
 							</tr>
 							<tr v-for="(v,i) in voters" :key="i" v-if="v.isPaginVisible!==false">
@@ -80,7 +80,7 @@
 						<pagin :options="{rows:voters}"></pagin>
 					</div>
 					<div class="container row"> 
-						<h1><i class="fa fa-diamond" aria-hidden="true"></i> Transactions</h2>
+						<h1><i class="fa fa-diamond" aria-hidden="true"></i> Transactions ({{transactions.length}})</h2>
 						<table>
 							<tr>
 								<th>#</th>
@@ -88,9 +88,9 @@
 								<th>TransactionId</th>
 								<th v-for="th in th_trans" 
 								@click="sortRows('transactions',th.field)" 
-								:class="{'active':sorted_field==th.field}" class="is-sorted">
+								:class="{'active':sorted_field_transactions==th.field}" class="is-sorted">
 									{{th.title}} <i class="fa" 
-									:class="{'fa-sort-asc':sorted_field==th.field && sorted>0, 'fa-sort-desc':sorted_field==th.field && sorted<0}" aria-hidden="true" ></i>
+									:class="{'fa-sort-asc':sorted_field_transactions==th.field && sorted_transactions>0, 'fa-sort-desc':sorted_field_transactions==th.field && sorted_transactions<0}" aria-hidden="true" ></i>
 								</th>
 							</tr>
 							<tr v-for="(t,i) in transactions" :key="i" v-if="t.isPaginVisible!==false"> 

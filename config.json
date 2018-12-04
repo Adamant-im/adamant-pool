@@ -4,7 +4,7 @@
 	"passPhrase":"random phrase",
     "reward_percentage": 80,
 	"minpayout":0.1,
-	"payoutperiod":"1h",
+	"payoutperiod":"1d",
 	"considerownvote": 1,
 	"maintenancewallet":false,
 	"slack":"https://hooks.slack.com/services/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",

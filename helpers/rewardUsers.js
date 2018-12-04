@@ -6,11 +6,9 @@ const _ = require('underscore');
 const syncNedb = require('./syncNedb');
 const {dbVoters, dbBlocks, dbRewards, dbTrans}= require('./DB');
 const notifier=require('./slackNotifier');
-const getForgeFromPayoutPeriod = require('./getForgeFromPayoutPeriod');
+const periodData = require('./periodData');
 
 module.exports = async(forged, delegateForged) => {
-	
-	getForgeFromPayoutPeriod.forged+=forged;
 	
 	const delegate = adamant.get('full_account', config.address)
 	const blocks101=adamant.get('blocks');
@@ -89,12 +87,10 @@ module.exports = async(forged, delegateForged) => {
 		}
 		
 	};
-	/*
-		Проверки и уведомления (мы будем отправлять себе в Слак, например)
-		Если forged * percentage < sum of usertotalreward 
-		Если userbalance > usertotalreward for any user
-		Если totalforged < баланса нашего делегата
-	*/
+	
+	periodData.rewards+=usertotalreward;  
+	periodData.forged+=forged/SAT;
+	
 	usertotalreward=+usertotalreward.toFixed(8);
 	const username=delegate.delegate.username;
 	
