@@ -2,9 +2,9 @@
 <html> 
 	<head>
 		<meta charset="utf-8">
-		<meta name="description" content="ADAMANT-pool">
+		<meta name="description" content="Welcome to ADAMANT Forging Pool. Join to earn ADM and support decentralization.">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-		<title>ADAMANT-pool</title>
+		<title>ADAMANT Forging Pool</title>
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
 		<script src="https://use.fontawesome.com/ecd0a414f6.js"></script>
 		<script	src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
@@ -17,40 +17,40 @@
 		<div class="preloader">
 			<span>
 				<img src="https://msg.adamant.im/img/adamant-logo-transparent-512x512.png"/>
-				<div>ADAMANT Pool</div>
+				<div>ADAMANT Forging Pool</div>
 			</span>
 		</div>
 		<div id="panel">
 			<div class="topnav content">
 				<div class="row header">
-					<h1 class="h1_header"><img src="https://msg.adamant.im/img/adamant-logo-transparent-512x512.png" class="logo"/>
-					ADAMANT POOL </h1>
-					<a :href="'https://explorer.adamant.im/delegate/'+delegate.address" target="_blank">{{delegate.delegate.username}}</a>
+					<h1 class="h1_header"><img src="https://msg.adamant.im/img/adamant-logo-transparent-512x512.png" class="logo"/>ADAMANT Forging Pool <i class="fa fa-refresh refresh" aria-hidden="true" @click="fRefresh"></i></h1>
+					<a :href="'https://explorer.adamant.im/delegate/'+delegate.address" target="_blank" style="margin-top: 20px;">{{delegate.delegate.username}}</a>
 				</div>
 			</div>
 			<div class="content main">
-				<h2>Delegate {{delegate.delegate.username}} rewards {{system.reward_percentage}}% forged every {{system.payoutperiod}}, min payout {{system.minpayout}} ADM <i class="fa fa-refresh refresh" aria-hidden="true" @click="fRefresh"></i></h2>
+				<div class="row" style="100px 0px 15px 0px">Delegate <i>{{delegate.delegate.username}}</i> distributes <i>{{system.reward_percentage}}%</i> rewards with payouts every <i>{{system.payoutperiod}}</i>. Minimum payout is <i>{{system.minpayout}}</i> ADM.</div>
+				
 				<div id="cards" class="row">
-					<div class="card" style="background-color:#dff0d8; color:#3c763d;">	<span>
-						Total forged: {{(delegate.delegate.forged/100000000).toFixed(0)}} ADM<br>
+					<div class="card" style="background-color: rgb(238, 238, 238);">	<span>
+						Total forged: {{(delegate.delegate.forged/100000000).toFixed(1)}} ADM<br>
 						Votes weight: {{(delegate.delegate.votesWeight/100000000).toFixed(0)}} ADM
 					</span></div>
-					<div class="card" style="background-color:#f2dede; color:#a94442;"><span>
-						Productivity: {{delegate.delegate.productivity}}<br>
+					<div class="card" style="background-color: rgb(221, 221, 221);"><span>
+						Productivity: {{delegate.delegate.productivity}}%<br>
 						Rank: {{delegate.delegate.rank}}
 					</span></div>
-					<div class="card" style="background-color:#d9edf7; color:#31708f;">	<span>
-						Balance: {{(delegate.balance/100000000 || 0).toFixed(8)}}<br>
-						Pending: {{totalPending}}
+					<div class="card" style="background-color: rgb(238, 238, 238);">	<span>
+						Balance: {{(delegate.balance/100000000 || 0).toFixed(3)}}<br>
+						Pending: {{totalPending.toFixed(3)}}
 					</span></div>
-					<div class="card" style="background-color:#fcf8e3; color:#8a6d3b;">	<span>
+					<div class="card" style="background-color: rgb(221, 221, 221);">	<span>
 						Last payout: {{lastPayOut}}<br>
 						Next payout: {{nextPayOut}}
 					</div>
 					</span></div>
 					
 					<div class="container row"> 
-						<h1><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> Voites</h2>
+						<h1><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> Voters</h2>
 						<table>
 							<tr>
 								<th>#</th>
@@ -65,8 +65,8 @@
 							<tr v-for="(v,i) in voters" :key="i" v-if="v.isPaginVisible">
 								<td>{{i+1}}</td>
 								<td><a :href="'https://explorer.adamant.im/address/'+v.address" target="_blank">{{v.address}}</a></td>
-								<td>{{v.pending}}</td>
-								<td>{{v.received}}</td>
+								<td>{{v.pending.toFixed(4)}}</td>
+								<td>{{v.received.toFixed(4)}}</td>
 								<td>{{(v.userADM).toFixed(0)}}</td>
 								<td>{{(v.userWeight).toFixed(0)}}</td>
 								<td>{{v.userVotesNumber}}</td>  
@@ -93,7 +93,7 @@
 								<td>{{i+1}}</td>
 								<td>{{t.address}}</td>
 								<td>{{t.transactionId}}</td>
-								<td>{{t.payoutcount}}</td>
+								<td>{{t.payoutcount.toFixed(4)}}</td>
 								<td>{{moment(t.timeStamp).format(FORMAT_TRANS)}}</td>
 							</tr>
 						</table>
