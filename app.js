@@ -16,7 +16,7 @@ setInterval(() => {
 	const newForged=+adamant.get('delegate_forged', delegate.publicKey).forged;
 	
 	if (delegateForged < newForged) {
-		const forged = (newForged - delegateForged);
+		const forged = +(newForged - delegateForged).toFixed(8);
         log.info('New Forged: ' + forged/SAT + ' ADM.');
         delegateForged = newForged;
 		

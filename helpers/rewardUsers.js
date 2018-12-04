@@ -5,7 +5,7 @@ const log = require('./log');
 const _ = require('underscore');
 const syncNedb = require('./syncNedb');
 const {dbVoters, dbBlocks, dbRewards}= require('./DB');
-
+const notifier=require('./slackNotifier');
 
 module.exports = async(forged, delegateForged) => {
 	
@@ -92,13 +92,16 @@ module.exports = async(forged, delegateForged) => {
 		Если userbalance > usertotalreward for any user
 		Если totalforged < баланса нашего делегата
 	*/
-	
+	usertotalreward=+usertotalreward.toFixed(8);
+	const username=delegate.delegate.username;
 	if (forged * config.reward_percentage < usertotalreward) {
-		log.warn('Forged: ' + forged/SAT + ' User total reward:' + usertotalreward);
-		
+		let msg='Forged: ' + forged/SAT + ' User total reward:' + usertotalreward;
+		log.warn(msg);
+		notifier('Delegate:'+username+' '+msg, 1);
 		} else {
-		
-		log.info('Forged: ' + forged/SAT + ' User total reward:' + usertotalreward);
+		let msg='Forged: ' + forged/SAT + ' User total reward:' + usertotalreward
+		log.info(msg);	
+		notifier('Delegate:'+username+' '+msg, 'green');
 	}
 	
 }					

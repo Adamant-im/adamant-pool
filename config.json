@@ -3,7 +3,7 @@
     "address": "U9466395914658764774", 
 	"passPhrase":"random phrase",
     "reward_percentage": 80,
-	"minpayout":5,
+	"minpayout":1,
 	"payoutperiod":"1h",
 	"considerownvote": 1,
 	"maintenancewallet":false,
