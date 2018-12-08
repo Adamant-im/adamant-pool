@@ -42,9 +42,9 @@
 						Rank: {{delegate.delegate.rank}}
 					</span></div>
 					<div class="card" style="background-color: rgb(238, 238, 238);">	<span>
-						Balance: {{(delegate.balance/100000000 || 0).toFixed(3)}}<br>
-						Period forged: {{(system.payoutperiodForged || 0).toFixed(3)}}<br>
-						Period pending: {{(system.payoutperiodRewards || 0).toFixed(3)}}
+						Balance: {{(delegate.balance/100000000 || 0).toFixed(3)}} ADM<br>
+						Forged this period: {{(system.payoutperiodForged || 0).toFixed(1)}}<br>
+						Pending rewards: {{(system.payoutperiodRewards || 0).toFixed(1)}}
 					</span></div>
 					<div class="card" style="background-color: rgb(221, 221, 221);">	<span>
 						Last payout: {{lastPayOut}}<br>
