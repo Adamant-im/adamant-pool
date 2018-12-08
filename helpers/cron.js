@@ -1,5 +1,5 @@
-var cron = require('node-cron');
-const config = require('../config.json');
+const cron = require('node-cron');
+const config = require('./configReader')
 const payOut=require('./payOut');
 const payoutperiod=config.payoutperiod || '30d';
 const log = require('./log');
@@ -14,7 +14,7 @@ switch(payoutperiod){
 	case('1h'):
 	pattern='0 0-23 * * *';
 	break;
-	
+	 
 	case('1d'):
 	pattern='0 0 1-31 * *';
 	break;

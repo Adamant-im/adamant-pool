@@ -25,10 +25,10 @@ var panel = new Vue({
 		nextPayOut: 0,
 		th_voters:[{
 			field:'pending', 
-			title:'Pending ADM'
+			title:'Pending'
 			},{
 			field:'received',
-			title:'Received ADM'
+			title:'Received'
 			},{
 			field:'userADM',
 			title:'Balance'
@@ -41,7 +41,7 @@ var panel = new Vue({
 		}],
 		th_trans:[{
 			field:'payoutcount', 
-			title:'Received ADM'
+			title:'Amount'
 			},{
 			field:'timeStamp',
 			title:'Date'
@@ -63,7 +63,8 @@ var panel = new Vue({
 			var this_=this;
 			$.get('/api/get-transactions', function (res) {
 				if (typeof res == 'object')
-				panel.transactions = res;			
+				panel.transactions = res;		
+				panel.sortRows('transactions', panel.sorted_field_transactions, 1);
 				if(this_.system.payoutperiodStart){
 					let start=this_.system.payoutperiodStart; 
 					this_.lastPayOut = moment(start).format(FORMAT_PAYOUT);
@@ -75,6 +76,7 @@ var panel = new Vue({
 			$.get('/api/get-voters', function (res) {
 				if (typeof res == 'object')
 				panel.voters = res;
+				panel.sortRows('voters', panel.sorted_field_voters, 1) 
 			});
 		},
 		getDelegate() {
@@ -102,9 +104,9 @@ var panel = new Vue({
 			el.rotate = (el.rotate || 0)+400;
 			el.style.transform = "rotate("+el.rotate+"grad)";
 		},
-		sortRows(table, field) {
+		sortRows(table, field, noSort) { 
 			this['sorted_field_'+table]=field;
-			this['sorted_'+table] *= -1;
+			if(!noSort) this['sorted_'+table] *= -1;
 			panel[table].sort((a, b) => (a[field] - b[field]) * this['sorted_'+table]);			
 		},		
 		moment: moment

@@ -1,5 +1,5 @@
 const request = require('request');
-const config = require('../config.json');
+const config = require('./configReader');
 const url=config.slack;
 
 module.exports=(message, error)=>{

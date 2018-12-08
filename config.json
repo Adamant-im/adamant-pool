@@ -1,5 +1,5 @@
 {
-    "node": "https://endless.adamant.im",
+	"node": ["https://endless.adamant.im","https://endless.adamant.im"],
     "address": "U9466395914658764774", 
 	"passPhrase":"random phrase",
     "reward_percentage": 80,

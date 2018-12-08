@@ -85,7 +85,7 @@ table
 {
 	border-collapse: collapse;
 	border: 1px solid #eee;
-	width: 100%;
+	width:100%;
 }
 th 
 {
@@ -144,6 +144,10 @@ th.is-sorted.active
 }
 .row{
 	width: 90%;
+}
+
+.delegate-info{
+	margin: 120px 0px 25px 0px;
 }
 .main{
 	flex-direction: column;
@@ -207,3 +211,86 @@ ul li.active{
 .refresh:active{
 	color:#31708f;
 }
+
+
+.table-holder {
+	overflow-x: auto;
+	/* max-height: 100px; */
+	-webkit-overflow-scrolling: touch;
+}
+
+.table-holder::-webkit-scrollbar {
+	height: 5px;
+    width: 5px;
+}
+.table-holder::-webkit-scrollbar-track {
+	border-radius: 10px;
+	background:  #eee;
+}
+.table-holder::-webkit-scrollbar-thumb {
+	border-radius: 10px;
+	background:  #aaa;
+}
+
+
+
+@media (max-width: 800px) {
+	
+	.main{
+		margin: 30px 0px 0px 0px;
+	}
+	.card{
+		width: 50%;
+		margin: 2px 0;
+	}
+}
+
+@media (max-width: 650px) {
+	table{
+		min-width: 650px;
+	}
+	td, th{
+		font-size:12px;
+	}
+	.row{
+		width:95%;
+	}
+	.topnav {
+		height:100px;
+	}
+	.topnav.content{
+		padding:0;
+	}
+	.topnav a{
+		line-height:0;
+	}
+	
+	.topnav h1{
+		margin:0;
+	}
+	.header{
+		flex-direction: column;
+		padding: 0;
+	}	
+	
+	.main h1{
+		font-size:20px;
+	}
+	
+	.delegate-info{
+		margin-top: 80px;
+	}
+	
+}
+
+@media (max-width: 500px) {
+	.row{
+		width:98%;
+	}
+	.topnav h1 {
+		font-size: 1.2em;
+	}
+	.card{
+		width: 100%;
+	}
+}	

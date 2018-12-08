@@ -1,5 +1,5 @@
-const config = require('../config.json');
-const adamant = require('adamant-rest-api')(config);
+const config = require('../helpers/configReader'); 
+const adamant = require('../helpers/api');
 const express = require('express');
 const app = express();
 const {dbVoters, dbTrans} = require('../helpers/DB');

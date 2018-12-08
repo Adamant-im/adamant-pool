@@ -9,8 +9,9 @@
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
-		"adamant-rest-api": "0.0.1",
+		"adamant-api": "0.0.7",
 		"express": "^4.16.4",
+		"jsonminify": "^0.4.1",
 		"lodash": "^4.17.11",
 		"nedb": "^1.8.0",
 		"node-cron": "^2.0.3",

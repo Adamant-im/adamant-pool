@@ -1,8 +1,7 @@
 const {SAT} = require('./const');
-const config = require('../config.json');
-const adamant = require('adamant-rest-api')(config);
+const config = require('./configReader');
+const adamant = require('./api');
 const log = require('./log');
-const _ = require('underscore');
 const syncNedb = require('./syncNedb');
 const {dbVoters, dbBlocks, dbRewards, dbTrans}= require('./DB');
 const notifier=require('./slackNotifier');
@@ -16,7 +15,7 @@ module.exports = async(forged, delegateForged) => {
 	let timeStamp=new Date().getTime();
 	
 	const delegateBlocks=blocks101.filter(b=>b.generatorId===config.address);
-	const lastDelegateBlock=_.last(delegateBlocks);
+	const lastDelegateBlock=delegateBlocks[delegateBlocks.length-1];
 	lastDelegateBlock.delegateForged=delegateForged;
 	lastDelegateBlock.unixTimestamp=timeStamp;
 	
@@ -104,9 +103,3 @@ module.exports = async(forged, delegateForged) => {
 	}
 	
 }			
-
-// a();
-// async function a(){
-
-// console.log(last)
-// }

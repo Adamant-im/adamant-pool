@@ -24,11 +24,11 @@
 			<div class="topnav content">
 				<div class="row header">
 					<h1 class="h1_header"><img src="https://msg.adamant.im/img/adamant-logo-transparent-512x512.png" class="logo"/>ADAMANT Forging Pool&nbsp;<i class="fa fa-refresh refresh" style="font-size: 20px; color: rgb(221, 221, 221);" aria-hidden="true" @click="fRefresh"></i></h1>
-					<a :href="'https://explorer.adamant.im/delegate/'+delegate.address" target="_blank" style="margin-top: 30px;">{{delegate.delegate.username}}</a>
+					<a :href="'https://explorer.adamant.im/delegate/'+delegate.address" target="_blank" >{{delegate.delegate.username}}</a>
 				</div>
 			</div>
-			<div class="content main">
-				<div class="row" style="margin: 120px 0px 25px 0px">Delegate <i>{{delegate.delegate.username}}</i> distributes <i>{{system.reward_percentage}}%</i> rewards with payouts every <i>{{system.payoutperiod}}</i>. Minimum payout is <i>{{system.minpayout}}</i> ADM.</div>
+			<div class="content main ">
+				<div class="row delegate-info" >Delegate <i>{{delegate.delegate.username}}</i> distributes <i>{{system.reward_percentage}}%</i> rewards with payouts every <i>{{system.payoutperiod}}</i>. Minimum payout is <i>{{system.minpayout}}</i> ADM.</div>
 				
 				<div id="cards" class="row">
 					<div class="card" style="background-color: rgb(238, 238, 238);">	<span>
@@ -55,52 +55,56 @@
 					
 					<div class="container row"> 
 						<h1><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> Voters ({{voters.length}})</h2>
-						<table>
-							<tr>
-								<th>#</th>
-								<th>Address</th>
-								<th v-for="th in th_voters" 
-								@click="sortRows('voters',th.field)" 
-								:class="{'active':sorted_field_voters==th.field}" class="is-sorted">
-									{{th.title}} <i class="fa" 
-									:class="{'fa-sort-asc':sorted_field_voters==th.field && sorted_voters>0, 'fa-sort-desc':sorted_field_voters==th.field && sorted_voters<0}" aria-hidden="true" ></i>
-								</th>
-							</tr>
-							<tr v-for="(v,i) in voters" :key="i" v-if="v.isPaginVisible!==false">
-								<td>{{i+1}}</td>
-								<td><a :href="'https://explorer.adamant.im/address/'+v.address" target="_blank">{{v.address}}</a></td>
-								<td>{{v.pending.toFixed(4)}}</td>
-								<td>{{v.received.toFixed(4)}}</td>
-								<td>{{(v.userADM).toFixed(0)}}</td>
-								<td>{{(v.userWeight).toFixed(0)}}</td>
-								<td>{{v.userVotesNumber}}</td>  
-							</tr>
-							
-						</table>	
+						<div class="table-holder">
+							<table>
+								<tr>
+									<th>#</th>
+									<th>Address</th>
+									<th v-for="th in th_voters" 
+									@click="sortRows('voters',th.field)" 
+									:class="{'active':sorted_field_voters==th.field}" class="is-sorted">
+										{{th.title}} <i class="fa" 
+										:class="{'fa-sort-asc':sorted_field_voters==th.field && sorted_voters>0, 'fa-sort-desc':sorted_field_voters==th.field && sorted_voters<0}" aria-hidden="true" ></i>
+									</th>
+								</tr>
+								<tr v-for="(v,i) in voters" :key="i" v-if="v.isPaginVisible!==false">
+									<td>{{i+1}}</td>
+									<td><a :href="'https://explorer.adamant.im/address/'+v.address" target="_blank">{{v.address}}</a></td>
+									<td>{{v.pending.toFixed(4)}}</td>
+									<td>{{v.received.toFixed(4)}}</td>
+									<td>{{(v.userADM).toFixed(0)}}</td>
+									<td>{{(v.userWeight).toFixed(0)}}</td>
+									<td>{{v.userVotesNumber}}</td>  
+								</tr>
+								
+							</table>	
+						</div>
 						<pagin :options="{rows:voters}"></pagin>
 					</div>
 					<div class="container row"> 
 						<h1><i class="fa fa-diamond" aria-hidden="true"></i> Transactions ({{transactions.length}})</h2>
-						<table>
-							<tr>
-								<th>#</th>
-								<th>Address</th>
-								<th>TransactionId</th>
-								<th v-for="th in th_trans" 
-								@click="sortRows('transactions',th.field)" 
-								:class="{'active':sorted_field_transactions==th.field}" class="is-sorted">
-									{{th.title}} <i class="fa" 
-									:class="{'fa-sort-asc':sorted_field_transactions==th.field && sorted_transactions>0, 'fa-sort-desc':sorted_field_transactions==th.field && sorted_transactions<0}" aria-hidden="true" ></i>
-								</th>
-							</tr>
-							<tr v-for="(t,i) in transactions" :key="i" v-if="t.isPaginVisible!==false"> 
-								<td>{{i+1}}</td>
-								<td>{{t.address}}</td>
-								<td>{{t.transactionId}}</td>
-								<td>{{t.payoutcount.toFixed(4)}}</td>
-								<td>{{moment(t.timeStamp).format(FORMAT_TRANS)}}</td>
-							</tr>
-						</table>
+						<div class="table-holder">
+							<table>
+								<tr>
+									<th>#</th>
+									<th>Address</th>
+									<th>TransactionId</th>
+									<th v-for="th in th_trans" 
+									@click="sortRows('transactions',th.field)" 
+									:class="{'active':sorted_field_transactions==th.field}" class="is-sorted">
+										{{th.title}} <i class="fa" 
+										:class="{'fa-sort-asc':sorted_field_transactions==th.field && sorted_transactions>0, 'fa-sort-desc':sorted_field_transactions==th.field && sorted_transactions<0}" aria-hidden="true" ></i>
+									</th>
+								</tr>
+								<tr v-for="(t,i) in transactions" :key="i" v-if="t.isPaginVisible!==false"> 
+									<td>{{i+1}}</td>
+									<td><a :href="'https://explorer.adamant.im/address/'+t.address" target="_blank">{{t.address}}</a></td>
+									<td><a :href="'https://explorer.adamant.im/tx/'+t.transactionId" target="_blank">{{t.transactionId}}</a></td>
+									<td>{{t.payoutcount.toFixed(4)}}</td>
+									<td>{{moment(t.timeStamp).format(FORMAT_TRANS)}}</td>
+								</tr>
+							</table>
+						</div>
 						<pagin :options="{rows:transactions}" ></pagin>
 					</div>
 			</div>
