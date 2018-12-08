@@ -1,13 +1,12 @@
 {
 	"node": ["https://endless.adamant.im","https://endless.adamant.im"],
-    "address": "U9466395914658764774", 
+	"address": "U9466395914658764774", 
 	"passPhrase":"random phrase",
-	
-    "reward_percentage": 80,
+	"reward_percentage": 80,
 	"minpayout":0.1,
 	"payoutperiod":"1d",
 	"considerownvote": 1,
 	"maintenancewallet":false,
 	"slack":"https://hooks.slack.com/services/key_slack",
 	"port":36667
-} 
+}
