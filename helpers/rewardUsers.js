@@ -27,15 +27,15 @@ module.exports = async(forged, delegateForged) => {
 	if(!resSetBlock) log.error(' Set new block');
 	
 	
-    const totalweight = +delegate.delegate.votesWeight;
-    lastDelegateBlock.totalweight=totalweight; 
+	const totalweight = +delegate.delegate.votesWeight;
+	lastDelegateBlock.totalweight=totalweight; 
 	const voters = delegate.voters;
-    let usertotalreward = 0;
+	let usertotalreward = 0;
 	
-    for(let i=0;i<voters.length;i++) {
-        try {
+	for(let i=0;i<voters.length;i++) {
+		try {
 			const v = voters[i];
-            const address = v.address;
+			const address = v.address;
 			
 			if(address == config.address && !config.considerownvote) continue;
 			const userADM = v.balance;
@@ -65,7 +65,7 @@ module.exports = async(forged, delegateForged) => {
 			// console.log({userADM,userVotesNumber, userWeight})
 			
 			usertotalreward += userReward;
-			const pending  = (voter.pending || 0) + userReward;		
+			const pending= (voter.pending || 0) + userReward;		
 			const resUpdatePending=await dbVoters.syncUpdate({address}, {$set: {pending,userWeight:userWeight/SAT, userVotesNumber, userADM:userADM/SAT}});
 			
 			if(!resUpdatePending) log.error(" Updated pending "+address);
@@ -87,7 +87,7 @@ module.exports = async(forged, delegateForged) => {
 		
 	};
 	
-	periodData.rewards+=usertotalreward;  
+	periodData.rewards+=usertotalreward;
 	periodData.forged+=forged/SAT;
 	
 	usertotalreward=+usertotalreward.toFixed(8);

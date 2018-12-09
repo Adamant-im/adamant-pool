@@ -1,6 +1,6 @@
 var FORMAT_TRANS = 'YYYY/MM/DD HH:mm';
 var FORMAT_PAYOUT = 'YYYY/MM/DD';
-var EL;
+
 var panel = new Vue({
 	el: '#panel',
 	created() {
