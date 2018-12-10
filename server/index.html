@@ -58,7 +58,7 @@
 			<div class="content main ">
 				<div class="row delegate-info" >Delegate <i>{{delegate.delegate.username}}</i> distributes <i>{{system.reward_percentage}}%</i> rewards with payouts every <i>{{system.payoutperiod}}</i>. Minimum payout is <i>{{system.minpayout}}</i> ADM.</div>
 				
-				<div id="cards" class="row">
+				<div id="cards" class="row" style="margin-bottom: 50px;">
 					<div class="card" style="background-color: rgb(238, 238, 238);">	<span>
 						Total forged: {{(delegate.delegate.forged/100000000).toFixed(1)}} ADM<br>
 						Votes weight: {{(delegate.delegate.votesWeight/100000000).toFixed(0)}} ADM<br>
