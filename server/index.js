@@ -10,6 +10,7 @@ const DIR_NAME = __dirname + '/';
 
 let Forged=0;
 app.use('/assets', express.static(__dirname + '/public'));
+app.use('/favicon.ico', express.static(__dirname + '/public/icons/favicon.ico'));
 
 app.get('/', (req, res) => res.sendFile(DIR_NAME + '/index.html'));
 

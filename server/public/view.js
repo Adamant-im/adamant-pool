@@ -3,14 +3,14 @@ var FORMAT_PAYOUT = 'YYYY/MM/DD';
 
 var panel = new Vue({
 	el: '#panel',
-	created() {
-		setTimeout(() => {
+	created:function() {
+		setTimeout(function(){
 			$('.preloader').fadeOut(1000);
 		}, 2000);
 		
 		this.refresh();
-		setInterval(()=>{
-			this.refresh();
+		setInterval(function(){
+			panel.refresh();
 		}, 300*1000);
 		
 	},
@@ -59,7 +59,7 @@ var panel = new Vue({
 		}
 	},
 	methods: {
-		getTransactions() {
+		getTransactions:function() {
 			var this_=this;
 			$.get('/api/get-transactions', function (res) {
 				if (typeof res == 'object')
@@ -72,39 +72,39 @@ var panel = new Vue({
 				}				
 			});
 		},
-		getVoters() {
+		getVoters:function() {
 			$.get('/api/get-voters', function (res) {
 				if (typeof res == 'object')
 				panel.voters = res;
 				panel.sortRows('voters', panel.sorted_field_voters, 1) 
 			});
 		},
-		getDelegate() {
+		getDelegate:function() {
 			$.get('/api/get-delegate', function (res) {
 				if (typeof res == 'object')
 				panel.delegate = res;
 			});
 		},
-		getSystem() {
+		getSystem:function() {
 			$.get('/api/get-config', function (res) {
 				if (typeof res == 'object')
 				panel.system = res;
 				panel.getTransactions();
 			});
 		},
-		refresh() {
+		refresh:function() {
 			this.getSystem();
 			this.getTransactions();
 			this.getVoters();
 			this.getDelegate();
 		},
-		fRefresh(e){
+		fRefresh:function(e) {
 			this.refresh(); 
 			var el=e.target;
 			el.rotate = (el.rotate || 0)+400;
 			el.style.transform = "rotate("+el.rotate+"grad)";
 		},
-		sortRows(table, field, noSort) { 
+		sortRows:function(table, field, noSort) { 
 			this['sorted_field_'+table]=field;
 			if(!noSort) this['sorted_'+table] *= -1;
 			panel[table].sort((a, b) => (a[field] - b[field]) * this['sorted_'+table]);			
