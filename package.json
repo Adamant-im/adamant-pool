@@ -1,13 +1,13 @@
 {
 	"name": "adamant-pool",
-	"version": "1.0.0",
-	"description": "\"ADAMANT Messenger Pool\"",
+	"version": "1.0.1",
+	"description": "\"ADAMANT Messenger Forging Pool\"",
 	"main": "index.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
-	"author": "",
-	"license": "ISC",
+	"author": "ADAMANT Tech Labs <devs@adamant.im>",
+	"license": "GPL-3.0",
 	"dependencies": {
 		"adamant-api": "^0.1.1",
 		"express": "^4.16.4",

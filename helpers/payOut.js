@@ -94,7 +94,7 @@ module.exports = async() => {
 		let msg2;
 		color='green';
 		if(votersToReceived.length===successTrans){
-			msg2=`Pool ${poolname} made payouts successfully. Transferred ${totalPayOut.toFixed(4)} ADM to users, <X> ADM to maintenance wallet <ID>. Total payouts count:  ${successTrans}. Number of pending payouts (users forged less, than minimum of ${config.minpayout} ADM) — ${votersMinPayout.length}, their total rewards amount is  ${leftPending.toFixed(4)} ADM. _Balance of delegate now — ${balance.toFixed(4)} ADM._`;
+			msg2=`Pool ${poolname} made payouts successfully. Transferred ${totalPayOut.toFixed(4)} ADM to users, <X> ADM to maintenance wallet <ID>. Total payouts count: ${successTrans}. Number of pending payouts (users forged less, than minimum of ${config.minpayout} ADM) — ${votersMinPayout.length}, their total rewards amount is ${leftPending.toFixed(4)} ADM. _Balance of delegate now — ${balance.toFixed(4)} ADM._`;
 			} else{
 			color=1;
 			msg2= `Pool ${poolname} notifies about problems with payouts. Admin attention is needed. Balance of delegate now — ${balance} ADM.`;			
