@@ -6,13 +6,14 @@ const {dbVoters, dbTrans} = require('../helpers/DB');
 const log = require('../helpers/log');
 const periodData=require('../helpers/periodData');
 const port = config.port || 36668;
-const DIR_NAME = __dirname + '/';
+const DIR_NAME = __dirname + '/public/';
 
 let Forged=0;
-app.use('/assets', express.static(__dirname + '/public'));
-app.use('/favicon.ico', express.static(__dirname + '/public/icons/favicon.ico'));
+// app.use('/assets', express.static(__dirname + '/public'));
+// app.use('/favicon.ico', express.static(__dirname + '/public/icons/favicon.ico'));
+app.use('/', express.static(__dirname + '/public/'));
 
-app.get('/', (req, res) => res.sendFile(DIR_NAME + '/index.html'));
+app.get('/', (req, res) => res.sendFile(DIR_NAME + 'index.html'));
 
 app.get('/api/get-transactions', (req, res) => {
 	dbTrans.find({}, (err, docs)=>{
