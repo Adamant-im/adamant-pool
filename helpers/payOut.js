@@ -1,5 +1,6 @@
 const {
-	SAT
+	SAT,
+	FEE
 } = require('./const');
 const config = require('./configReader');
 const adamant = require('./api');
@@ -12,7 +13,9 @@ const {
 const notifier = require('./slackNotifier');
 const periodData = require('./periodData');
 
+
 module.exports = async () => {
+
 	log.info('Pay out period!');
 	notifier('---------Payout period----------', 'green');
 
@@ -21,14 +24,14 @@ module.exports = async () => {
 		let balance = +delegate.balance / SAT;
 		const poolname = delegate.delegate.username;
 
-		if (!config.passphrase) {
+		if (!config.passPhrase) {
 			let msg = 'Pool ' + poolname + ' is in read-only mode. To enable payouts, set passPhrase in config.';
 			notifier(msg, 'yellow');
 			log.warn(msg);
 			return;
 		}
 		const totalforged = periodData.forged;
-		const usertotalreward = periodData.rewards;
+		const usertotalreward = periodData.rewards; // 80% 
 		periodData.zero();
 
 		const voters = await dbVoters.syncFind({});
@@ -117,14 +120,26 @@ module.exports = async () => {
 			}
 		}
 
-		if (config.maintenancewallet) {}
+		let delegate_report = '';
+		if (config.maintenancewallet && successTrans) {
+			let delegateProf = totalforged - usertotalreward; // 100-percent
+			totalFee = (successTrans + 1) * FEE
+			delegateProf -= totalFee;
+			// const trans_maintenance= adamant.send((config.passPhrase, config.maintenancewallet, delegateProf));
+			const trans_maintenance = {
+				success: 1
+			};
+			if (trans_maintenance && trans_maintenance.success) {
+				delegate_report = `${delegateProf} ADM to maintenance wallet ${config.maintenancewallet}, fee - ${totalFee} ADM`;
+			}
+		}
 
 		delegate = adamant.get('full_account', config.address);
 		balance = +delegate.balance / SAT;
 		let msg2;
 		color = 'green';
 		if (votersToReceived.length === successTrans) {
-			msg2 = `Pool ${poolname} made payouts successfully. Transferred ${totalPayOut.toFixed(4)} ADM to users, <X> ADM to maintenance wallet <ID>. Total payouts count: ${successTrans}. Number of pending payouts (users forged less, than minimum of ${config.minpayout} ADM) — ${votersMinPayout.length}, their total rewards amount is ${leftPending.toFixed(4)} ADM. _Balance of delegate now — ${balance.toFixed(4)} ADM._`;
+			msg2 = `Pool ${poolname} made payouts successfully. Transferred ${totalPayOut.toFixed(4)} ADM to users, ${delegate_report}. Total payouts count: ${successTrans}. Number of pending payouts (users forged less, than minimum of ${config.minpayout} ADM) — ${votersMinPayout.length}, their total rewards amount is ${leftPending.toFixed(4)} ADM. _Balance of delegate now — ${balance.toFixed(4)} ADM._`;
 		} else {
 			color = 1;
 			msg2 = `Pool ${poolname} notifies about problems with payouts. Admin attention is needed. Balance of delegate now — ${balance} ADM.`;
