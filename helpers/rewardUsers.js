@@ -4,7 +4,6 @@ const {
 const config = require('./configReader');
 const adamant = require('./api');
 const log = require('./log');
-
 const {
     dbVoters,
     dbBlocks,
@@ -15,7 +14,9 @@ const periodData = require('./periodData');
 
 module.exports = async (forged, delegateForged) => {
     try {
-        const delegate = adamant.get('full_account', config.address)
+        const delegate = adamant.get('full_account', config.address);
+        const poolname = delegate.delegate.username;
+        const balance = +delegate.balance;
         const blocks101 = adamant.get('blocks');
         if (!blocks101) return;
         let timeStamp = new Date().getTime();
@@ -101,23 +102,39 @@ module.exports = async (forged, delegateForged) => {
 
         };
 
+        const currentPeriodForged = periodData.forged;
         periodData.rewards += usertotalreward;
         periodData.forged += forged / SAT;
 
-        usertotalreward = +usertotalreward.toFixed(8);
-        const username = delegate.delegate.username;
-
-        let msg = 'Forged: ' + forged / SAT + ' User total reward:' + usertotalreward;
-
+        usertotalreward *= SAT;
         if (forged * config.reward_percentage < usertotalreward) {
+            let msg = `Pool ${poolname}: forged * percentage < sum of usertotalreward. Values: forged — ${round(forged)} ADM, percentage — ${config.reward_percentage}%, sum of usertotalreward — ${round(usertotalreward)} ADM.`;
             log.warn(msg);
-            notifier('Delegate:' + username + ' ' + msg, 1);
-        } else {
-            log.info(msg);
+            notifier(msg, 1);
         }
+
+        if (balance < usertotalreward) {
+            let msg = `Pool ${poolname}: userbalance < usertotalreward for user <ID>. Values: userbalance — ${round(balance)} ADM, usertotalreward — ${round(usertotalreward)} ADM.`
+            log.warn(msg);
+            notifier(msg, 1);
+        }
+        
+        if (currentPeriodForged > balance) {
+            let msg = ` Pool ${poolname}: totalforged < balance of delegate.Values: totalforged— ${round(currentPeriodForged)} ADM, balance of delegate— ${round(balance)} ADM.`;
+            log.warn(msg);
+            notifier(msg, 1);
+        }
+
+        let msg = 'Forged: ' + round(forged) + ' User total reward:' + round(usertotalreward);
+        log.info(msg);
+
         return true;
     } catch (e) {
         log.error(' Reward Users: ' + e);
     }
 
+}
+
+function round(num) {
+    return Number((num / SAT).toFixed(3));
 }

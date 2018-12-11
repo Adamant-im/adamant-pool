@@ -14,18 +14,23 @@ log.info('ADAMANT-pool started ' + config.address + '.');
 const delegate = adamant.get('full_account', config.address);
 let delegateForged = +delegate.delegate.forged;
 
-setInterval(() => {
-	try {
-		const newForged = +adamant.get('delegate_forged', delegate.publicKey).forged;
-		if (delegateForged < newForged) {
-			const forged = +(newForged - delegateForged).toFixed(8);
-			log.info('New Forged: ' + forged / SAT + ' ADM.');
-			const resRewards = rewardUsers(forged, delegateForged);
-			if (resRewards) delegateForged = newForged;
+iterat();
+
+function iterat() {
+	setTimeout(() => {
+		try {
+			const newForged = +adamant.get('delegate_forged', delegate.publicKey).forged;
+			if (delegateForged < newForged) {
+				const forged = newForged - delegateForged;
+				log.info('New Forged: ' + forged / SAT + ' ADM.');
+				const resRewards = rewardUsers(forged, delegateForged);
+				if (resRewards) delegateForged = newForged;
+			}
+
+		} catch (e) {
+			log.error('Get new Forged!');
 		}
 
-	} catch (e) {
-
-		log.error('Get new Forged!');
-	}
-}, TIME_RATE * 1000);
+		iterat();
+	}, TIME_RATE * 1000);
+}
