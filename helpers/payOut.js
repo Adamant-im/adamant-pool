@@ -1,51 +1,68 @@
-const {SAT, FEE} = require('./const');
+const {
+	SAT
+} = require('./const');
 const config = require('./configReader');
 const adamant = require('./api');
 const log = require('./log');
 const _ = require('lodash');
-const {dbVoters, dbTrans, dbBlocks, dbRewards} = require('./DB');
-const notifier=require('./slackNotifier');
-const periodData=require('./periodData');
+const {
+	dbVoters,
+	dbTrans
+} = require('./DB');
+const notifier = require('./slackNotifier');
+const periodData = require('./periodData');
 
-
-
-module.exports = async() => {
+module.exports = async () => {
 	log.info('Pay out period!');
 	notifier('---------Payout period----------', 'green');
+
 	try {
-		let delegate=adamant.get('full_account', config.address);
-		let balance=+delegate.balance/SAT;
-		const poolname=delegate.delegate.username;	
-		
-		const totalforged =	periodData.forged;
-		const usertotalreward=periodData.rewards;
+		let delegate = adamant.get('full_account', config.address);
+		let balance = +delegate.balance / SAT;
+		const poolname = delegate.delegate.username;
+
+		if (!config.passphrase) {
+			let msg = 'Pool ' + poolname + ' is in read-only mode. To enable payouts, set passPhrase in config.';
+			notifier(msg, 'yellow');
+			log.warn(msg);
+			return;
+		}
+		const totalforged = periodData.forged;
+		const usertotalreward = periodData.rewards;
 		periodData.zero();
-		
+
 		const voters = await dbVoters.syncFind({});
-		const votersToReceived = voters.filter((v)=>v.pending >= (config.minpayout || 10));
-		const votersMinPayout = voters.filter((v)=>v.pending < (config.minpayout || 10));
-		
+		const votersToReceived = voters.filter((v) => v.pending >= (config.minpayout || 10));
+		const votersMinPayout = voters.filter((v) => v.pending < (config.minpayout || 10));
+
 		if (!votersToReceived) {
 			log.error(' Voters to received is null');
 			return;
 		}
-		let leftPending=votersMinPayout.reduce((s,v)=>{
-			return s+v.pending;
-		},0);
-		
-		let totalPayNeed=votersToReceived.reduce((s,v)=>{
-			return s+v.pending;
-		},0);		
-		
-		let msg1=`Pool ${poolname} is ready to make payouts. Values: _payoutcount_ — ${votersToReceived.length}, _totalforged_ — ${totalforged.toFixed(4)} ADM, sum of _usertotalreward_ — ${usertotalreward.toFixed(4)} ADM, amount for this payout — ${totalPayNeed.toFixed(4)} ADM, _balance of delegate — ${balance.toFixed(4)} ADM._`;
-		
-		let color='green';
-		if(totalPayNeed > balance) color=1;
-		
-		notifier(msg1, color);
+		let leftPending = votersMinPayout.reduce((s, v) => {
+			return s + v.pending;
+		}, 0);
+
+		let totalPayNeed = votersToReceived.reduce((s, v) => {
+			return s + v.pending;
+		}, 0);
+
+		let msg1 = `Pool ${poolname} is ready to make payouts. Values: _payoutcount_ — ${votersToReceived.length}, _totalforged_ — ${totalforged.toFixed(4)} ADM, sum of _usertotalreward_ — ${usertotalreward.toFixed(4)} ADM, amount for this payout — ${totalPayNeed.toFixed(4)} ADM, _balance of delegate — ${balance.toFixed(4)} ADM._`;
+
+		let color = 'green';
+		if (totalPayNeed > balance) {
+			let msg3 = ` Pool ${poolname} notifies about problems with payouts. Admin attention is needed. Balance of delegate now — ${balance.toFixed(4)} ADM.`;
+			color = 1;
+			log.error(msg3);
+			notifier(msg3, 1);
+			return;
+		}
+
 		log.info(msg1);
-		let totalPayOut=0;
-		let successTrans=0;
+		notifier(msg1, color);
+
+		let totalPayOut = 0;
+		let successTrans = 0;
 		for (let v of votersToReceived) {
 			try {
 				let {
@@ -53,56 +70,69 @@ module.exports = async() => {
 					pending,
 					received
 				} = v;
-				// const trans= admitad.send((config.passPhrase, address, pending));
+				// const trans= adamant.send((config.passPhrase, address, pending));
 				const trans = { // Demo transaction
 					success: true,
 					transactionId: new Date().getTime() / Math.random(),
+					error: ' *API error*',
 				}
-				
-				if (!trans.success){
-					console.log('return');
-					return;
+
+				if (!trans || !trans.success) {
+					let err = " response 502";
+					if (trans) err = trans.error;
+					// let msg = 'Error send transaction:' + address + ' | ' + pending + ' ADM!' + trans.error;
+					let msg = `Pool ${poolname} notifies about problem with payout: transaction of amount ${pending} ADM to user ${address} unsuccessful. Node’s reply: ${err}.`;
+					log.error(msg);
+					notifier(msg, 1);
+					continue;
 				}
 				successTrans++;
-				
+
 				delete trans.success;
-				
+
 				trans.timeStamp = new Date().getTime();
 				trans.address = address;
-				trans.received =received;
+				trans.received = received;
 				trans.payoutcount = pending;
-				totalPayOut+=pending;
+				totalPayOut += pending;
 				received += pending;
-				const resUpdateRecived = await dbVoters.syncUpdate({address}, {$set: {pending: 0,received}});
+				const resUpdateRecived = await dbVoters.syncUpdate({
+					address
+				}, {
+					$set: {
+						pending: 0,
+						received
+					}
+				});
 				const resCreateTrans = await dbTrans.syncInsert(trans);
-				
+
 				if (!resUpdateRecived)
-				log.error(" Updated  received " + address + ' ' + pending);
-				
+					log.error(" Updated  received " + address + ' ' + pending);
+
 				if (!resCreateTrans)
-				log.error(" Create  transaction " + address + ' ' + pending);
-				
-				} catch (e) {
+					log.error(" Create  transaction " + address + ' ' + pending);
+
+			} catch (e) {
 				log.error(' Set transaction: ' + e);
-			}			
-		}		
-		
-		if (config.maintenancewallet) {}
-		
-		delegate=adamant.get('full_account', config.address);
-		balance=+delegate.balance/SAT;
-		let msg2;
-		color='green';
-		if(votersToReceived.length===successTrans){
-			msg2=`Pool ${poolname} made payouts successfully. Transferred ${totalPayOut.toFixed(4)} ADM to users, <X> ADM to maintenance wallet <ID>. Total payouts count: ${successTrans}. Number of pending payouts (users forged less, than minimum of ${config.minpayout} ADM) — ${votersMinPayout.length}, their total rewards amount is ${leftPending.toFixed(4)} ADM. _Balance of delegate now — ${balance.toFixed(4)} ADM._`;
-			} else{
-			color=1;
-			msg2= `Pool ${poolname} notifies about problems with payouts. Admin attention is needed. Balance of delegate now — ${balance} ADM.`;			
+			}
 		}
-		
-		log.info(msg2);	
-		notifier(msg2,color);
-		} catch (e) {
+
+		if (config.maintenancewallet) {}
+
+		delegate = adamant.get('full_account', config.address);
+		balance = +delegate.balance / SAT;
+		let msg2;
+		color = 'green';
+		if (votersToReceived.length === successTrans) {
+			msg2 = `Pool ${poolname} made payouts successfully. Transferred ${totalPayOut.toFixed(4)} ADM to users, <X> ADM to maintenance wallet <ID>. Total payouts count: ${successTrans}. Number of pending payouts (users forged less, than minimum of ${config.minpayout} ADM) — ${votersMinPayout.length}, their total rewards amount is ${leftPending.toFixed(4)} ADM. _Balance of delegate now — ${balance.toFixed(4)} ADM._`;
+		} else {
+			color = 1;
+			msg2 = `Pool ${poolname} notifies about problems with payouts. Admin attention is needed. Balance of delegate now — ${balance} ADM.`;
+		}
+
+		log.info(msg2);
+		notifier(msg2, color);
+	} catch (e) {
 		log.error(' Sending coins: ' + e);
 	}
-}	
+}

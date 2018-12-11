@@ -1,124 +1,123 @@
 const {
-	SAT
+    SAT
 } = require('./const');
 const config = require('./configReader');
 const adamant = require('./api');
 const log = require('./log');
-const syncNedb = require('./syncNedb');
+
 const {
-	dbVoters,
-	dbBlocks,
-	dbRewards,
-	dbTrans
+    dbVoters,
+    dbBlocks,
+    dbRewards
 } = require('./DB');
 const notifier = require('./slackNotifier');
 const periodData = require('./periodData');
 
 module.exports = async (forged, delegateForged) => {
-	try {
-		const delegate = adamant.get('full_account', config.address)
-		const blocks101 = adamant.get('blocks');
-		if (!blocks101) return;
-		let timeStamp = new Date().getTime();
+    try {
+        const delegate = adamant.get('full_account', config.address)
+        const blocks101 = adamant.get('blocks');
+        if (!blocks101) return;
+        let timeStamp = new Date().getTime();
 
-		const delegateBlocks = blocks101.filter(b => b.generatorId === config.address);
-		const lastDelegateBlock = delegateBlocks[delegateBlocks.length - 1];
-		lastDelegateBlock.delegateForged = delegateForged;
-		lastDelegateBlock.unixTimestamp = timeStamp;
+        const delegateBlocks = blocks101.filter(b => b.generatorId === config.address);
+        const lastDelegateBlock = delegateBlocks[delegateBlocks.length - 1];
+        if (!lastDelegateBlock) return;
+
+        lastDelegateBlock.delegateForged = delegateForged;
+        lastDelegateBlock.unixTimestamp = timeStamp;
+
+        const blockId = lastDelegateBlock.id
+        const resSetBlock = await dbBlocks.syncInsert(lastDelegateBlock);
+        if (!resSetBlock) log.error(' Set new block');
 
 
-		if (!lastDelegateBlock) return;
+        const totalweight = +delegate.delegate.votesWeight;
+        lastDelegateBlock.totalweight = totalweight;
+        const voters = delegate.voters;
+        let usertotalreward = 0;
 
-		const blockId = lastDelegateBlock.id
-		const resSetBlock = await dbBlocks.syncInsert(lastDelegateBlock);
-		if (!resSetBlock) log.error(' Set new block');
+        for (let i = 0; i < voters.length; i++) {
+            try {
+                const v = voters[i];
+                const address = v.address;
 
+                if (address == config.address && !config.considerownvote) continue;
+                const userADM = v.balance;
+                const userVotesNumber = adamant.get('account_delegates', address).length;
 
-		const totalweight = +delegate.delegate.votesWeight;
-		lastDelegateBlock.totalweight = totalweight;
-		const voters = delegate.voters;
-		let usertotalreward = 0;
+                let voter = await dbVoters.syncFindOne({
+                    address
+                });
 
-		for (let i = 0; i < voters.length; i++) {
-			try {
-				const v = voters[i];
-				const address = v.address;
+                if (!voter) {
+                    log.info('New voter: ' + address);
 
-				if (address == config.address && !config.considerownvote) continue;
-				const userADM = v.balance;
-				const userVotesNumber = adamant.get('account_delegates', address).length;
+                    voter = {
+                        address: address,
+                        pending: 0,
+                        received: 0
+                    };
 
-				let voter = await dbVoters.syncFindOne({
-					address
-				});
+                    const resCreateVoter = await dbVoters.syncInsert(voter);
 
-				if (!voter) {
-					log.info('New voter: ' + address);
+                    if (!resCreateVoter) {
+                        log.error(' Failed created voter ' + address);
+                        return;
+                    }
+                }
 
-					voter = {
-						address: address,
-						pending: 0,
-						received: 0
-					};
+                const userWeight = userADM / userVotesNumber;
+                const userReward = (userWeight / totalweight) * forged * config.reward_percentage / 100 / SAT;
+                usertotalreward += userReward;
+                const pending = (voter.pending || 0) + userReward;
+                const resUpdatePending = await dbVoters.syncUpdate({
+                    address
+                }, {
+                    $set: {
+                        pending,
+                        userWeight: userWeight / SAT,
+                        userVotesNumber,
+                        userADM: userADM / SAT
+                    }
+                });
 
-					const resCreateVoter = await dbVoters.syncInsert(voter);
+                if (!resUpdatePending) log.error(" Updated pending " + address);
+                const reward = {
+                    address,
+                    reward: userReward,
+                    blockId,
+                    timeStamp,
+                    userWeight: userWeight / SAT,
+                    userADM: userADM / SAT,
+                    userVotesNumber
+                }
 
-					if (!resCreateVoter) {
-						log.error(' Failed created voter ' + address);
-						return;
-					}
-				}
+                const resInsertReward = await dbRewards.syncInsert(reward);
 
-				const userWeight = userADM / userVotesNumber;
-				const userReward = (userWeight / totalweight) * forged * config.reward_percentage / 100 / SAT;
-				usertotalreward += userReward;
-				const pending = (voter.pending || 0) + userReward;
-				const resUpdatePending = await dbVoters.syncUpdate({
-					address
-				}, {
-					$set: {
-						pending,
-						userWeight: userWeight / SAT,
-						userVotesNumber,
-						userADM: userADM / SAT
-					}
-				});
+            } catch (e) {
+                log.error(' Reward Voter: ' + e);
+            }
 
-				if (!resUpdatePending) log.error(" Updated pending " + address);
-				const reward = {
-					address,
-					reward: userReward,
-					blockId,
-					timeStamp,
-					userWeight: userWeight / SAT,
-					userADM: userADM / SAT,
-					userVotesNumber
-				}
+        };
 
-				const resInsertReward = await dbRewards.syncInsert(reward);
+        periodData.rewards += usertotalreward;
+        periodData.forged += forged / SAT;
 
-			} catch (e) {
-				log.error(' Reward Voter: ' + e);
-			}
+        usertotalreward = +usertotalreward.toFixed(8);
+        const username = delegate.delegate.username;
 
-		};
+        let msg = 'Forged: ' + forged / SAT + ' User total reward:' + usertotalreward;
 
-		periodData.rewards += usertotalreward;
-		periodData.forged += forged / SAT;
-
-		usertotalreward = +usertotalreward.toFixed(8);
-		const username = delegate.delegate.username;
-
-		let msg = 'Forged: ' + forged / SAT + ' User total reward:' + usertotalreward;
-
-		if (forged * config.reward_percentage < usertotalreward) {
-			log.warn(msg);
-			notifier('Delegate:' + username + ' ' + msg, 1);
-		} else {
-			log.info(msg);
-		}
-	} catch (e) {
-		log.error(' Reward Users: ' + e);
-	}
+        if (forged * config.reward_percentage < usertotalreward) {
+            log.warn(msg);
+            notifier('Delegate:' + username + ' ' + msg, 1);
+        } else {
+            log.info(msg);
+        }
+        return true;
+    } catch (e) {
+        log.error(' Reward Users: ' + e);
+    }
 
 }

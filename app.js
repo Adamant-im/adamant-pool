@@ -20,9 +20,8 @@ setInterval(() => {
 		if (delegateForged < newForged) {
 			const forged = +(newForged - delegateForged).toFixed(8);
 			log.info('New Forged: ' + forged / SAT + ' ADM.');
-			delegateForged = newForged;
-
-			rewardUsers(forged, delegateForged);
+			const resRewards = rewardUsers(forged, delegateForged);
+			if (resRewards) delegateForged = newForged;
 		}
 
 	} catch (e) {
