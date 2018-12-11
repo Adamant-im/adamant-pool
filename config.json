@@ -13,8 +13,8 @@
 	/** Your delegete address. Used to fetch forging information, needed to count rewards **/
 	"address": "U9466395914658764774",
 	
-	/** Put delegate's passPhrase to make payouts **/
-	"passPhrase": "passphrase for your delegate needed for payouts",
+	/** Put delegate's passPhrase to make payouts. If 'off', pool will be in read only mode, without payouts. **/
+	"passPhrase": "off",
 	
 	/** Percentage to distribute to voters. Amount left will go to maintenace wallet **/
 	"reward_percentage": 80,
@@ -46,5 +46,5 @@
 	"slack": "https://hooks.slack.com/services/key_slack",
 	
 	/** Port for pool's public Web panel **/
-	"port": 36667
+	"port": 36668
 }
