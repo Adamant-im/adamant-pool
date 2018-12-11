@@ -22,7 +22,7 @@ module.exports = async () => {
 		const poolname = delegate.delegate.username;
 
 		if (!config.passphrase) {
-			let msg = 'Pool ' + poolname + ' is in read-only mode. To enable payouts, set passPhrase in config.';
+			let msg = 'Pool ' + poolname + ' is in read-only mode. To enable payouts, set _passPhrase_ in config.';
 			notifier(msg, 'yellow');
 			log.warn(msg);
 			return;
@@ -51,7 +51,7 @@ module.exports = async () => {
 
 		let color = 'green';
 		if (totalPayNeed > balance) {
-			let msg3 = ` Pool ${poolname} notifies about problems with payouts. Admin attention is needed. Balance of delegate now — ${balance.toFixed(4)} ADM.`;
+			let msg3 = `Pool ${poolname} notifies about problems with payouts. Admin attention is needed. Balance of delegate now — ${balance.toFixed(4)} ADM.`;
 			color = 1;
 			log.error(msg3);
 			notifier(msg3, 1);
@@ -80,8 +80,7 @@ module.exports = async () => {
 				if (!trans || !trans.success) {
 					let err = " response 502";
 					if (trans) err = trans.error;
-					// let msg = 'Error send transaction:' + address + ' | ' + pending + ' ADM!' + trans.error;
-					let msg = `Pool ${poolname} notifies about problem with payout: transaction of amount ${pending} ADM to user ${address} unsuccessful. Node’s reply: ${err}.`;
+					let msg = `Pool ${poolname} notifies about problem with payout: transaction of amount _${pending.toFixed(4)} ADM_ to user _${address}_ unsuccessful. Node’s reply: _${err}_.`;
 					log.error(msg);
 					notifier(msg, 1);
 					continue;
