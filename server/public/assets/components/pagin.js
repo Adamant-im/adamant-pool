@@ -29,5 +29,5 @@ Vue.component('pagin', {
 			return stopRow;
 		}
 	},
-	template: '<ul v-if="rows.length>visible_count || options.foreverVis" class="pagin_list"><li v-show="startRow>0" @click="startRow-=visible_count"><i class="fa fa-arrow-left" aria-hidden="true"></i></li><li class="pagin_page" v-for="(r,i) in rows" v-if="i%visible_count==0" :class="{active:i>=startRow && i<stopRow}" @click="startRow=i">{{i/visible_count+1}}</li><li v-show="stopRow<rows.length" @click="startRow+=visible_count"><i class="fa fa-arrow-right" aria-hidden="true"></i></li></ul>'
+	template: '<ul  class="pagin_list"><span v-if="rows.length>visible_count || options.foreverVis"><li v-show="startRow>0" @click="startRow-=visible_count"><i class="fa fa-arrow-left" aria-hidden="true"></i></li><li class="pagin_page" v-for="(r,i) in rows" v-if="i%visible_count==0" :class="{active:i>=startRow && i<stopRow}" @click="startRow=i">{{i/visible_count+1}}</li><li v-show="stopRow<rows.length" @click="startRow+=visible_count"><i class="fa fa-arrow-right" aria-hidden="true"></i></li></span></ul>'
 })
