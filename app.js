@@ -17,7 +17,7 @@ let delegateForged = +delegate.delegate.forged;
 iterat();
 
 function iterat() {
-	
+
 	setTimeout(() => {
 		try {
 			const newForged = +adamant.get('delegate_forged', delegate.publicKey).forged;
@@ -43,7 +43,7 @@ setTimeout(() => {
 }, 5000);
 
 setInterval(() => {
-	if (unixTime() - lastForg > 3600) rewardUsers(0);
+	if (unixTime() - lastForg > 600) rewardUsers(0);
 }, 600 * 1000);
 
 function unixTime() {
