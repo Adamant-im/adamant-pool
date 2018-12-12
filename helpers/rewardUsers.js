@@ -15,6 +15,7 @@ const periodData = require('./periodData');
 module.exports = async (forged, delegateForged) => {
     try {
         const delegate = adamant.get('full_account', config.address);
+        if(!delegate) return;    
         const poolname = delegate.delegate.username;
         const balance = +delegate.balance;
         const blocks101 = adamant.get('blocks');

@@ -37,13 +37,13 @@
 	/** Minimum amount in ADM for payouts. 
 		If at the end of payoutperiod voter forged less than minpayout, it will be stored as Pending for next period.
 	**/
-	"minpayout": 0.2, 
+	"minpayout":1, 
 		
 	/** Consider if delegate can vote for himself and this will count in rewards **/
 	"considerownvote": 0,
 	
 	/** Slack key for notifications and monitoring (if needed) **/
-	"slack": "https://hooks.slack.com/services/T7YMKRU",
+	"slack": "https://hooks.slack.com/services/",
 	
 	/** Port for pool's public Web panel **/
 	"port": 36667
