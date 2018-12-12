@@ -17,11 +17,12 @@ let delegateForged = +delegate.delegate.forged;
 iterat();
 
 function iterat() {
-	lastForg = unixTime();
+	
 	setTimeout(() => {
 		try {
 			const newForged = +adamant.get('delegate_forged', delegate.publicKey).forged;
 			if (delegateForged < newForged) {
+				lastForg = unixTime();
 				const forged = newForged - delegateForged;
 				log.info('New Forged: ' + forged / SAT + ' ADM.');
 				const resRewards = rewardUsers(forged, delegateForged);
@@ -43,7 +44,7 @@ setTimeout(() => {
 
 setInterval(() => {
 	if (unixTime() - lastForg > 3600) rewardUsers(0);
-}, 3600 * 1000);
+}, 600 * 1000);
 
 function unixTime() {
 	return new Date().getTime() / 1000
