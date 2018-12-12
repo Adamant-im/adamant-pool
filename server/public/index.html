@@ -109,7 +109,7 @@
 
 					</table>
 				</div>
-				<pagin :options="{rows:voters, foreverVis:true}"></pagin>
+				<pagin :options="{rows:voters, visible_count:15}"></pagin>
 			</div>
 			<div class="container row">
 				<h2><i class="fa fa-diamond" aria-hidden="true"></i> Transactions ({{transactions.length}})</h2>
@@ -134,7 +134,7 @@
 						</tr>
 					</table>
 				</div>
-				<pagin :options="{rows:transactions, foreverVis:true}"></pagin>
+				<pagin :options="{rows:transactions}"></pagin>
 			</div>
 		</div>
 	</div>
