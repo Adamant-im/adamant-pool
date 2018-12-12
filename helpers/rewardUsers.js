@@ -108,20 +108,15 @@ module.exports = async (forged, delegateForged) => {
         periodData.forged += forged / SAT;
 
         usertotalreward *= SAT;
+        
         if (forged * config.reward_percentage < usertotalreward) {
-            let msg = `Pool ${poolname}: forged * percentage < sum of usertotalreward. Values: forged — ${round(forged)} ADM, percentage — ${config.reward_percentage}%, sum of usertotalreward — ${round(usertotalreward)} ADM.`;
-            log.warn(msg);
-            notifier(msg, 1);
-        }
-
-        if (balance < usertotalreward) {
-            let msg = `Pool ${poolname}: userbalance < usertotalreward for user <ID>. Values: userbalance — ${round(balance)} ADM, usertotalreward — ${round(usertotalreward)} ADM.`
+            let msg = `Pool ${poolname}: _forged * percentage_ < sum of _usertotalreward_. Values: _forged_ — ${round(forged)} ADM, _percentage_ — ${config.reward_percentage}%, sum of _usertotalreward_ — ${round(usertotalreward)} ADM.`;
             log.warn(msg);
             notifier(msg, 1);
         }
         
         if (currentPeriodForged > balance) {
-            let msg = ` Pool ${poolname}: totalforged < balance of delegate.Values: totalforged— ${round(currentPeriodForged)} ADM, balance of delegate— ${round(balance)} ADM.`;
+            let msg = `Pool ${poolname}: _totalforged_ > _balance of delegate_. Values: _totalforged_ —  ${round(currentPeriodForged)} ADM, _balance of delegate_ — ${round(balance)} ADM.`;
             log.warn(msg);
             notifier(msg, 1);
         }
@@ -137,5 +132,5 @@ module.exports = async (forged, delegateForged) => {
 }
 
 function round(num) {
-    return Number((num / SAT).toFixed(3));
+    return Number((num / SAT).toFixed(4));
 }
