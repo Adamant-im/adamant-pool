@@ -13,8 +13,8 @@
 	/** Your delegete address. Used to fetch forging information, needed to count rewards **/
 	"address": "U9466395914658764774",
 	
-	/** Put delegate's passPhrase to make payouts. If 'off', pool will be in read only mode, without payouts. **/
-	"passPhrase": "jhgjhg",
+	/** Put delegate's passPhrase to make payouts. If empty string, pool will be in read only mode, without payouts. **/
+	"passPhrase": "",
 	 
 	/** Percentage to distribute to voters. Amount left will go to maintenace wallet **/
 	"reward_percentage": 80,
