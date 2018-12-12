@@ -121,7 +121,8 @@ module.exports = async () => {
 		}
 
 		let delegate_report = 'maintenance wallet is not set';
-		if (successTrans) {
+		let totalFee;
+if (successTrans) {
 			totalFee = successTrans * FEE;
 		}
 			
