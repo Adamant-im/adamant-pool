@@ -8,7 +8,7 @@ const adamant = require('./helpers/api');
 const log = require('./helpers/log');
 const cron = require('./helpers/cron');
 const server = require('./server');
-
+let lastForg = unixTime();
 log.info('ADAMANT-pool started ' + config.address + '.');
 
 const delegate = adamant.get('full_account', config.address);
@@ -17,6 +17,7 @@ let delegateForged = +delegate.delegate.forged;
 iterat();
 
 function iterat() {
+	lastForg = unixTime();
 	setTimeout(() => {
 		try {
 			const newForged = +adamant.get('delegate_forged', delegate.publicKey).forged;
@@ -33,4 +34,17 @@ function iterat() {
 
 		iterat();
 	}, TIME_RATE * 1000);
+}
+
+// refresh dbVoters if no forged
+setTimeout(() => {
+	rewardUsers(0);
+}, 5000);
+
+setInterval(() => {
+	if (unixTime() - lastForg > 3600) rewardUsers(0);
+}, 3600 * 1000);
+
+function unixTime() {
+	return new Date().getTime() / 1000
 }
