@@ -13,7 +13,7 @@
 	<script src="http://underscorejs.ru/underscore.js"></script>
 	<script src="http://momentjs.com/downloads/moment-with-locales.min.js"></script>
 	<link rel="stylesheet" href="/assets/styles.css">
-	
+
 	<link rel="apple-touch-icon-precomposed" sizes="57x57" href="assets/icons/apple-touch-icon-57x57.png" />
 	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/icons/apple-touch-icon-114x114.png" />
 	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/icons/apple-touch-icon-72x72.png" />
@@ -67,7 +67,8 @@
 						Votes count: {{delegate.voters?delegate.voters.length:0}}
 					</span></div>
 				<div class="card" style="background-color: rgb(221, 221, 221);"><span>
-						Productivity: {{delegate.delegate.productivity}}%<br>
+						<div v-if="delegate.delegate.rank <= 101">Productivity: {{delegate.delegate.productivity}}%</div>
+						<div v-else style="color: darkred;">Status: Standby</div>
 						Approval: {{delegate.delegate.approval}}<br>
 						Rank: {{delegate.delegate.rank}}
 					</span></div>
