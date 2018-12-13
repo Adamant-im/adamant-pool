@@ -38,8 +38,10 @@ module.exports = async () => {
 		const votersToReceived = voters.filter((v) => v.pending >= (config.minpayout || 10));
 		const votersMinPayout = voters.filter((v) => v.pending < (config.minpayout || 10));
 
-		if (!votersToReceived) {
+		if (!votersToReceived || usertotalreward < 0.01) {
 			log.error(' Voters to received is null');
+			let msg0 = `Pool ${poolname}: no pending payouts. _Balance of delegate — ${balance.toFixed(4)} ADM._`;
+			notifier(msg0, 'yellow');
 			return;
 		}
 		let leftPending = votersMinPayout.reduce((s, v) => {
