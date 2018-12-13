@@ -76,7 +76,7 @@ return;
 					pending,
 					received
 				} = v;
-				const trans= adamant.send((config.passPhrase, address, pending));
+				const trans= adamant.send(config.passPhrase, address, pending);
 				const trans_t = { // Demo transaction
 					success: true,
 					transactionId: new Date().getTime() / Math.random(),
@@ -133,7 +133,7 @@ if (successTrans) {
 			let delegateProf = totalforged - usertotalreward; // 100-percent
 			totalFee += FEE;
 			delegateProf -= totalFee;
-			const trans_maintenance= adamant.send((config.passPhrase, config.maintenancewallet, delegateProf));
+			const trans_maintenance= adamant.send(config.passPhrase, config.maintenancewallet, delegateProf);
 			const trans_maintenance_t= {
 				success: 1
 			};
