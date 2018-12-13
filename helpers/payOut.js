@@ -17,7 +17,7 @@ const periodData = require('./periodData');
 module.exports = async () => {
 
 	log.info('Pay out period!');
-	notifier('---------Payout period----------', 'green');
+	// notifier('---------Payout period----------', 'green');
 
 	try {
 		let delegate = adamant.get('full_account', config.address);
