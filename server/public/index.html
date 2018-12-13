@@ -103,9 +103,9 @@
 							<td><a :href="'https://explorer.adamant.im/address/'+v.address" target="_blank">{{v.address}}</a></td>
 							<td>{{v.pending.toFixed(4)}}</td>
 							<td>{{v.received.toFixed(4)}}</td>
-							<td>{{(v.userADM).toFixed(0)}}</td>
-							<td>{{(v.userWeight).toFixed(0)}}</td>
-							<td>{{v.userVotesNumber}}</td>
+							<td>{{~votersApi.indexOf(v.address)?v.userADM.toFixed(0): '&mdash;'}}</td>
+							<td>{{~votersApi.indexOf(v.address)?v.userWeight.toFixed(0): '&mdash;'}}</td>
+							<td>{{~votersApi.indexOf(v.address)?v.userVotesNumber.toFixed(0): '&mdash;'}}</td>
 						</tr>
 
 					</table>
