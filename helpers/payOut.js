@@ -76,11 +76,6 @@ module.exports = async () => {
 					received
 				} = v;
 				const trans = adamant.send(config.passPhrase, address, pending);
-				const trans_t = { // Demo transaction
-					success: true,
-					transactionId: new Date().getTime() / Math.random(),
-					error: ' *API error*',
-				}
 
 				if (!trans || !trans.success) {
 					let err = "502 Bad Gateway";
@@ -132,16 +127,14 @@ module.exports = async () => {
 			let delegateProf = totalforged - usertotalreward; // 100-percent
 			totalFee += FEE;
 			delegateProf -= totalFee;
-			
+
 			if (delegateProf > 0) {
 				const trans_maintenance = adamant.send(config.passPhrase, config.maintenancewallet, delegateProf);
-				const trans_maintenance_t = {
-					success: 1
-				};
 				if (trans_maintenance && trans_maintenance.success) {
 					delegate_report = `${delegateProf.toFixed(4)} ADM to maintenance wallet ${config.maintenancewallet}`;
 				}
 			} else {
+				totalFee -= FEE;
 				delegate_report = `maintenance reward doesn't cover transaction fees`;
 			}
 		}
@@ -160,7 +153,7 @@ module.exports = async () => {
 			log.info(msg2);
 			notifier(msg2, color);
 
-		}, 10 * 1000)
+		}, 60 * 1000)
 	} catch (e) {
 		log.error(' Sending coins: ' + e);
 	}
