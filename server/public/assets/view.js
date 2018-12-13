@@ -79,7 +79,7 @@ var panel = new Vue({
 		getVoters: function () {
 			$.get('/api/get-voters', function (res) {
 				if (typeof res == 'object')
-					panel.voters = res.filter(v => ~panel.votersApi.indexOf(v.address) && v.pending >= panel.system.minpayout);
+					panel.voters = res.filter(v => ~panel.votersApi.indexOf(v.address) || v.pending >= panel.system.minpayout);
 
 				panel.sortRows('voters', panel.sorted_field_voters, 1)
 			});
