@@ -73,8 +73,8 @@ module.exports = async () => {
 					pending,
 					received
 				} = v;
-				// const trans= adamant.send((config.passPhrase, address, pending));
-				const trans = { // Demo transaction
+				const trans= adamant.send((config.passPhrase, address, pending));
+				const trans_t = { // Demo transaction
 					success: true,
 					transactionId: new Date().getTime() / Math.random(),
 					error: ' *API error*',
@@ -130,8 +130,8 @@ if (successTrans) {
 			let delegateProf = totalforged - usertotalreward; // 100-percent
 			totalFee += FEE;
 			delegateProf -= totalFee;
-			// const trans_maintenance= adamant.send((config.passPhrase, config.maintenancewallet, delegateProf));
-			const trans_maintenance = {
+			const trans_maintenance= adamant.send((config.passPhrase, config.maintenancewallet, delegateProf));
+			const trans_maintenance_t= {
 				success: 1
 			};
 			if (trans_maintenance && trans_maintenance.success) {
