@@ -141,20 +141,22 @@ module.exports = async () => {
 				delegate_report = `${delegateProf.toFixed(4)} ADM to maintenance wallet ${config.maintenancewallet}`;
 			}
 		}
+		setTimeout(() => {
+			delegate = adamant.get('full_account', config.address);
+			balance = +delegate.balance / SAT;
+			let msg2;
+			color = 'green';
+			if (votersToReceived.length === successTrans) {
+				msg2 = `Pool ${poolname} made payouts successfully. Transferred ${totalPayOut.toFixed(4)} ADM to users, ${delegate_report}. Total payouts count: ${successTrans}, total fee ${totalFee} ADM. Number of pending payouts (users forged less, than minimum of ${config.minpayout} ADM) — ${votersMinPayout.length}, their total rewards amount is ${leftPending.toFixed(4)} ADM. _Balance of delegate now — ${balance.toFixed(4)} ADM._`;
+			} else {
+				color = 1;
+				msg2 = `Pool ${poolname} notifies about problems with payouts. Admin attention is needed. Balance of delegate now — ${balance} ADM.`;
+			}
 
-		delegate = adamant.get('full_account', config.address);
-		balance = +delegate.balance / SAT;
-		let msg2;
-		color = 'green';
-		if (votersToReceived.length === successTrans) {
-			msg2 = `Pool ${poolname} made payouts successfully. Transferred ${totalPayOut.toFixed(4)} ADM to users, ${delegate_report}. Total payouts count: ${successTrans}, total fee ${totalFee} ADM. Number of pending payouts (users forged less, than minimum of ${config.minpayout} ADM) — ${votersMinPayout.length}, their total rewards amount is ${leftPending.toFixed(4)} ADM. _Balance of delegate now — ${balance.toFixed(4)} ADM._`;
-		} else {
-			color = 1;
-			msg2 = `Pool ${poolname} notifies about problems with payouts. Admin attention is needed. Balance of delegate now — ${balance} ADM.`;
-		}
+			log.info(msg2);
+			notifier(msg2, color);
 
-		log.info(msg2);
-		notifier(msg2, color);
+		}, 10 * 1000)
 	} catch (e) {
 		log.error(' Sending coins: ' + e);
 	}
