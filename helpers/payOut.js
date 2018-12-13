@@ -17,7 +17,6 @@ const periodData = require('./periodData');
 module.exports = async () => {
 
 	log.info('Pay out period!');
-	notifier('---------Payout period----------', 'green');
 
 	try {
 		let delegate = adamant.get('full_account', config.address);
@@ -133,12 +132,17 @@ module.exports = async () => {
 			let delegateProf = totalforged - usertotalreward; // 100-percent
 			totalFee += FEE;
 			delegateProf -= totalFee;
-			const trans_maintenance = adamant.send(config.passPhrase, config.maintenancewallet, delegateProf);
-			const trans_maintenance_t = {
-				success: 1
-			};
-			if (trans_maintenance && trans_maintenance.success) {
-				delegate_report = `${delegateProf.toFixed(4)} ADM to maintenance wallet ${config.maintenancewallet}`;
+			
+			if (delegateProf > 0) {
+				const trans_maintenance = adamant.send(config.passPhrase, config.maintenancewallet, delegateProf);
+				const trans_maintenance_t = {
+					success: 1
+				};
+				if (trans_maintenance && trans_maintenance.success) {
+					delegate_report = `${delegateProf.toFixed(4)} ADM to maintenance wallet ${config.maintenancewallet}`;
+				}
+			} else {
+				delegate_report = `maintenance reward doesn't cover transaction fees`;
 			}
 		}
 		setTimeout(() => {
