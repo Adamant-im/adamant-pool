@@ -42,9 +42,9 @@ module.exports = async () => {
 			log.error(' Voters to received is null');
 			let msg0 = `Pool ${poolname}: no pending payouts. _Balance of delegate — ${balance.toFixed(4)} ADM._`;
 			notifier(msg0, 'yellow');
-return;
+			return;
 		}
-		
+
 		let leftPending = votersMinPayout.reduce((s, v) => {
 			return s + v.pending;
 		}, 0);
@@ -76,7 +76,7 @@ return;
 					pending,
 					received
 				} = v;
-				const trans= adamant.send(config.passPhrase, address, pending);
+				const trans = adamant.send(config.passPhrase, address, pending);
 				const trans_t = { // Demo transaction
 					success: true,
 					transactionId: new Date().getTime() / Math.random(),
@@ -86,7 +86,7 @@ return;
 				if (!trans || !trans.success) {
 					let err = "502 Bad Gateway";
 					if (trans) err = trans.error;
-					
+
 					let msg = `Pool ${poolname} notifies about problem with payout: transaction of amount _${pending.toFixed(4)} ADM_ to user _${address}_ unsuccessful. Node’s reply: _${err}_.`;
 					log.error(msg);
 					notifier(msg, 1);
@@ -125,16 +125,16 @@ return;
 
 		let delegate_report = 'maintenance wallet is not set';
 		let totalFee;
-if (successTrans) {
+		if (successTrans) {
 			totalFee = successTrans * FEE;
 		}
-			
+
 		if (config.maintenancewallet && successTrans) {
 			let delegateProf = totalforged - usertotalreward; // 100-percent
 			totalFee += FEE;
 			delegateProf -= totalFee;
-			const trans_maintenance= adamant.send(config.passPhrase, config.maintenancewallet, delegateProf);
-			const trans_maintenance_t= {
+			const trans_maintenance = adamant.send(config.passPhrase, config.maintenancewallet, delegateProf);
+			const trans_maintenance_t = {
 				success: 1
 			};
 			if (trans_maintenance && trans_maintenance.success) {
