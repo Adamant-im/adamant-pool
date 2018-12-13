@@ -98,7 +98,7 @@
 								 aria-hidden="true"></i>
 							</th>
 						</tr>
-						<tr v-for="(v,i) in voters" :key="i" v-if="v.isPaginVisible!==false && ~votersApi.indexOf(v.address)">
+						<tr v-for="(v,i) in voters" :key="i" v-if="v.isPaginVisible!==false">
 							<td>{{i+1}}</td>
 							<td><a :href="'https://explorer.adamant.im/address/'+v.address" target="_blank">{{v.address}}</a></td>
 							<td>{{v.pending.toFixed(4)}}</td>
