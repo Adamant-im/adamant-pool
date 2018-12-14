@@ -70,7 +70,7 @@ a:hover {
 	line-height: 60px;
 	font-weight: 400;
 	color: rgb(49, 112, 143);
-	margin-top: 20px;
+	margin-top: 10px;
 }
 
 #panel {
@@ -261,53 +261,32 @@ ul li.active {
 }
 
 @media (max-width: 650px) {
-	table {
-		min-width: 650px;
-	}
-
-	td,
-	th {
-		font-size: 12px;
-	}
-
-	.row {
-		width: 95%;
+	
+	.header {
+		flex-direction: column;
 	}
 
 	.topnav {
-		height: 100px;
-	}
-
-	.topnav.content {
-		padding: 0;
-	}
-
-	.topnav a {
-		line-height: 0;
+		height: 70px;
 	}
 
 	.topnav h1 {
+		line-height: 0;
 		margin: 0;
 	}
 
-	.header {
-		flex-direction: column;
-		padding: 0;
+	.topnav a {
+		line-height: 20px;
+		margin-top: 0;
+		padding-bottom: 10px;
 	}
 
-	.main h1 {
-		font-size: 20px;
-	}
-
-	.delegate-info {
-		margin-top: 80px;
-	}
 
 }
 
 @media (max-width: 500px) {
 	.row {
-		width: 98%;
+		
 	}
 
 	.topnav h1 {
@@ -316,5 +295,28 @@ ul li.active {
 
 	.card {
 		width: 100%;
+	}
+
+	.topnav a {
+		align-self: center;
+		font-size: 1em;
+	}
+
+	.header {
+		width: 100%;
+	}
+
+	.delegate-info {
+    		margin: 100px 0px 25px 0px;
+	}
+
+	.bottomnav {
+		height: auto;
+	}
+
+	.bottom-links {
+   		flex-direction: column;
+    		line-height: 25px;
+    		align-items: center;
 	}
 }
