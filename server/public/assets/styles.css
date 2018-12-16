@@ -322,6 +322,7 @@ ul li.active {
 	.card {
 		width: 100%;
 	} 
+	
 	#transactions tr td:nth-child(4),
 	#transactions tr th:nth-child(4){
 		display: none;
