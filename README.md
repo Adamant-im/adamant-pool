@@ -3,6 +3,8 @@ ADAMANT Forging pool is a software that helps you running Fogring pool, calculat
 
 Read more about [Forging, delegates, Fair dPoS, and how to run your Forging pool](https://medium.com/adamant-im/earning-money-on-adm-forging-4c7b6eb15516).
 
+Article link.
+
 # Features and advantages
 
 * Easy to install
@@ -45,5 +47,16 @@ Parameters:
 * `slack` <string> Token for Slack alerts for the pool’s administrator. No alerts if not set.
 * `port` <number> Port for connecting the web interface. The web interface is available at http://IP:port. Default: 36668
 
+## Launching
+You can start the pool with the `node app` command, but it is recommended to use the process manager for this purpose.
+```
+pm2 start --name adamantpool app.js 
+```
 
-Article 
+The web interface is available at http://<IP>:port.
+
+## Add pool to cron:
+crontab -e
+@reboot cd /home/adamant/adamant-pool && pm2 start --name adamantpool app.js
+
+
