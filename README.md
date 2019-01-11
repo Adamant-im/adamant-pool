@@ -53,8 +53,6 @@ You can start the pool with the `node app` command, but it is recommended to use
 pm2 start --name adamantpool app.js 
 ```
 
-The web interface is available at http://<IP>:port.
-
 ## Add pool to cron:
 crontab -e
 @reboot cd /home/adamant/adamant-pool && pm2 start --name adamantpool app.js
