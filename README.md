@@ -3,8 +3,6 @@ ADAMANT Forging pool is a software that helps you running Fogring pool, calculat
 
 Read more about [Forging, delegates, Fair dPoS, and how to run your Forging pool](https://medium.com/adamant-im/earning-money-on-adm-forging-4c7b6eb15516).
 
-Article link.
-
 # Features and advantages
 
 * Easy to install
@@ -16,6 +14,8 @@ Article link.
 * Notification system via Slack for admin (other method is configurable)
 * Built-in node availability check
 * Read-only mode without passphrase or with automatic payments
+
+See [User-frienldy description and installation instructions](https://medium.com/adamant-im/create-your-own-adamant-forging-pool-a8574f5da43b).
 
 # Installation
 ## Requirements
