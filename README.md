@@ -54,7 +54,13 @@ pm2 start --name adamantpool app.js
 ```
 
 ## Add pool to cron:
+```
 crontab -e
+```
+
+Add string:
+```
 @reboot cd /home/adamant/adamant-pool && pm2 start --name adamantpool app.js
+```
 
 
