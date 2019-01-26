@@ -3,6 +3,7 @@ const config = require('./configReader');
 const url=config.slack;
 
 module.exports=(message, error)=>{
+	if(url=='' || !url) return;
 	var color = '#36a64f';
 	if (error)
 	color = '#FF0000';
