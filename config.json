@@ -1,50 +1,50 @@
 {
-	/** List of nodes to fetch forging information, needed to count rewards.
-		If one become unavailable, pool will choose live one.
-	**/
-	"node": [
-		"https://endless.adamant.im",
-		"https://clown.adamant.im",
-		"http://185.231.245.26:36666",
-		"http://80.211.177.181:36666",
-		"https://lake.adamant.im"
-	],
-	
-	/** Your delegete address. Used to fetch forging information, needed to count rewards **/
-	"address": "U9466395914658764774",
-	
-	/** Put delegate's passPhrase to make payouts. If false, pool will be in read only mode, without payouts. **/
-	"passPhrase": false,
-	 
-	/** Percentage to distribute to voters. Amount left will go to maintenace wallet **/
-	"reward_percentage": 80,
-	
-	/** Maintenace wallet to receive amount of (100-reward_percentage) to cover pool expenses
-		Put false if you want to leave it on delegate's wallet.
-	**/
-	"maintenancewallet": "U15034821354995029193",
+    /** List of nodes to fetch forging information, needed to count rewards.
+    If one become unavailable, pool will choose live one.
+    **/
+    "node": [
+        "https://endless.adamant.im",
+        "https://clown.adamant.im",
+        "http://185.231.245.26:36666",
+        "http://80.211.177.181:36666",
+        "https://lake.adamant.im"
+    ],
 
-	/** How often pool will do payouts. All at 00:00.
-		1h -> every hour
-		1d -> every day
-		5d -> days 1, 5, 10, 15, 20, 25 of the month
-		10d -> days 1, 10, 20 of the month
-		15d -> days 1, 15 of the month
-		30d -> 30th of each month
-	**/
-	"payoutperiod": "1h",
+    /** Your delegete address. Used to fetch forging information, needed to count rewards **/
+    "address": "U9466395914658764774",
 
-	/** Minimum amount in ADM for payouts. 
-		If at the end of payoutperiod voter forged less than minpayout, it will be stored as Pending for next period.
-	**/
-	"minpayout":1, 
-		
-	/** Consider if delegate can vote for himself and this will count in rewards **/
-	"considerownvote": 0,
-	
-	/** Slack key for notifications and monitoring (if needed) **/
-	"slack": "https://hooks.slack.com/services/",
-	
-	/** Port for pool's public Web panel **/
-	"port": 36667
+    /** Put delegate's passPhrase to make payouts. If false, pool will be in read only mode, without payouts. **/
+    "passPhrase": false,
+
+    /** Percentage to distribute to voters. Amount left will go to maintenace wallet **/
+    "reward_percentage": 80,
+
+    /** Maintenace wallet to receive amount of (100-reward_percentage) to cover pool expenses
+    	Put false if you want to leave it on delegate's wallet.
+    **/
+    "maintenancewallet": "U15034821354995029193",
+
+    /** How often pool will do payouts. All at 00:00.
+    	1 h - > every hour
+    	1 d - > every day
+    	5 d - > days 1, 5, 10, 15, 20, 25 of the month
+    	10 d - > days 1, 10, 20 of the month
+    	15 d - > days 1, 15 of the month
+    	30 d - > 30 th of each month
+    **/
+    "payoutperiod": "1h",
+
+    /** Minimum amount in ADM for payouts. 
+    	If at the end of payoutperiod voter forged less than minpayout, it will be stored as Pending for next period.
+    **/
+    "minpayout": 1,
+
+    /** Consider if delegate can vote for himself and this will count in rewards **/
+    "considerownvote": 0,
+
+    /** Slack key for notifications and monitoring (if needed) **/
+    "slack": "https://hooks.slack.com/services/",
+
+    /** Port for pool's public Web panel **/
+    "port": 36667
 }
