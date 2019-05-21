@@ -15,6 +15,7 @@ require('./helpers/cron');
 require('./server');
 
 const delegate = adamant.get('full_account', config.address);
+const poolname = delegate.delegate.username;
 let delegateForged = +delegate.delegate.forged;
 
 iterat();
@@ -24,7 +25,7 @@ function iterat () {
         try {
             const newForged = +adamant.get('delegate_forged', delegate.publicKey).forged;
             if (isNaN(newForged)) {
-                const msg = 'Pool! newForged isNan! Plese check internet connection.';
+                const msg = `Pool ${poolname} newForged isNan! Plese check internet connection.`;
                 notifier(msg, 'red');
                 log.error(msg);
                 return;
