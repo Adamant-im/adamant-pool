@@ -8,15 +8,15 @@ const adamant = require('./helpers/api');
 const log = require('./helpers/log');
 const notifier = require('./helpers/slackNotifier');
 let lastForg = unixTime();
-log.info('ADAMANT-pool started ' + config.address + '.');
 
 // Init
 require('./helpers/cron');
 require('./server');
-
 const delegate = adamant.get('full_account', config.address);
 const poolname = delegate.delegate.username;
 let delegateForged = +delegate.delegate.forged;
+
+log.info('ADAMANT-pool started ' + poolname + ' (' + config.address + ').');
 
 iterat();
 
@@ -25,7 +25,7 @@ function iterat () {
         try {
             const newForged = +adamant.get('delegate_forged', delegate.publicKey).forged;
             if (isNaN(newForged)) {
-                const msg = `Pool ${poolname} newForged isNan! Plese check internet connection.`;
+                const msg = `Pool ${poolname} newForged isNaN! Plese check internet connection.`;
                 notifier(msg, 'red');
                 log.error(msg);
                 return;
