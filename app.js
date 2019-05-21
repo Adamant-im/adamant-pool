@@ -25,7 +25,7 @@ function iterat () {
         try {
             const newForged = +adamant.get('delegate_forged', delegate.publicKey).forged;
             if (isNaN(newForged)) {
-                const msg = `Pool ${poolname} newForged isNaN! Plese check internet connection.`;
+                const msg = 'Pool ${poolname} newForged value isNaN! Check internet connection.';
                 notifier(msg, 'red');
                 log.error(msg);
                 return;
@@ -33,7 +33,7 @@ function iterat () {
             if (delegateForged < newForged) {
                 lastForg = unixTime();
                 const forged = newForged - delegateForged;
-                log.info('New Forged: ' + forged / SAT + ' ADM.');
+                log.info('newForged: ' + forged / SAT + ' ADM.');
                 const resRewards = rewardUsers(forged, delegateForged);
                 if (resRewards) {
                     delegateForged = newForged;
@@ -41,7 +41,7 @@ function iterat () {
             }
 
         } catch (e) {
-            log.error('Get new Forged!');
+            log.error('Cannot get newForged!');
         }
 
         iterat();
