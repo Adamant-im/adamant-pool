@@ -38,7 +38,7 @@
     	If store_history is 10 and payoutperiod is 5d, data will be stored for last 50 days.
         Payout transactions are stored forever independant from store_history value.
     **/
-    "store_history": 10,
+    "store_history": 2,
 
     /** Minimum amount in ADM for payouts. 
     	If at the end of payoutperiod voter forged less than minpayout, it will be stored as Pending for next period.

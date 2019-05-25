@@ -12,6 +12,7 @@ const {
 } = require('./DB');
 const notifier = require('./slackNotifier');
 const periodData = require('./periodData');
+const clearHistory = require('./clearHistory');
 
 
 module.exports = async () => {
@@ -163,6 +164,7 @@ module.exports = async () => {
             log.info(msg2);
             notifier(msg2, color);
 
+            clearHistory();
         }, 60 * 1000);
     } catch (e) {
         log.error(' Sending coins: ' + e);
