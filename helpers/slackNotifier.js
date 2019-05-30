@@ -1,31 +1,56 @@
 const request = require('request');
 const config = require('./configReader');
-const url=config.slack;
+const log = require('./log');
+const {
+    adamant_notify,
+    slack
+} = config;
+const api = require('./api');
 
-module.exports=(message, error)=>{
-	if(url=='' || !url) return;
-	var color = '#36a64f';
-	if (error)
-	color = '#FF0000';
-	if (error == 'yellow')
-	color = '#FFFF00';
-	if (error == 'green')
-	color = '#00FF00';
-	if (error == 'white')
-	color = '#FFFFFF';
-	var opts = {
-		uri:url,
-		method: 'POST',
-		json: true,
-		body: {
-			'attachments': [{
-				'fallback': message,
-				'color': color,
-				'text': message,
-				'mrkdwn_in': ['text']
-			}]
-		}
-		
-	};
-	request(opts)
-}
+module.exports = (message, type) => {
+    try {
+        log[type](message);
+
+        if (!slack && !adamant_notify) {
+            return;
+        }
+        let color;
+        switch (type) {
+        case ('error'):
+            color = '#36a64f';
+            break;
+
+        case ('warn'):
+            color = '#FFFF00';
+            break;
+
+        case ('info'):
+            color = '#00FF00';
+            break;
+
+        }
+
+        const opts = {
+            uri: slack,
+            method: 'POST',
+            json: true,
+            body: {
+                'attachments': [{
+                    'fallback': message,
+                    'color': color,
+                    'text': message,
+                    'mrkdwn_in': ['text']
+                }]
+            }
+
+        };
+        if (slack && slack.length > 5) {
+            request(opts);
+        }
+        if (adamant_notify && adamant_notify.length > 5 && adamant_notify.startsWith('U') && config.passPhrase) {
+            api.send(config.passPhrase, adamant_notify, `${type}| ${message}`, 'message');
+        }
+    } catch (e) {
+        log.error(' Notifer ' + e);
+    }
+};

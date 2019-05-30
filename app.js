@@ -26,7 +26,7 @@ function iterat () {
             const newForged = +adamant.get('delegate_forged', delegate.publicKey).forged;
             if (isNaN(newForged)) {
                 const msg = `Pool ${poolname} newForged isNaN! Plese check internet connection.`;
-                notifier(msg, 'red');
+                notifier(msg, 'error');
                 log.error(msg);
                 return;
             }

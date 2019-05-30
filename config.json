@@ -11,10 +11,10 @@
     ],
 
     /** Your delegete address. Used to fetch forging information, needed to count rewards **/
-    "address": "U9466395914658764774",
+    "address": "U10666556853857590034",
 
     /** Put delegate's passPhrase to make payouts. If false, pool will be in read only mode, without payouts. **/
-    "passPhrase": false,
+    "passPhrase": "people match wrap label lend puppy gate crisp typical deal chunk history",
 
     /** Percentage to distribute to voters. Amount left will go to maintenace wallet **/
     "reward_percentage": 80,
@@ -38,7 +38,7 @@
     	If store_history is 10 and payoutperiod is 5d, data will be stored for last 50 days.
         Payout transactions are stored forever independant from store_history value.
     **/
-    "store_history": 2,
+    "store_history": 10,
 
     /** Minimum amount in ADM for payouts. 
     	If at the end of payoutperiod voter forged less than minpayout, it will be stored as Pending for next period.
@@ -47,6 +47,9 @@
 
     /** Consider if delegate can vote for himself and this will count in rewards **/
     "considerownvote": 0,
+
+    /** ADAMANT address for notifications and monitoring (if needed) **/
+    "adamant_notify": "U10666556853857590034",
 
     /** Slack key for notifications and monitoring (if needed) **/
     "slack": "https://hooks.slack.com/services/",
