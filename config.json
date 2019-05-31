@@ -11,10 +11,10 @@
     ],
 
     /** Your delegete address. Used to fetch forging information, needed to count rewards **/
-    "address": "U10666556853857590034",
+    "address": "U10666456853457590034",
 
     /** Put delegate's passPhrase to make payouts. If false, pool will be in read only mode, without payouts. **/
-    "passPhrase": "people match wrap label lend puppy gate crisp typical deal chunk history",
+    "passPhrase": "people match wrap puppy gate crisp typical deal chunk history",
 
     /** Percentage to distribute to voters. Amount left will go to maintenace wallet **/
     "reward_percentage": 80,
