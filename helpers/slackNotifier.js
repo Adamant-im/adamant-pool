@@ -9,7 +9,7 @@ const api = require('./api');
 
 module.exports = (message, type) => {
     try {
-        log[type](message);
+        log[type](message.replace(/\*/g, '').replace(/_/g, ''));
 
         if (!slack && !adamant_notify) {
             return;
