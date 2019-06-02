@@ -11,7 +11,7 @@ Read more about [Forging, delegates, Fair dPoS, and how to run your Forging pool
 * Minimum server requirements
 * Setup on a separate machine without a node
 * Informative web interface for voters + mobile version
-* Notification system via Slack for admin (other method is configurable)
+* Notification system via ADAMANT, Slack for admin (other method is configurable)
 * Built-in node availability check
 * Read-only mode without passphrase or with automatic payments
 
@@ -45,6 +45,7 @@ Parameters:
 * `considerownvote` <boolean> Whether to consider your own vote (can you vote for the delegate for yourself). Default: false
 * `maintenancewallet` <string> Wallet to transfer delegate share (100-reward_percentage) to. If the wallet is not set, this amount will remain on the delegate’s wallet.
 * `slack` <string> Token for Slack alerts for the pool’s administrator. No alerts if not set.
+* `adamant_notify` <string> ADM address for the pool’s administrator. Recommended.
 * `port` <number> Port for connecting the web interface. The web interface is available at http://IP:port. Default: 36668
 
 ## Launching
