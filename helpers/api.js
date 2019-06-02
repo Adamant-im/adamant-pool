@@ -1,2 +1,2 @@
 const config = require('./configReader');
-module.exports = require('adamant-api')(config.node);
+module.exports = require('adamant-api')(config);
