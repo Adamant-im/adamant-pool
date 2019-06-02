@@ -16,13 +16,7 @@ const delegate = adamant.get('full_account', config.address);
 const poolname = delegate.delegate.username;
 let delegateForged = +delegate.delegate.forged;
 
-try {
-        const msg_started = `Pool ${poolname} started for address _${config.address}_.`;
-        notifier(msg_started, 'info');
-    } 
-    catch (e) {
-            log.error('Notify failed for starting pool.');
-    }
+notifier(`Pool ${poolname} started for address _${config.address}_.`, 'info');
 
 iterat();
 
