@@ -27,7 +27,6 @@ module.exports = (message, type) => {
         case ('info'):
             color = '#00FF00';
             break;
-
         }
 
         const opts = {
@@ -42,7 +41,6 @@ module.exports = (message, type) => {
                     'mrkdwn_in': ['text']
                 }]
             }
-
         };
         if (slack && slack.length > 5) {
             request(opts);
