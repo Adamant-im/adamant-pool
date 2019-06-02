@@ -11,10 +11,10 @@
     ],
 
     /** Your delegete address. Used to fetch forging information, needed to count rewards **/
-    "address": "U10666456853457590034",
+    "address": "U9466395914658764774",
 
     /** Put delegate's passPhrase to make payouts. If false, pool will be in read only mode, without payouts. **/
-    "passPhrase": "people match wrap puppy gate crisp typical deal chunk history",
+    "passPhrase": "",
 
     /** Percentage to distribute to voters. Amount left will go to maintenace wallet **/
     "reward_percentage": 80,
@@ -22,7 +22,7 @@
     /** Maintenace wallet to receive amount of (100-reward_percentage) to cover pool expenses
     	Put false if you want to leave it on delegate's wallet.
     **/
-    "maintenancewallet": "U15034821354995029193",
+    "maintenancewallet": false,
 
     /** How often pool will do payouts. All at 00:00.
     	1 h - > every hour
@@ -49,7 +49,7 @@
     "considerownvote": 0,
 
     /** ADAMANT address for notifications and monitoring (if needed) **/
-    "adamant_notify": "U10666556853857590034",
+    "adamant_notify": "",
 
     /** Slack key for notifications and monitoring (if needed) **/
     "slack": "https://hooks.slack.com/services/",
