@@ -9,7 +9,7 @@ Vue.component('pagin', {
             lastNumButton: 0
         };
     },
-    created() {
+    created () {
         this.visible_count = this.options.visible_count || this.visible_count;
         this.count_buttons_show = this.options.visible_count || this.visible_count;
         if (this.count_buttons_show % 2) {
@@ -35,14 +35,11 @@ Vue.component('pagin', {
             this.countButtons = Math.floor(count_rows / visible_count);
             this.lastNumButton = this.countButtons * visible_count;
             let currentButtonNumber = startRow / this.visible_count + 1;
-            // if (countButtons > this.count_buttons_show + 2){
 
-            // };
             this.rows.forEach((r, i) => {
-                if (currentButtonNumber < this.count_buttons_show) {
-                    currentButtonNumber = this.count_buttons_show / 2 + 1;
-                }
+                currentButtonNumber = Math.max(currentButtonNumber, this.count_buttons_show / 2 + 1);
                 Vue.set(r, '_numberButton', i / this.visible_count + 1);
+
                 if (currentButtonNumber - this.count_buttons_show / 2 <= r._numberButton &&
                     currentButtonNumber + this.count_buttons_show / 2 >= r._numberButton &&
                     i % this.visible_count === 0) {
@@ -50,6 +47,7 @@ Vue.component('pagin', {
                 } else {
                     Vue.set(r, '_buttonIsShow', false);
                 }
+
                 if (i >= startRow && i < stopRow) {
                     Vue.set(r, 'isPaginVisible', true);
                 } else {
