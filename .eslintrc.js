@@ -54,7 +54,9 @@ module.exports = {
         "after": true,
         "afterEach": true,
         "chrome": true,
-        "Symbol": true
+        "Symbol": true,
+        "Vue": true,
+        "$": true
     },
     "plugins": []
 }

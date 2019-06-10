@@ -2,157 +2,173 @@
 <html>
 
 <head>
-	<meta charset="utf-8">
-	<meta name="description" content="Welcome to ADAMANT Forging Pool. Join to earn ADM and support decentralization.">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-	<title>ADAMANT Forging Pool</title>
-	<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
-	<script src="//use.fontawesome.com/ecd0a414f6.js"></script>
-	<script src="//code.jquery.com/jquery-3.2.1.min.js"></script>
-	<script src="//cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
-	<script src="//cdn.jsdelivr.net/npm/underscore@1.9.1/underscore.min.js"></script>
-	<script src="//momentjs.com/downloads/moment-with-locales.min.js"></script>
-	<link rel="stylesheet" href="/assets/styles.css">
+    <meta charset="utf-8">
+    <meta name="description" content="Welcome to ADAMANT Forging Pool. Join to earn ADM and support decentralization.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <title>ADAMANT Forging Pool</title>
+    <link rel="stylesheet"
+        href="//fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+    <script src="//use.fontawesome.com/ecd0a414f6.js"></script>
+    <script src="//code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/underscore@1.9.1/underscore.min.js"></script>
+    <script src="//momentjs.com/downloads/moment-with-locales.min.js"></script>
+    <link rel="stylesheet" href="/assets/styles.css">
 
-	<link rel="apple-touch-icon-precomposed" sizes="57x57" href="assets/icons/apple-touch-icon-57x57.png" />
-	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/icons/apple-touch-icon-114x114.png" />
-	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/icons/apple-touch-icon-72x72.png" />
-	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="assets/icons/apple-touch-icon-144x144.png" />
-	<link rel="apple-touch-icon-precomposed" sizes="60x60" href="assets/icons/apple-touch-icon-60x60.png" />
-	<link rel="apple-touch-icon-precomposed" sizes="120x120" href="assets/icons/apple-touch-icon-120x120.png" />
-	<link rel="apple-touch-icon-precomposed" sizes="76x76" href="assets/icons/apple-touch-icon-76x76.png" />
-	<link rel="apple-touch-icon-precomposed" sizes="152x152" href="assets/icons/apple-touch-icon-152x152.png" />
-	<link rel="apple-touch-icon-precomposed" sizes="180x180" href="assets/icons/apple-touch-icon-180x180.png" />
-	<link rel="icon" type="image/png" href="assets/icons/favicon-196x196.png" sizes="196x196" />
-	<link rel="icon" type="image/png" href="assets/icons/favicon-96x96.png" sizes="96x96" />
-	<link rel="icon" type="image/png" href="assets/icons/favicon-32x32.png" sizes="32x32" />
-	<link rel="icon" type="image/png" href="assets/icons/favicon-16x16.png" sizes="16x16" />
-	<link rel="icon" type="image/png" href="assets/icons/favicon-128.png" sizes="128x128" />
-	<meta name="application-name" content="ADAMANT Forging Pool" />
-	<meta name="msapplication-TileColor" content="#FFFFFF" />
-	<meta name="msapplication-TileImage" content="assets/icons/mstile-144x144.png" />
-	<meta name="msapplication-square70x70logo" content="assets/icons/mstile-70x70.png" />
-	<meta name="msapplication-square150x150logo" content="assets/icons/mstile-150x150.png" />
-	<meta name="msapplication-wide310x150logo" content="assets/icons/mstile-310x150.png" />
-	<meta name="msapplication-square310x310logo" content="assets/icons/mstile-310x310.png" />
-	<link rel="mask-icon" href="assets/icons/safari-pinned-tab.svg" color="#ffffff">
-	<link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="assets/icons/apple-touch-icon-57x57.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/icons/apple-touch-icon-114x114.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/icons/apple-touch-icon-72x72.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="assets/icons/apple-touch-icon-144x144.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="60x60" href="assets/icons/apple-touch-icon-60x60.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="120x120" href="assets/icons/apple-touch-icon-120x120.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="76x76" href="assets/icons/apple-touch-icon-76x76.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="assets/icons/apple-touch-icon-152x152.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="180x180" href="assets/icons/apple-touch-icon-180x180.png" />
+    <link rel="icon" type="image/png" href="assets/icons/favicon-196x196.png" sizes="196x196" />
+    <link rel="icon" type="image/png" href="assets/icons/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/png" href="assets/icons/favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="assets/icons/favicon-16x16.png" sizes="16x16" />
+    <link rel="icon" type="image/png" href="assets/icons/favicon-128.png" sizes="128x128" />
+    <meta name="application-name" content="ADAMANT Forging Pool" />
+    <meta name="msapplication-TileColor" content="#FFFFFF" />
+    <meta name="msapplication-TileImage" content="assets/icons/mstile-144x144.png" />
+    <meta name="msapplication-square70x70logo" content="assets/icons/mstile-70x70.png" />
+    <meta name="msapplication-square150x150logo" content="assets/icons/mstile-150x150.png" />
+    <meta name="msapplication-wide310x150logo" content="assets/icons/mstile-310x150.png" />
+    <meta name="msapplication-square310x310logo" content="assets/icons/mstile-310x310.png" />
+    <link rel="mask-icon" href="assets/icons/safari-pinned-tab.svg" color="#ffffff">
+    <link rel="manifest" href="/manifest.json">
 
 </head>
 
 <body>
-	<div class="preloader">
-		<span>
-			<img src="https://msg.adamant.im/img/adamant-logo-transparent-512x512.png" />
-			<div>ADAMANT Forging Pool</div>
-		</span>
-	</div>
-	<div id="panel">
-		<div class="topnav content">
-			<div class="row header">
-				<h1 class="h1_header"><img src="https://msg.adamant.im/img/adamant-logo-transparent-512x512.png" class="logo" />ADAMANT
-					Forging Pool&nbsp;<i class="fa fa-refresh refresh" style="font-size: 20px; color: rgb(221, 221, 221);" aria-hidden="true"
-					 @click="fRefresh"></i></h1>
-				<a :href="'https://explorer.adamant.im/delegate/'+delegate.address" target="_blank">{{delegate.delegate.username}}</a>
-			</div>
-		</div>
-		<div class="content main ">
-			<div class="row delegate-info">Delegate <i>{{delegate.delegate.username}}</i> distributes <i>{{system.reward_percentage}}%</i>
-				rewards with payouts every <i>{{system.payoutperiod}}</i>. Minimum payout is <i>{{system.minpayout}}</i> ADM.</div>
+    <div class="preloader">
+        <span>
+            <img src="https://msg.adamant.im/img/adamant-logo-transparent-512x512.png" />
+            <div>ADAMANT Forging Pool</div>
+        </span>
+    </div>
+    <div id="panel">
+        <div class="topnav content">
+            <div class="row header">
+                <h1 class="h1_header"><img src="https://msg.adamant.im/img/adamant-logo-transparent-512x512.png"
+                        class="logo" />ADAMANT
+                    Forging Pool&nbsp;<i class="fa fa-refresh refresh"
+                        style="font-size: 20px; color: rgb(221, 221, 221);" aria-hidden="true" @click="fRefresh"></i>
+                </h1>
+                <a :href="'https://explorer.adamant.im/delegate/'+delegate.address"
+                    target="_blank">{{delegate.delegate.username}}</a>
+            </div>
+        </div>
+        <div class="content main ">
+            <div class="row delegate-info">Delegate <i>{{delegate.delegate.username}}</i> distributes
+                <i>{{system.reward_percentage}}%</i>
+                rewards with payouts every <i>{{system.payoutperiod}}</i>. Minimum payout is <i>{{system.minpayout}}</i>
+                ADM.</div>
 
-			<div id="cards" class="row">
-				<div class="card" style="background-color: rgb(238, 238, 238);"> <span>
-						Total forged: {{(delegate.delegate.forged/100000000).toFixed(1) || 0}} ADM<br>
-						Votes: {{(delegate.delegate.votesWeight/100000000).toFixed(0) || 0}} ADM<br>
-						Votes count: {{delegate.voters?delegate.voters.length:0}}
-					</span></div>
-				<div class="card" style="background-color: rgb(221, 221, 221);"><span>
-						<div v-if="delegate.delegate.rank <= 101">Productivity: {{delegate.delegate.productivity}}%</div>
-						<div v-else style="color: darkred;">Status: Standby</div>
-						Approval: {{delegate.delegate.approval}}<br>
-						Rank: {{delegate.delegate.rank}}
-					</span></div>
-				<div class="card" style="background-color: rgb(238, 238, 238);"> <span>
-						Balance: {{(delegate.balance/100000000 || 0).toFixed(3)}} ADM<br>
-						Forged this period: {{(system.payoutperiodForged || 0).toFixed(1)}}<br>
-						Pending rewards: {{(system.payoutperiodRewards || 0).toFixed(1)}}
-					</span></div>
-				<div class="card" style="background-color: rgb(221, 221, 221);"> <span>
-						Last payout: {{lastPayOut}}<br>
-						Next payout: {{nextPayOut}}<br>
-						Payout period: {{system.payoutperiod}}
-					</span>
-				</div>
-			</div>
+            <div id="cards" class="row">
+                <div class="card" style="background-color: rgb(238, 238, 238);"> <span>
+                        Total forged: {{(delegate.delegate.forged/100000000).toFixed(1) || 0}} ADM<br>
+                        Votes: {{(delegate.delegate.votesWeight/100000000).toFixed(0) || 0}} ADM<br>
+                        Votes count: {{delegate.voters?delegate.voters.length:0}}
+                    </span></div>
+                <div class="card" style="background-color: rgb(221, 221, 221);"><span>
+                        <div v-if="delegate.delegate.rank <= 101">Productivity: {{delegate.delegate.productivity}}%
+                        </div>
+                        <div v-else style="color: darkred;">Status: Standby</div>
+                        Approval: {{delegate.delegate.approval}}<br>
+                        Rank: {{delegate.delegate.rank}}
+                    </span></div>
+                <div class="card" style="background-color: rgb(238, 238, 238);"> <span>
+                        Balance: {{(delegate.balance/100000000 || 0).toFixed(3)}} ADM<br>
+                        Forged this period: {{(system.payoutperiodForged || 0).toFixed(1)}}<br>
+                        Pending rewards: {{(system.payoutperiodRewards || 0).toFixed(1)}}
+                    </span></div>
+                <div class="card" style="background-color: rgb(221, 221, 221);"> <span>
+                        Last payout: {{lastPayOut}}<br>
+                        Next payout: {{nextPayOut}}<br>
+                        Payout period: {{system.payoutperiod}}
+                    </span>
+                </div>
+            </div>
 
-			<div class="container row">
-				<h2><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> Voters ({{voters.length}})</h2>
-				<div class="table-holder">
-					<table>
-						<tr>
-							<th>#</th>
-							<th>Address</th>
-							<th v-for="th in th_voters" @click="sortRows('voters',th.field)" :class="{'active':sorted_field_voters==th.field}"
-							 class="is-sorted">
-								{{th.title}} <i class="fa" :class="{'fa-sort-asc':sorted_field_voters==th.field && sorted_voters>0, 'fa-sort-desc':sorted_field_voters==th.field && sorted_voters<0}"
-								 aria-hidden="true"></i>
-							</th>
-						</tr>
-						<tr v-for="(v,i) in voters" :key="i" v-if="v.isPaginVisible!==false">
-							<td>{{i+1}}</td>
-							<td><a :href="'https://explorer.adamant.im/address/'+v.address" target="_blank">{{v.address}}</a></td>
-							<td>{{v.pending.toFixed(4)}}</td>
-							<td>{{v.received.toFixed(4)}}</td>
-							<td>{{~votersApi.indexOf(v.address)?v.userADM.toFixed(0): '&mdash;'}}</td>
-							<td>{{~votersApi.indexOf(v.address)?v.userWeight.toFixed(0): '&mdash;'}}</td>
-							<td>{{~votersApi.indexOf(v.address)?v.userVotesNumber.toFixed(0): '&mdash;'}}</td>
-						</tr>
+            <div class="container row">
+                <h2><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> Voters ({{voters.length}})</h2>
+                <div class="table-holder">
+                    <table>
+                        <tr>
+                            <th>#</th>
+                            <th>Address</th>
+                            <th v-for="th in th_voters" @click="sortRows('voters',th.field)"
+                                :class="{'active':sorted_field_voters==th.field}" class="is-sorted">
+                                {{th.title}} <i class="fa"
+                                    :class="{'fa-sort-asc':sorted_field_voters==th.field && sorted_voters>0, 'fa-sort-desc':sorted_field_voters==th.field && sorted_voters < 0}"
+                                    aria-hidden="true"></i>
+                            </th>
+                        </tr>
+                        <tr v-for="(v,i) in voters" :key="i" v-if="v.isPaginVisible!==false">
+                            <td>{{i+1}}</td>
+                            <td><a :href="'https://explorer.adamant.im/address/'+v.address"
+                                    target="_blank">{{v.address}}</a></td>
+                            <td>{{v.pending.toFixed(4)}}</td>
+                            <td>{{v.received.toFixed(4)}}</td>
+                            <td>{{~votersApi.indexOf(v.address) ? v.userADM.toFixed(0) : '&mdash;'}}</td>
+                            <td>{{~votersApi.indexOf(v.address) ? v.userVotesNumber.toFixed(0) : '&mdash;'}}</td>
+                            <td>{{~votersApi.indexOf(v.address) ? v.userWeight.toFixed(0) : '&mdash;'}}</td>
+                            <td>{{~votersApi.indexOf(v.address) ? v.userWeightPercent : '&mdash;'}}%</td>
+                        </tr>
 
-					</table>
-				</div>
-				<pagin :options="{rows:voters, visible_count:15}"></pagin>
-			</div>
-			<div class="container row">
-				<h2><i class="fa fa-diamond" aria-hidden="true"></i> Transactions ({{transactions.length}})</h2>
-				<div class="table-holder">
-					<table id="transactions">
-						<tr>
-							<th>#</th>
-							<th>Address</th>
-							<th>TransactionId</th>
-							<th v-for="th in th_trans" @click="sortRows('transactions',th.field)" :class="{'active':sorted_field_transactions==th.field}"
-							 class="is-sorted">
-								{{th.title}} <i class="fa" :class="{'fa-sort-asc':sorted_field_transactions==th.field && sorted_transactions>0, 'fa-sort-desc':sorted_field_transactions==th.field && sorted_transactions<0}"
-								 aria-hidden="true"></i>
-							</th>
-						</tr>
-						<tr v-for="(t,i) in transactions" :key="i" v-if="t.isPaginVisible!==false">
-							<td>{{i+1}}</td>
-							<td><a :href="'https://explorer.adamant.im/address/'+t.address" target="_blank">{{t.address}}</a></td>
-							<td><a :href="'https://explorer.adamant.im/tx/'+t.transactionId" target="_blank">{{t.transactionId}}</a></td>
-							<td>{{t.payoutcount.toFixed(4)}}</td>
-							<td>{{moment(t.timeStamp).format(FORMAT_TRANS)}}</td>
-						</tr>
-					</table>
-				</div>
-				<pagin :options="{rows:transactions}"></pagin>
-			</div>
-		</div>
-	</div>
-	<div class="bottomnav content">
-		<div class="row bottom-links">
-			<a href="https://adamant.im" target="_blank" title="Go to ADAMANT Website">Adamant.im</a>
-			<a href="https://adamant.im/#adm-apps" target="_blank" title="Start Messaging">Messenger Apps</a>
-			<a href="https://github.com/Adamant-im/adamant-pool" target="_blank" title="ADAMANT Forging Pool GitHub">GitHub</a>
-			<a href="https://medium.com/adamant-im/join-the-official-adamant-pool-d3def33fb99c" target="_blank" title="Join forging and earn ADM">Join
-				Pool</a>
-			<a href="https://medium.com/adamant-im/earning-money-on-adm-forging-4c7b6eb15516" target="_blank" title="Create your own ADAMANT Forging Pool and earn ADM">Create
-				your Pool</a>
+                    </table>
+                </div>
+                <pagin :options="{rows:voters, visible_count:15}"></pagin>
+            </div>
+            <div class="container row">
+                <h2><i class="fa fa-diamond" aria-hidden="true"></i> Transactions ({{transactions.length}})</h2>
+                <div class="table-holder">
+                    <table id="transactions">
+                        <tr>
+                            <th>#</th>
+                            <th>Address</th>
+                            <th>TransactionId</th>
+                            <th v-for="th in th_trans" @click="sortRows('transactions',th.field)"
+                                :class="{'active':sorted_field_transactions==th.field}" class="is-sorted">
+                                {{th.title}} <i class="fa"
+                                    :class="{'fa-sort-asc':sorted_field_transactions==th.field && sorted_transactions>0, 'fa-sort-desc':sorted_field_transactions==th.field && sorted_transactions<0}"
+                                    aria-hidden="true"></i>
+                            </th>
+                        </tr>
+                        <tr v-for="(t,i) in transactions" :key="i" v-if="t.isPaginVisible!==false">
+                            <td>{{i+1}}</td>
+                            <td><a :href="'https://explorer.adamant.im/address/'+t.address"
+                                    target="_blank">{{t.address}}</a></td>
+                            <td><a :href="'https://explorer.adamant.im/tx/'+t.transactionId"
+                                    target="_blank">{{t.transactionId}}</a></td>
+                            <td>{{t.payoutcount.toFixed(4)}}</td>
+                            <td>{{moment(t.timeStamp).format(FORMAT_TRANS)}}</td>
+                        </tr>
+                    </table>
+                </div>
+                <pagin :options="{rows:transactions}"></pagin>
+            </div>
+        </div>
+    </div>
+    <div class="bottomnav content">
+        <div class="row bottom-links">
+            <a href="https://adamant.im" target="_blank" title="Go to ADAMANT Website">Adamant.im</a>
+            <a href="https://adamant.im/#adm-apps" target="_blank" title="Start Messaging">Messenger Apps</a>
+            <a href="https://github.com/Adamant-im/adamant-pool" target="_blank"
+                title="ADAMANT Forging Pool GitHub">GitHub</a>
+            <a href="https://medium.com/adamant-im/join-the-official-adamant-pool-d3def33fb99c" target="_blank"
+                title="Join forging and earn ADM">Join
+                Pool</a>
+            <a href="https://medium.com/adamant-im/earning-money-on-adm-forging-4c7b6eb15516" target="_blank"
+                title="Create your own ADAMANT Forging Pool and earn ADM">Create
+                your Pool</a>
 
-		</div>
-	</div>
-	<script src="/assets/components/pagin.js"></script>
-	<script src="/assets/view.js"></script>
+        </div>
+    </div>
+    <script src="/assets/components/pagin.js"></script>
+    <script src="/assets/view.js"></script>
 
 </body>
 
