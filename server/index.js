@@ -28,7 +28,7 @@ app.get('/api/get-voters', (req, res) => {
     });
 });
 
-app.get('/api/get-delegate', async (req, res) => res.send(adamant.get('full_account', config.address)));
+app.get('/api/get-delegate', async (req, res) => res.send(await adamant.get('full_account', config.address)));
 
 app.get('/api/get-config', async (req, res) => res.send({
     reward_percentage: config.reward_percentage,

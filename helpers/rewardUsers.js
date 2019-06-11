@@ -15,27 +15,35 @@ const periodData = require('./periodData');
 module.exports = async (forged, delegateForged) => {
     try {
         const timeStamp = new Date().getTime();
-        const delegate = adamant.get('full_account', config.address);
-        if (!delegate) return;
+        const delegate = await adamant.get('full_account', config.address);
+        if (!delegate) {
+            return;
+        }
         const poolname = delegate.delegate.username;
         const balance = +delegate.balance;
         const totalweight = +delegate.delegate.votesWeight;
         let blockId;
 
         if (delegateForged) {
-            const blocks101 = adamant.get('blocks');
-            if (!blocks101) return;
+            const blocks101 = await adamant.get('blocks');
+            if (!blocks101) {
+                return;
+            }
 
             const delegateBlocks = blocks101.filter(b => b.generatorId === config.address);
             const lastDelegateBlock = delegateBlocks[delegateBlocks.length - 1];
-            if (!lastDelegateBlock) return;
+            if (!lastDelegateBlock) {
+                return;
+            }
 
             lastDelegateBlock.delegateForged = delegateForged;
             lastDelegateBlock.unixTimestamp = timeStamp;
             lastDelegateBlock.totalweight = totalweight;
             blockId = lastDelegateBlock.id;
             const resSetBlock = await dbBlocks.syncInsert(lastDelegateBlock);
-            if (!resSetBlock) log.error(' Set new block');
+            if (!resSetBlock) {
+                log.error(' Set new block');
+            }
         }
 
         const voters = delegate.voters;
@@ -46,13 +54,13 @@ module.exports = async (forged, delegateForged) => {
                 const v = voters[i];
                 const address = v.address;
 
-                if (address == config.address && !config.considerownvote) continue;
+                if (address === config.address && !config.considerownvote) {
+                    continue;
+                }
                 const userADM = v.balance;
-                const userVotesNumber = adamant.get('account_delegates', address).length;
+                const userVotesNumber = (await adamant.get('account_delegates', address)).length;
 
-                let voter = await dbVoters.syncFindOne({
-                    address
-                });
+                let voter = await dbVoters.syncFindOne({address});
 
                 if (!voter) {
                     log.info('New voter: ' + address);
@@ -86,9 +94,13 @@ module.exports = async (forged, delegateForged) => {
                     }
                 });
 
-                if (!delegateForged) continue;
+                if (!delegateForged) {
+                    continue;
+                }
 
-                if (!resUpdatePending) log.error(" Updated pending " + address);
+                if (!resUpdatePending) {
+                    log.error(" Updated pending " + address);
+                }
                 const reward = {
                     address,
                     reward: userReward,
@@ -97,10 +109,12 @@ module.exports = async (forged, delegateForged) => {
                     userWeight: userWeight / SAT,
                     userADM: userADM / SAT,
                     userVotesNumber
-                }
+                };
 
                 const resInsertReward = await dbRewards.syncInsert(reward);
-                if(!resInsertReward) log.error(' resInsertReward: ');
+                if (!resInsertReward) {
+                    log.error(' resInsertReward: ');
+                }
             } catch (e) {
                 log.error(' Reward Voter: ' + e);
             }
@@ -126,15 +140,17 @@ module.exports = async (forged, delegateForged) => {
         }
 
         let msg = 'Forged: ' + round(forged) + ' User total reward:' + round(usertotalreward);
-        if(forged) log.info(msg);
+        if (forged) {
+            log.info(msg);
+        }
 
         return true;
     } catch (e) {
         log.error(' Reward Users: ' + e);
     }
 
-}
+};
 
-function round(num) {
+function round (num) {
     return Number((num / SAT).toFixed(4));
 }

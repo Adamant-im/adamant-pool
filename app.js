@@ -9,23 +9,27 @@ const log = require('./helpers/log');
 const notifier = require('./helpers/slackNotifier');
 let lastForg = unixTime();
 
+let delegateForged,
+    poolname,
+    delegate;
 // Init
-require('./helpers/cron');
-require('./server');
-const delegate = adamant.get('full_account', config.address);
-const poolname = delegate.delegate.username;
-let delegateForged = +delegate.delegate.forged;
+(async () => {
+    require('./helpers/cron');
+    require('./server');
+    delegate = await adamant.get('full_account', config.address);
+    poolname = delegate.delegate.username;
+    delegateForged = +delegate.delegate.forged;
 
-notifier(`Pool ${poolname} started for address _${config.address}_.`, 'info');
-
-iterat();
+    log.info('ADAMANT-pool started ' + poolname + ' (' + config.address + ').');
+    iterat();
+})();
 
 function iterat () {
-    setTimeout(() => {
+    setTimeout(async () => {
         try {
-            const newForged = +adamant.get('delegate_forged', delegate.publicKey).forged;
+            const newForged = + (await adamant.get('delegate_forged', delegate.publicKey)).forged;
             if (isNaN(newForged)) {
-                const msg = `Pool ${poolname} _newForged_ value _isNaN_! Please check Internet connection.`;
+                const msg = `Pool ${poolname} newForged isNaN! Plese check internet connection.`;
                 notifier(msg, 'error');
                 log.error(msg);
                 return;
@@ -43,7 +47,6 @@ function iterat () {
         } catch (e) {
             log.error('Get new Forged!');
         }
-
         iterat();
     }, TIME_RATE * 1000);
 }

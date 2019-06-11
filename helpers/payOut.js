@@ -20,7 +20,7 @@ module.exports = async () => {
     log.info('Pay out period!');
 
     try {
-        let delegate = adamant.get('full_account', config.address);
+        let delegate = await adamant.get('full_account', config.address);
         if (!delegate) {
             let msg = 'Pool ' + poolname + 'Check you internet connection please!';
             notifier(msg, 'error');
@@ -141,8 +141,8 @@ module.exports = async () => {
                 delegate_report = `maintenance reward doesn't cover transaction fees`;
             }
         }
-        setTimeout(() => {
-            delegate = adamant.get('full_account', config.address);
+        setTimeout(async () => {
+            delegate = await adamant.get('full_account', config.address);
             balance = +delegate.balance / SAT;
             let msg2;
             let type = 'info';
