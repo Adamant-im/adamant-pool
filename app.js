@@ -1,7 +1,4 @@
-const {
-    TIME_RATE,
-    SAT
-} = require('./helpers/const');
+const {TIME_RATE, SAT} = require('./helpers/const');
 const config = require('./helpers/configReader');
 const rewardUsers = require('./helpers/rewardUsers');
 const adamant = require('./helpers/api');
