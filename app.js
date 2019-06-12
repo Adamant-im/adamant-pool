@@ -20,7 +20,7 @@ let delegateForged,
     poolname = delegate.delegate.username;
     delegateForged = +delegate.delegate.forged;
 
-    log.info('ADAMANT-pool started ' + poolname + ' (' + config.address + ').');
+    notifier(`Pool ${poolname} started for address _${config.address}_.`, 'info');
     iterat();
 })();
 
@@ -29,7 +29,7 @@ function iterat () {
         try {
             const newForged = + (await adamant.get('delegate_forged', delegate.publicKey)).forged;
             if (isNaN(newForged)) {
-                const msg = `Pool ${poolname} newForged isNaN! Plese check internet connection.`;
+                const msg = `Pool ${poolname} _newForged_ value _isNaN_! Please check Internet connection.`;
                 notifier(msg, 'error');
                 log.error(msg);
                 return;
