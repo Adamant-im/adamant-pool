@@ -3,6 +3,7 @@
     If one become unavailable, pool will choose live one.
     **/
     "node": [
+        "http://localhost:36666",
         "https://endless.adamant.im",
         "https://clown.adamant.im",
         "http://185.231.245.26:36666",
