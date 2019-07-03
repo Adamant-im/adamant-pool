@@ -2,12 +2,10 @@ const config = require('../helpers/configReader');
 const adamant = require('../helpers/api');
 const express = require('express');
 const app = express();
-const {
-    dbVoters,
-    dbTrans
-} = require('../helpers/DB');
+const {dbVoters, dbTrans} = require('../helpers/DB');
 const log = require('../helpers/log');
 const periodData = require('../helpers/periodData');
+const pkg = require('../package.json');
 const port = config.port;
 const DIR_NAME = __dirname + '/public/';
 
@@ -31,6 +29,7 @@ app.get('/api/get-voters', (req, res) => {
 app.get('/api/get-delegate', async (req, res) => res.send(await adamant.get('full_account', config.address)));
 
 app.get('/api/get-config', async (req, res) => res.send({
+    version: pkg.version,
     reward_percentage: config.reward_percentage,
     minpayout: config.minpayout,
     payoutperiod: config.payoutperiod,
