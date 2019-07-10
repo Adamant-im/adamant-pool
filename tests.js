@@ -14,7 +14,7 @@ const config = {
     'publicKey': 'cc1ca549413b942029c4742a6e6ed69767c325f8d989f7e4b71ad82a164c2ada',
     'address': 'U1467838112172792705',
     'payoutperiod': '5d',
-    'port': 36667
+    'port': 36667 
 };
 
 // {"type":"ETH_transaction","amount":0.1,"hash":"0x96075435aa404a9cdda0edf40c07e2098435b28547c135278f5864f8398c5d7d","comments":"Testing purposes "}
