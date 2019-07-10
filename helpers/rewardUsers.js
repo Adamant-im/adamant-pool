@@ -1,36 +1,27 @@
-const {
-    SAT
-} = require('./const');
+const {SAT} = require('./const');
 const config = require('./configReader');
-const adamant = require('./api');
+const api = require('./api');
 const log = require('./log');
-const {
-    dbVoters,
-    dbBlocks,
-    dbRewards
-} = require('./DB');
+const {dbVoters, dbBlocks, dbRewards} = require('./DB');
 const notifier = require('./slackNotifier');
 const periodData = require('./periodData');
+const Store = require('../modules/Store');
 
 module.exports = async (forged, delegateForged) => {
     try {
         const timeStamp = new Date().getTime();
-        const delegate = await adamant.get('full_account', config.address);
-        if (!delegate) {
-            return;
-        }
-        const poolname = delegate.delegate.username;
-        const balance = +delegate.balance;
-        const totalweight = +delegate.delegate.votesWeight;
+        const {poolname} = Store;
+        const {voters, balance, votesWeight, address} = Store.delegate;
+        console.log({balance, votesWeight, address});
         let blockId;
 
         if (delegateForged) {
-            const blocks101 = await adamant.get('blocks');
+            const blocks101 = await api.get('blocks');
             if (!blocks101) {
                 return;
             }
 
-            const delegateBlocks = blocks101.filter(b => b.generatorId === config.address);
+            const delegateBlocks = blocks101.filter(b => b.generatorId === address);
             const lastDelegateBlock = delegateBlocks[delegateBlocks.length - 1];
             if (!lastDelegateBlock) {
                 return;
@@ -38,15 +29,13 @@ module.exports = async (forged, delegateForged) => {
 
             lastDelegateBlock.delegateForged = delegateForged;
             lastDelegateBlock.unixTimestamp = timeStamp;
-            lastDelegateBlock.totalweight = totalweight;
+            lastDelegateBlock.votesWeight = votesWeight;
             blockId = lastDelegateBlock.id;
             const resSetBlock = await dbBlocks.syncInsert(lastDelegateBlock);
             if (!resSetBlock) {
                 log.error(' Set new block');
             }
         }
-
-        const voters = delegate.voters;
         let usertotalreward = 0;
 
         for (let i = 0; i < voters.length; i++) {
@@ -54,11 +43,11 @@ module.exports = async (forged, delegateForged) => {
                 const v = voters[i];
                 const address = v.address;
 
-                if (address === config.address && !config.considerownvote) {
+                if (address === Store.delegate.address && !config.considerownvote) {
                     continue;
                 }
                 const userADM = v.balance;
-                const userVotesNumber = (await adamant.get('account_delegates', address)).length;
+                const userVotesNumber = (await api.get('account_delegates', address)).length;
 
                 let voter = await dbVoters.syncFindOne({address});
 
@@ -80,7 +69,7 @@ module.exports = async (forged, delegateForged) => {
                 }
 
                 const userWeight = userADM / userVotesNumber;
-                const userReward = (userWeight / totalweight) * forged * config.reward_percentage / 100 / SAT;
+                const userReward = (userWeight / votesWeight) * forged * config.reward_percentage / 100 / SAT;
                 usertotalreward += userReward;
                 const pending = (voter.pending || 0) + userReward;
                 const resUpdatePending = await dbVoters.syncUpdate({
@@ -118,7 +107,6 @@ module.exports = async (forged, delegateForged) => {
             } catch (e) {
                 log.error(' Reward Voter: ' + e);
             }
-
         };
 
         const currentPeriodForged = periodData.forged;
@@ -130,13 +118,13 @@ module.exports = async (forged, delegateForged) => {
         if (forged * config.reward_percentage < usertotalreward) {
             let msg = `Pool ${poolname}: _forged * percentage_ < sum of _usertotalreward_. Values: _forged_ — ${round(forged)} ADM, _percentage_ — ${config.reward_percentage}%, sum of _usertotalreward_ — ${round(usertotalreward)} ADM.`;
             log.warn(msg);
-            notifier(msg, 1);
+            notifier(msg, 'error');
         }
 
         if (currentPeriodForged > balance) {
             let msg = `Pool ${poolname}: _totalforged_ > _balance of delegate_. Values: _totalforged_ —  ${round(currentPeriodForged)} ADM, _balance of delegate_ — ${round(balance)} ADM.`;
             log.warn(msg);
-            notifier(msg, 1);
+            notifier(msg, 'error');
         }
 
         let msg = 'Forged: ' + round(forged) + ' User total reward:' + round(usertotalreward);

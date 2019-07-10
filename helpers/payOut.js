@@ -6,28 +6,18 @@ const config = require('./configReader');
 const adamant = require('./api');
 const log = require('./log');
 const _ = require('lodash');
-const {
-    dbVoters,
-    dbTrans
-} = require('./DB');
+const {dbVoters, dbTrans} = require('./DB');
+const Store = require('../modules/Store');
 const notifier = require('./slackNotifier');
 const periodData = require('./periodData');
 const clearHistory = require('./clearHistory');
 
 
 module.exports = async () => {
-
     log.info('Pay out period!');
-
     try {
-        let delegate = await adamant.get('full_account', config.address);
-        if (!delegate) {
-            let msg = 'Pool ' + poolname + 'Check you internet connection please!';
-            notifier(msg, 'error');
-            return;
-        }
-        let balance = +delegate.balance / SAT;
-        const poolname = delegate.delegate.username;
+        let balance = Store.delegate.balance / SAT;
+        const {poolname} = Store;
 
         if (!config.passPhrase) {
             let msg = 'Pool ' + poolname + ' is in read-only mode. To enable payouts, set _passPhrase_ in config.';
@@ -142,8 +132,8 @@ module.exports = async () => {
             }
         }
         setTimeout(async () => {
-            delegate = await adamant.get('full_account', config.address);
-            balance = +delegate.balance / SAT;
+            await Store.updateDelegate();
+            balance = Store.delegate.balance / SAT;
             let msg2;
             let type = 'info';
             if (votersToReceived.length === successTrans) {

@@ -1,33 +1,28 @@
 const {TIME_RATE, SAT} = require('./helpers/const');
-const config = require('./helpers/configReader');
 const rewardUsers = require('./helpers/rewardUsers');
 const adamant = require('./helpers/api');
 const log = require('./helpers/log');
 const notifier = require('./helpers/slackNotifier');
-const pkg = require('./package.json');
+const Store = require('./modules/Store');
 
-let lastForg = unixTime,
-    delegateForged,
-    poolname,
-    delegate;
+let lastForg = unixTime(),
+    delegateForged;
 // Init
 setTimeout(async () => {
     require('./helpers/cron');
     require('./server');
-    delegate = await adamant.get('full_account', config.address);
-    poolname = delegate.delegate.username;
-    delegateForged = +delegate.delegate.forged;
-
-    notifier(`Pool ${poolname} started for address _${config.address}_ (ver. ${pkg.version}).`, 'info');
+    delegateForged = + (await adamant.get('delegate_forged', Store.delegate.publicKey)).forged;
+    await Store.updateDelegate(true);
+    notifier(`Pool ${Store.poolname} started for address _${Store.delegate.address}_ (ver. ${Store.version}).`, 'info');
     iterat();
-}, 3000);
+}, 5000);
 
 function iterat () {
     setTimeout(async () => {
         try {
-            const newForged = + (await adamant.get('delegate_forged', delegate.publicKey)).forged;
+            const newForged = + (await adamant.get('delegate_forged', Store.delegate.publicKey)).forged;
             if (isNaN(newForged)) {
-                const msg = `Pool ${poolname} _newForged_ value _isNaN_! Please check Internet connection.`;
+                const msg = `Pool ${Store.poolname} _newForged_ value _isNaN_! Please check Internet connection.`;
                 notifier(msg, 'error');
                 log.error(msg);
                 iterat();
@@ -53,7 +48,7 @@ function iterat () {
 // refresh dbVoters if no forged
 setTimeout(() => {
     rewardUsers(0);
-}, 5000);
+}, 10000);
 
 setInterval(() => {
     if (unixTime() - lastForg > 600) {
