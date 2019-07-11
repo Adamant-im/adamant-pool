@@ -12,7 +12,6 @@ module.exports = async (forged, delegateForged) => {
         const timeStamp = new Date().getTime();
         const {poolname} = Store;
         const {voters, balance, votesWeight, address} = Store.delegate;
-        console.log({balance, votesWeight, address});
         let blockId;
 
         if (delegateForged) {

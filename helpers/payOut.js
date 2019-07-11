@@ -25,7 +25,7 @@ module.exports = async () => {
             return;
         }
         const totalforged = periodData.forged;
-        const usertotalreward = periodData.rewards; // 80% 
+        const usertotalreward = periodData.rewards; // 80%
         periodData.zero();
 
         const voters = await dbVoters.syncFind({});
@@ -60,11 +60,7 @@ module.exports = async () => {
         let successTrans = 0;
         for (let v of votersToReceived) {
             try {
-                let {
-                    address,
-                    pending,
-                    received
-                } = v;
+                let {address, pending, received} = v;
                 const trans = adamant.send(config.passPhrase, address, pending);
 
                 if (!trans || !trans.success) {
@@ -87,13 +83,8 @@ module.exports = async () => {
                 trans.payoutcount = pending;
                 totalPayOut += pending;
                 received += pending;
-                const resUpdateRecived = await dbVoters.syncUpdate({
-                    address
-                }, {
-                    $set: {
-                        pending: 0,
-                        received
-                    }
+                const resUpdateRecived = await dbVoters.syncUpdate({address}, {
+                    $set: {pending: 0, received}
                 });
                 const resCreateTrans = await dbTrans.syncInsert(trans);
 
@@ -132,7 +123,7 @@ module.exports = async () => {
             }
         }
         setTimeout(async () => {
-            await Store.updateDelegate();
+            await Store.updateDelegate(1);
             balance = Store.delegate.balance / SAT;
             let msg2;
             let type = 'info';
