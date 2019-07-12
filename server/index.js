@@ -21,12 +21,10 @@ app.get('/api/get-transactions', (req, res) => {
 });
 
 app.get('/api/get-voters', (req, res) => {
-    dbVoters.find({}, (err, docs) => {
-        res.send(docs);
-    });
+    dbVoters.find({}, (err, docs) => res.send(docs));
 });
 
-app.get('/api/get-delegate', async (req, res) => res.send(await adamant.get('full_account', Store.delegate.address)));// TODO: send Store
+app.get('/api/get-delegate', async (req, res) => res.send(Store));// TODO: send Store
 
 app.get('/api/get-config', async (req, res) => res.send({
     version: Store.version,

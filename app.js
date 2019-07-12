@@ -28,6 +28,7 @@ function iterat () {
                 iterat();
                 return;
             }
+            Store.delegate.totalForged = delegateForged;
             if (delegateForged < newForged) {
                 lastForg = unixTime();
                 const forged = newForged - delegateForged;

@@ -28,27 +28,28 @@ var panel = new Vue({
         lastPayOut: 0,
         nextPayOut: 0,
         th_voters: [{
-            field: 'pending',
-            title: 'Pending'
-        }, {
-            field: 'received',
-            title: 'Received'
-        }, {
-            field: 'userADM',
-            title: 'Balance'
-        },
-        {
-            field: 'userVotesNumber',
-            title: 'Votes'
-        },
-        {
-            field: 'userWeight',
-            title: 'Weight'
-        },
-        {
-            field: 'userWeightPercent',
-            title: '% of Total votes'
-        }],
+                field: 'pending',
+                title: 'Pending'
+            }, {
+                field: 'received',
+                title: 'Received'
+            }, {
+                field: 'userADM',
+                title: 'Balance'
+            },
+            {
+                field: 'userVotesNumber',
+                title: 'Votes'
+            },
+            {
+                field: 'userWeight',
+                title: 'Weight'
+            },
+            {
+                field: 'userWeightPercent',
+                title: '% of Total votes'
+            }
+        ],
         th_trans: [{
             field: 'payoutcount',
             title: 'Amount'
@@ -75,6 +76,7 @@ var panel = new Vue({
                 if (typeof res === 'object') {
                     panel.transactions = res;
                 }
+                console.log(res)
                 panel.sortRows('transactions', panel.sorted_field_transactions, 1);
                 if (this_.system.payoutperiodStart) {
                     let start = this_.system.payoutperiodStart;
@@ -88,7 +90,7 @@ var panel = new Vue({
                 if (typeof res === 'object') {
                     panel.voters = res.filter(v => ~panel.votersApi.indexOf(v.address) || v.pending >= panel.system.minpayout);
                 }
-                panel.voters.forEach(v =>{
+                panel.voters.forEach(v => {
                     v.userWeightPercent = +(v.userWeight / this.delegate.delegate.votesWeight * 10000000000).toFixed(2);
                 });
                 panel.sortRows('voters', panel.sorted_field_voters, 1);
@@ -99,8 +101,8 @@ var panel = new Vue({
                 if (typeof res === 'object') {
                     panel.delegate = res;
                 }
-
-                panel.votersApi = res.voters.map(v => v.address).toString();
+                console.log(res);
+                panel.votersApi = res.delegate.voters.map(v => v.address).toString();
                 panel.getVoters();
             });
         },

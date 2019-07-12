@@ -68,9 +68,9 @@
 
             <div id="cards" class="row">
                 <div class="card" style="background-color: rgb(238, 238, 238);"> <span>
-                        Total forged: {{(delegate.delegate.forged/100000000).toFixed(1) || 0}} ADM<br>
-                        Votes: {{(delegate.delegate.votesWeight/100000000).toFixed(0) || 0}} ADM<br>
-                        Votes count: {{delegate.voters?delegate.voters.length:0}}
+                        Total forged: {{(delegate.delegate.totalForged / 100000000).toFixed(1) || 0}} ADM<br>
+                        Votes: {{(delegate.delegate.votesWeight / 100000000).toFixed(0) || 0}} ADM<br>
+                        Votes count: {{delegate.delegate.voters ? delegate.delegate.voters.length : 0}}
                     </span></div>
                 <div class="card" style="background-color: rgb(221, 221, 221);"><span>
                         <div v-if="delegate.delegate.rank <= 101">Productivity: {{delegate.delegate.productivity}}%
@@ -80,7 +80,7 @@
                         Rank: {{delegate.delegate.rank}}
                     </span></div>
                 <div class="card" style="background-color: rgb(238, 238, 238);"> <span>
-                        Balance: {{(delegate.balance/100000000 || 0).toFixed(3)}} ADM<br>
+                        Balance: {{(delegate.balance / 100000000 || 0).toFixed(3)}} ADM<br>
                         Forged this period: {{(system.payoutperiodForged || 0).toFixed(1)}}<br>
                         Pending rewards: {{(system.payoutperiodRewards || 0).toFixed(1)}}
                     </span></div>
