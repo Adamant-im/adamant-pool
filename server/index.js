@@ -26,7 +26,7 @@ app.get('/api/get-voters', (req, res) => {
     });
 });
 
-app.get('/api/get-delegate', async (req, res) => res.send(await adamant.get('full_account', Store.address)));// TODO: send Store
+app.get('/api/get-delegate', async (req, res) => res.send(await adamant.get('full_account', Store.delegate.address)));// TODO: send Store
 
 app.get('/api/get-config', async (req, res) => res.send({
     version: Store.version,
