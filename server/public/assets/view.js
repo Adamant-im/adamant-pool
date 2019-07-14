@@ -28,27 +28,27 @@ var panel = new Vue({
         lastPayOut: 0,
         nextPayOut: 0,
         th_voters: [{
-                field: 'pending',
-                title: 'Pending'
-            }, {
-                field: 'received',
-                title: 'Received'
-            }, {
-                field: 'userADM',
-                title: 'Balance'
-            },
-            {
-                field: 'userVotesNumber',
-                title: 'Votes'
-            },
-            {
-                field: 'userWeight',
-                title: 'Weight'
-            },
-            {
-                field: 'userWeightPercent',
-                title: '% of Total votes'
-            }
+            field: 'pending',
+            title: 'Pending'
+        }, {
+            field: 'received',
+            title: 'Received'
+        }, {
+            field: 'userADM',
+            title: 'Balance'
+        },
+        {
+            field: 'userVotesNumber',
+            title: 'Votes'
+        },
+        {
+            field: 'userWeight',
+            title: 'Weight'
+        },
+        {
+            field: 'userWeightPercent',
+            title: '% of Total votes'
+        }
         ],
         th_trans: [{
             field: 'payoutcount',
@@ -76,7 +76,7 @@ var panel = new Vue({
                 if (typeof res === 'object') {
                     panel.transactions = res;
                 }
-                console.log(res)
+                console.log(res);
                 panel.sortRows('transactions', panel.sorted_field_transactions, 1);
                 if (this_.system.payoutperiodStart) {
                     let start = this_.system.payoutperiodStart;
@@ -101,7 +101,7 @@ var panel = new Vue({
                 if (typeof res === 'object') {
                     panel.delegate = res;
                 }
-                console.log(res);
+                console.log(panel.delegate);
                 panel.votersApi = res.delegate.voters.map(v => v.address).toString();
                 panel.getVoters();
             });
