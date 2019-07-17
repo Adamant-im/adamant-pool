@@ -9,7 +9,7 @@
 	"author": "ADAMANT Tech Labs <devs@adamant.im>",
 	"license": "GPL-3.0",
 	"dependencies": {
-		"adamant-api": "^0.1.21",
+		"adamant-api": "^0.1.22",
 		"express": "^4.16.4",
 		"jsonminify": "^0.4.1",
 		"lodash": "^4.17.11",

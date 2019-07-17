@@ -52,9 +52,11 @@
         <div class="topnav content">
             <div class="row header">
                 <h1 class="h1_header"><img src="https://msg.adamant.im/img/adamant-logo-transparent-512x512.png"
-                        class="logo" />ADAMANT
-                    Forging Pool &nbsp;<small>(ver. {{system.version}})</small> &nbsp;<i class="fa fa-refresh refresh"
-                        style="font-size: 20px; color: rgb(221, 221, 221);" aria-hidden="true" @click="fRefresh"></i>
+                        class="logo" />
+                    <span>ADAMANT Forging Pool &nbsp;<small>(ver. {{system.version}})</small>
+                    </span>
+                    &nbsp;<i class="fa fa-refresh refresh" style="font-size: 20px; color: rgb(221, 221, 221);"
+                        aria-hidden="true" @click="fRefresh"></i>
                 </h1>
                 <a :href="'https://explorer.adamant.im/delegate/' + delegate.delegate.address"
                     target="_blank">{{delegate.poolname}}</a>
@@ -68,21 +70,22 @@
 
             <div id="cards" class="row">
                 <div class="card" style="background-color: rgb(238, 238, 238);"> <span>
-                        Total forged: {{(delegate.delegate.totalForged / 100000000).toFixed(1) || 0}} ADM<br>
-                        Votes: {{(delegate.delegate.votesWeight / 100000000).toFixed(0) || 0}} ADM<br>
-                        Votes count: {{delegate.delegate.voters ? delegate.delegate.voters.length : 0}}
+                        Total forged: {{(delegate.delegate.totalForged / 100000000).toFixed(1) || 0 | numberFormat}}
+                        ADM<br>
+                        Votes: {{(delegate.delegate.votesWeight / 100000000).toFixed(0) || 0 | numberFormat}} ADM<br>
+                        Votes count: {{delegate.delegate.voters ? delegate.delegate.voters.length : 0 | numberFormat}}
                     </span></div>
                 <div class="card" style="background-color: rgb(221, 221, 221);"><span>
                         <div v-if="delegate.delegate.rank <= 101">Productivity: {{delegate.delegate.productivity}}%
                         </div>
                         <div v-else style="color: darkred;">Status: Standby</div>
                         Approval: {{delegate.delegate.approval}}<br>
-                        Rank: {{delegate.delegate.rank}}
+                        Rank: {{delegate.delegate.rank | numberFormat}}
                     </span></div>
                 <div class="card" style="background-color: rgb(238, 238, 238);"> <span>
-                        Balance: {{(delegate.delegate.balance / 100000000 || 0).toFixed(3)}} ADM<br>
-                        Forged this period: {{(system.payoutperiodForged || 0).toFixed(1)}}<br>
-                        Pending rewards: {{(system.payoutperiodRewards || 0).toFixed(1)}}
+                        Balance: {{(delegate.delegate.balance / 100000000 || 0).toFixed(3) | numberFormat}} ADM<br>
+                        Forged this period: {{(system.payoutperiodForged || 0).toFixed(1) | numberFormat}}<br>
+                        Pending rewards: {{(system.payoutperiodRewards || 0).toFixed(1) | numberFormat}}
                     </span></div>
                 <div class="card" style="background-color: rgb(221, 221, 221);"> <span>
                         Last payout: {{lastPayOut}}<br>
@@ -110,11 +113,13 @@
                             <td>{{i+1}}</td>
                             <td><a :href="'https://explorer.adamant.im/address/'+v.address"
                                     target="_blank">{{v.address}}</a></td>
-                            <td>{{v.pending.toFixed(4)}}</td>
-                            <td>{{v.received.toFixed(4)}}</td>
-                            <td>{{~votersApi.indexOf(v.address) ? v.userADM.toFixed(0) : '&mdash;'}}</td>
-                            <td>{{~votersApi.indexOf(v.address) ? v.userVotesNumber.toFixed(0) : '&mdash;'}}</td>
-                            <td>{{~votersApi.indexOf(v.address) ? v.userWeight.toFixed(0) : '&mdash;'}}</td>
+                            <td>{{v.pending.toFixed(4) | numberFormat}}</td>
+                            <td>{{v.received.toFixed(4) | numberFormat}}</td>
+                            <td>{{~votersApi.indexOf(v.address) ? v.userADM.toFixed(0) : '&mdash;' | numberFormat}}</td>
+                            <td>{{~votersApi.indexOf(v.address) ? v.userVotesNumber.toFixed(0) : '&mdash;' | numberFormat}}
+                            </td>
+                            <td>{{~votersApi.indexOf(v.address) ? v.userWeight.toFixed(0) : '&mdash;' | numberFormat}}
+                            </td>
                             <td>{{~votersApi.indexOf(v.address) ? v.userWeightPercent : '&mdash;'}}%</td>
                         </tr>
 
@@ -143,7 +148,7 @@
                                     target="_blank">{{t.address}}</a></td>
                             <td><a :href="'https://explorer.adamant.im/tx/'+t.transactionId"
                                     target="_blank">{{t.transactionId}}</a></td>
-                            <td>{{t.payoutcount.toFixed(4)}}</td>
+                            <td>{{t.payoutcount.toFixed(4) | numberFormat}}</td>
                             <td>{{moment(t.timeStamp).format(FORMAT_TRANS)}}</td>
                         </tr>
                     </table>
@@ -168,6 +173,7 @@
         </div>
     </div>
     <script src="/assets/components/pagin.js"></script>
+    <script src="/assets/filters/numberFormat.js"></script>
     <script src="/assets/view.js"></script>
 
 </body>
