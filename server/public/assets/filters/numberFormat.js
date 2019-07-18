@@ -8,7 +8,7 @@ Vue.filter('numberFormat', value => {
     while (i >= 0) {
         output = main.charAt(i) + output;
         if ((len - i) % 3 === 0 && i > 0) {
-            output = ' ' + output;
+            output = '&nbsp;' + output;
         }
         --i;
     }
