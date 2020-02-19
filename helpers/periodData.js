@@ -45,10 +45,10 @@ module.exports = {
         const lastBlock = _.last(blocksPeriod);
         this.forged = (+lastBlock.delegateForged - firstBlock.delegateForged) / SAT + 0.5;
 
-        console.log({
-            usertotalreward,
-            totalforged: this.forged
-        });
+        // console.log({
+        //     usertotalreward,
+        //     totalforged: this.forged
+        // });
     },
     zero () {
         this.forged = 0;

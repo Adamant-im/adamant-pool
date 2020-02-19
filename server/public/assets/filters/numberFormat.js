@@ -12,7 +12,7 @@ Vue.filter('numberFormat', value => {
         }
         --i;
     }
-    console.log(parts[1]);
+    // console.log(parts[1]);
     if (parts.length > 1) {
         output = `${output}.${parts[1]}`;
     }

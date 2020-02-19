@@ -1,12 +1,12 @@
 const jsonminify = require('jsonminify');
 const fs = require('fs');
 const log = require('./log');
-const isDev = process.argv.reverse()[0] === 'dev';
+const isDev = process.argv.includes('dev');
 let config = {};
 
 try {
     if (isDev) {
-        config = require('../tests');
+        config = JSON.parse(jsonminify(fs.readFileSync('./config.test', 'utf-8')));
     } else {
         config = JSON.parse(jsonminify(fs.readFileSync('./config.json', 'utf-8')));
     }
