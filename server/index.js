@@ -9,6 +9,11 @@ const port = config.port;
 const DIR_NAME = __dirname + '/public/';
 const Store = require('../modules/Store');
 
+app.use('*.js', (req, res, next) => {
+    res.set('Content-Type', 'text/javascript')
+    next();
+})
+
 app.use('/', express.static(__dirname + '/public/'));
 
 app.get('/', (req, res) => res.sendFile(DIR_NAME + 'index.html'));
