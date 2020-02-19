@@ -1,6 +1,6 @@
 {
 	"name": "adamant-pool",
-	"version": "1.6.0",
+	"version": "1.6.1",
 	"description": "\"ADAMANT Messenger Forging Pool\"",
 	"main": "index.js",
 	"scripts": {

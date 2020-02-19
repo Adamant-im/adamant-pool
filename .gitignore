@@ -1,9 +1,7 @@
 node_modules/
 logs/
-adamant-rest-api_/
 db/
-cross.js
-config.json
-package-lock.json
+.vscode/
+config.test
 package-lock.json
 tests.js

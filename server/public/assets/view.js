@@ -76,7 +76,7 @@ var panel = new Vue({
                 if (typeof res === 'object') {
                     panel.transactions = res;
                 }
-                console.log(res);
+                // console.log(res);
                 panel.sortRows('transactions', panel.sorted_field_transactions, 1);
                 if (this_.system.payoutperiodStart) {
                     let start = this_.system.payoutperiodStart;
@@ -101,7 +101,7 @@ var panel = new Vue({
                 if (typeof res === 'object') {
                     panel.delegate = res;
                 }
-                console.log(panel.delegate);
+                // console.log(panel.delegate);
                 panel.votersApi = res.delegate.voters.map(v => v.address).toString();
                 panel.getVoters();
             });
