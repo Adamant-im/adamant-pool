@@ -1,7 +1,7 @@
 const {
     SAT
 } = require('./const');
-const _ = require('lodash');
+
 const {
     dbTrans,
     dbBlocks,
@@ -42,7 +42,7 @@ module.exports = {
             return;
         }
         const firstBlock = blocksPeriod[0];
-        const lastBlock = _.last(blocksPeriod);
+        const lastBlock = blocksPeriod[blocksPeriod.length-1];
         this.forged = (+lastBlock.delegateForged - firstBlock.delegateForged) / SAT + 0.5;
 
         // console.log({

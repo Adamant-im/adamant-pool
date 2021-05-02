@@ -7,7 +7,7 @@ Read more about [Forging, delegates, Fair dPoS, and how to run your Forging pool
 
 * Easy to install
 * Customizable (config file)
-* History of all work made stored in the database
+* History stored in local files (nedb)
 * Minimum server requirements
 * Setup on a separate machine without a node
 * Informative web interface for voters + mobile version

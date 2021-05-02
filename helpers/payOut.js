@@ -5,7 +5,6 @@ const {
 const config = require('./configReader');
 const adamant = require('./api');
 const log = require('./log');
-const _ = require('lodash');
 const {dbVoters, dbTrans} = require('./DB');
 const Store = require('../modules/Store');
 const notifier = require('./slackNotifier');
