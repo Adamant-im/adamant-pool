@@ -3,5 +3,5 @@ logs/
 db/
 .vscode/
 config.test
-package-lock.json
+
 tests.js
