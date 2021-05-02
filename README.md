@@ -46,7 +46,7 @@ Parameters:
 * `maintenancewallet` <string> Wallet to transfer delegate share (100-reward_percentage) to. If the wallet is not set, this amount will remain on the delegate’s wallet.
 * `slack` <string> Token for Slack alerts for the pool’s administrator. No alerts if not set.
 * `adamant_notify` <string> ADM address for the pool’s administrator. Recommended.
-* `port` <number> Port for connecting the web interface. The web interface is available at http://IP:port. Default: 36668
+* `port` <number> Port for connecting the web interface. The web interface is available at http://IP:port. Default: 36667
 
 ## Launching
 You can start the pool with the `node app` command, but it is recommended to use the process manager for this purpose.
