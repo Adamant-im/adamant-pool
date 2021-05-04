@@ -3,7 +3,7 @@ const config = require('./configReader');
 const api = require('./api');
 const log = require('./log');
 const {dbVoters, dbBlocks, dbRewards} = require('./DB');
-const notifier = require('./slackNotifier');
+const notifier = require('./notify');
 const periodData = require('./periodData');
 const Store = require('../modules/Store');
 

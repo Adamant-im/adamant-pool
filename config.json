@@ -1,59 +1,59 @@
 {
     /** List of nodes to fetch forging information, needed to count rewards.
-    If one become unavailable, pool will choose live one.
-    **/
+        If one become unavailable, pool will choose live one.
+      **/
     "node": [
         "http://localhost:36666",
         "https://endless.adamant.im",
         "https://clown.adamant.im",
-        "http://185.231.245.26:36666",
-        "http://80.211.177.181:36666",
+        "http://23.226.231.225:36666",
+        "http://88.198.156.44:36666",
         "https://lake.adamant.im"
     ],
 
-    /** Your delegete address. Used to fetch forging information, needed to count rewards **/
+    /** Pool's address. Must be a delegate of ADAMANT blockchain **/
     "address": "U9466395914658764774",
 
-    /** Put delegate's passPhrase to make payouts. If false, pool will be in read only mode, without payouts. **/
+    /** Pool's passPhrase to make payouts. If empty, pool will work in read-only mode, without payouts **/
     "passPhrase": "",
 
-    /** Percentage to distribute to voters. Amount left will go to maintenace wallet **/
+    /** Percentage of rewards to distribute to pool's voters. Pool will send the rest to the maintenance wallet, if set **/
     "reward_percentage": 80,
 
-    /** Maintenace wallet to receive amount of (100-reward_percentage) to cover pool expenses
-    	Put false if you want to leave it on delegate's wallet.
-    **/
+    /** Maintenance wallet to receive (100-reward_percentage) rewards
+        Put false if you want to leave it on the pool's wallet.
+      **/
     "maintenancewallet": false,
 
     /** How often pool will do payouts. All at 00:00.
-    	1 h - > every hour
-    	1 d - > every day
-    	5 d - > days 1, 5, 10, 15, 20, 25 of the month
-    	10 d - > days 1, 10, 20 of the month
-    	15 d - > days 1, 15 of the month
-    	30 d - > 30 th of each month
-    **/
+        1 h - > every hour
+        1 d - > every day
+        5 d - > days 1, 5, 10, 15, 20, 25 of the month
+        10 d - > days 1, 10, 20 of the month
+        15 d - > days 1, 15 of the month
+        30 d - > 30th of each month
+      **/
     "payoutperiod": "5d",
 
-    /** How many payout periods to store history data. Greater value needs more RAM.
-    	If store_history is 10 and payoutperiod is 5d, data will be stored for last 50 days.
-        Payout transactions are stored forever independant from store_history value.
-    **/
+    /** Periods to store history data. Greater value needs more RAM.
+        If store_history is 10 and payoutperiod is 5d, data will be stored for last 50 days.
+        Payout transactions are stored forever, independent from store_history value.
+      **/
     "store_history": 10,
 
-    /** Minimum amount in ADM for payouts. 
-    	If at the end of payoutperiod voter forged less than minpayout, it will be stored as Pending for next period.
-    **/
+    /** Minimum amount in ADM for payouts.
+    	If at the end of payoutperiod a voter's reward is less than minpayout, it will be pending for next period.
+      **/
     "minpayout": 1,
 
-    /** Consider if delegate can vote for himself and this will count in rewards **/
+    /** If delegate can vote for himself and this will count in rewards distribution **/
     "considerownvote": 0,
 
-    /** ADAMANT address for notifications and monitoring (if needed) **/
+    /** ADAMANT address for monitoring notifications **/
     "adamant_notify": "",
 
-    /** Slack key for notifications and monitoring (if needed) **/
-    "slack": "https://hooks.slack.com/services/",
+    /** Slack key for monitoring notifications **/
+    "slack": "https://hooks.slack.com/services/..",
 
     /** Port for pool's public Web panel **/
     "port": 36667

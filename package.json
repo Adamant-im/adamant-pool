@@ -10,11 +10,11 @@
 	"license": "GPL-3.0",
 	"dependencies": {
 		"adamant-api": "^0.1.22",
+		"axios": "^0.21.1",
 		"express": "^4.17.1",
 		"jsonminify": "^0.4.1",
 		"nedb": "^1.8.0",
-		"node-cron": "^3.0.0",
-		"request": "^2.88.0"
+		"node-cron": "^3.0.0"
 	},
 	"keywords": [
 		"forging",
@@ -22,10 +22,10 @@
 		"mining",
 		"rewards",
 		"dpos",
-    "adm",
-    "adamant",
-    "blockchain",
-    "crypto",
-    "cryptocurrency"
-  ]
+		"adm",
+		"adamant",
+		"blockchain",
+		"crypto",
+		"cryptocurrency"
+	]
 }

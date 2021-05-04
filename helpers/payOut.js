@@ -7,7 +7,7 @@ const adamant = require('./api');
 const log = require('./log');
 const {dbVoters, dbTrans} = require('./DB');
 const Store = require('../modules/Store');
-const notifier = require('./slackNotifier');
+const notifier = require('./notify');
 const periodData = require('./periodData');
 const clearHistory = require('./clearHistory');
 

@@ -2,7 +2,7 @@ const {TIME_RATE, SAT} = require('./helpers/const');
 const rewardUsers = require('./helpers/rewardUsers');
 const adamant = require('./helpers/api');
 const log = require('./helpers/log');
-const notifier = require('./helpers/slackNotifier');
+const notifier = require('./helpers/notify');
 const Store = require('./modules/Store');
 
 let lastForg = unixTime(),
