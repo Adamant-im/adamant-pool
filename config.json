@@ -11,19 +11,18 @@
         "https://lake.adamant.im"
     ],
 
-    /** Pool's address. Must be a delegate of ADAMANT blockchain **/
-    "address": "U9466395914658764774",
-
-    /** Pool's passPhrase to make payouts. If empty, pool will work in read-only mode, without payouts **/
+    /** The pool's secret phrase. Pool's ADM address will correspond this passPhrase.
+      Must be a delegate of ADAMANT blockchain.
+      **/
     "passPhrase": "",
 
     /** Percentage of rewards to distribute to pool's voters. Pool will send the rest to the maintenance wallet, if set **/
     "reward_percentage": 80,
 
     /** Maintenance wallet to receive (100-reward_percentage) rewards
-        Put false if you want to leave it on the pool's wallet.
+        If you wish to leave it on the pool's wallet, set to empty string
       **/
-    "maintenancewallet": false,
+    "maintenancewallet": "",
 
     /** How often pool will do payouts. All at 00:00.
         1 h - > every hour
@@ -44,10 +43,10 @@
     /** Minimum amount in ADM for payouts.
     	If at the end of payoutperiod a voter's reward is less than minpayout, it will be pending for next period.
       **/
-    "minpayout": 1,
+    "minpayout": 10,
 
     /** If delegate can vote for himself and this will count in rewards distribution **/
-    "considerownvote": 0,
+    "considerownvote": false,
 
     /** ADAMANT address for monitoring notifications **/
     "adamant_notify": "",

@@ -2,25 +2,12 @@ const api = require('../helpers/api');
 const {version} = require('../package.json');
 const config = require('../helpers/configReader');
 
-let address,
-    publicKey;
-
-if (config.isDev){
-    address = config.address;
-    publicKey = config.publicKey;
-} else {
-    const keys = require('adamant-api/helpers/keys');
-    const AdmKeysPair = keys.createKeypairFromPassPhrase(config.passPhrase);
-    address = keys.createAddressFromPublicKey(AdmKeysPair.publicKey);
-    publicKey = AdmKeysPair.publicKey.toString('hex');
-}
-
 module.exports = {
     version,
     poolname: '',
     delegate: {
-        address,
-        publicKey,
+        address: config.address,
+        publicKey: config.publicKey,
         balance: 0,
         voters: []
     },

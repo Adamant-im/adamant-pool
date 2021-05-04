@@ -4,33 +4,29 @@ if (!fs.existsSync('./logs')) {
 }
 
 let infoStr = fs.createWriteStream('./logs/' + date() + '.log', {
-	flags: "a"
+	flags: 'a'
 });
 
-infoStr.write(`
-_________________${fullTime()}_________________
-
-`);
+infoStr.write(`\n\n[The pool started] _________________${fullTime()}_________________\n`);
 
 module.exports = {
 	error(str) {
-		infoStr.write(`
-		` + 'error|' + time() + '|' + str);
-		console.log('\x1b[31m', 'error|' + time(), "\x1b[0m", str);
+		infoStr.write(`\n ` + 'error|' + fullTime() + '|' + str);
+		console.log('\x1b[31m', 'error|' + fullTime(), '\x1b[0m', str);
 	},
 	info(str) {
-		console.log('\x1b[32m', 'info|' + time(), "\x1b[0m", str);
-		
-		infoStr.write(`
-		` + 'info|' + time() + '|' + str);
+		console.log('\x1b[32m', 'info|' + fullTime(), '\x1b[0m', str);
+		infoStr.write(`\n ` + 'info|' + fullTime() + '|' + str);
 	},
 	warn(str) {
-		console.log('\x1b[33m', 'warn|' + time(), "\x1b[0m", str);
-		
-		infoStr.write(`
-		` + 'warn|' + time() + '|' + str);
+		console.log('\x1b[33m', 'warn|' + fullTime(), '\x1b[0m', str);
+		infoStr.write(`\n ` + 'warn|' + fullTime() + '|' + str);
 	},
-}
+	log(str) {
+		console.log('\x1b[34m', 'log|' + fullTime(), '\x1b[0m', str);
+		infoStr.write(`\n ` + 'log|[' + fullTime() + '|' + str);
+	}
+};
 
 function time() {
 	var options = {
@@ -38,19 +34,19 @@ function time() {
 		minute: 'numeric',
 		second: 'numeric'
 	};
-	
-	return new Date().toLocaleString("en", options);
+
+	return new Date().toLocaleString('en-GB', options);
 }
 
 function date() {
 	var options = {
-		day: 'numeric',
+		year: 'numeric',
 		month: 'numeric',
-		year: 'numeric'
-	};	
-	return (new Date().toLocaleString("en", options)).replace(/\//g, '-');
+		day: 'numeric'
+	};
+	return (new Date().toLocaleString('fr-CA', options)).replace(/\//g, '-');
 }
 
-function fullTime(){
-	return date()+' '+time();
+function fullTime() {
+	return date() + ' ' + time();
 }

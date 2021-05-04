@@ -13,7 +13,6 @@ Read more about [Forging, delegates, Fair dPoS, and how to run your Forging pool
 * Informative web interface for voters + mobile version
 * Notification system via ADAMANT or Slack for admin
 * Built-in node availability check
-* Read-only mode without passphrase
 
 See [User-friendly description and installation instructions](https://medium.com/adamant-im/create-your-own-adamant-forging-pool-a8574f5da43b).
 
@@ -41,17 +40,16 @@ nano config.json
 
 Parameters:
 
-* `node` <string, array> List of nodes for pool’s API work, obligatorily
-* `address` <string> The delegate’s ADM wallet address, obligatorily
-* `passPhrase` <string> The delegate’s secret phrase for concluding transactions. If absent, transfers are not available, and the pool will work in “Read only” mode as system for statistics.
+* `node` <string, array> List of ADAMANT nodes for pool’s API, obligatorily
+* `passPhrase` <string> The pools’s secret phrase. Pool's ADM address will correspond this passPhrase. Must be a delegate of ADAMANT blockchain. Obligatory.
 * `reward_percentage` <number> The percentage of forged amount that will be sent to voters. Default: 80
-* `minpayout` <number> Minimal sum for transfer in the end of payout period (in ADM). If the amount is not enough, the payment will be postponed to the next period. Default: 10
+* `minpayout` <number> Minimal amount in ADM to transfer in the end of payout period. If voter's share is less than minpayout, payout will be postponed to the next period. Default: 10
 * `payoutperiod` <string> The duration of payout period (1d, 5d, 10d, 15d, 30d) counted from the first day of a month. 1d — everyday payouts. 10d — payouts every 1st, 10th, 20th days of month. Default: 10d
-* `considerownvote` <boolean> Whether to consider your own vote (can you vote for the delegate for yourself). Default: false
-* `maintenancewallet` <string> Wallet to transfer delegate share (100-reward_percentage) to. If the wallet is not set, this amount will remain on the delegate’s wallet.
-* `slack` <string> Token for Slack alerts for the pool’s administrator. No alerts if not set.
-* `adamant_notify` <string> ADM address for the pool’s administrator. Recommended.
-* `port` <number> Port for connecting the web interface. The web interface is available at http://IP:port. Default: 36667
+* `considerownvote` <boolean> Whether to consider your own vote (the pool can vote for itself). Default: false
+* `maintenancewallet` <string> Maintenance wallet to receive (100-reward_percentage) rewards. If you wish to leave it on the pool's wallet, set to empty string.
+* `slack` <string> Slack key for monitoring notifications. No alerts if not set.
+* `adamant_notify` <string> ADAMANT address for monitoring notifications. No alerts if not set.
+* `port` <number> Port for public web interface. The web interface is available at http://IP:port. Default: 36667
 
 ## Launching
 
