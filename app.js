@@ -12,8 +12,8 @@ let lastForg = unixTime(),
 // Init
 setTimeout(async () => {
 	require('./helpers/cron');
-	await initDelegate();
 	require('./server');
+	await initDelegate();
 	// console.log('config', config)
 	// delegateForged = + (await adamant.get('delegate_forged', Store.delegate.publicKey)).forged;
 	// await Store.updateDelegate(true);
@@ -35,7 +35,7 @@ async function initDelegate() {
 	}
 	config.logName = `_${config.poolName}_ (${config.address})`
 	config.infoString = `distributes _${config.reward_percentage}_% rewards with payouts every _${config.payoutperiod}_. Minimum payout is _${config.minpayout}_ ADM.`
-	notifier(`Pool ${config.logName} started on v${config.version} software. It ${config.infoString}`, 'info');
+	notifier(`Pool ${config.logName} started on v${config.version} software and listens port ${config.port}. It ${config.infoString}`, 'info');
 }
 
 function exit(msg) {
