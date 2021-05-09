@@ -27,20 +27,25 @@ module.exports = {
 
     async updateDelegate (isUpdateVoters){
         try {
-            const resp = await api.get('uri', 'delegates/get?publicKey=' + this.delegate.publicKey);// TODO: fixed endpoint node
-            if (resp && resp.success){
-                this.delegate = Object.assign(this.delegate, resp.delegate);
-                this.poolname = this.delegate.username;
-                this.delegate.votesWeight = +this.delegate.votesWeight;
-            }
-            if (isUpdateVoters){
-                await this.updateVotersList();
-                await this.updateBalance();
-            }
-        } catch (e){}
+
+            let resp = await api.get('delegates/get', { publicKey: this.delegate.publicKey });
+            console.log('resp1', resp)
+            process.exit(1);
+            // if (resp && resp.success){
+            //     this.delegate = Object.assign(this.delegate, resp.delegate);
+            //     this.poolname = this.delegate.username;
+            //     this.delegate.votesWeight = +this.delegate.votesWeight;
+            // }
+            // if (isUpdateVoters){
+            //     await this.updateVotersList();
+            //     await this.updateBalance();
+            // }
+        } catch (e) {
+            console.log('e', e)
+        }
     },
 };
 
-setInterval(()=>{
+setInterval(() => {
     module.exports.updateDelegate(true);
 }, 60 * 1000);

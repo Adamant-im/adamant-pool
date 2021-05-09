@@ -3,6 +3,7 @@ const fs = require('fs');
 const log = require('./log');
 const keys = require('adamant-api/helpers/keys');
 const isDev = process.argv.includes('dev');
+const { version } = require('../package.json');
 let config = {};
 
 // Validate config fields
@@ -15,18 +16,18 @@ const fields = {
 		type: Array,
 		isRequired: true
 	},
-    reward_percentage: {
+	reward_percentage: {
 		type: Number,
 		default: 80
-    },
-    minpayout: {
+	},
+	minpayout: {
 		type: Number,
 		default: 10
-    },
-    port: {
+	},
+	port: {
 		type: Number,
 		default: 36667
-    },
+	},
 	payoutperiod: {
 		type: String,
 		default: '10d'
@@ -55,29 +56,30 @@ const fields = {
 
 try {
 
-    if (isDev) {
-        config = JSON.parse(jsonminify(fs.readFileSync('./config.test', 'utf-8')));
-    } else {
-        config = JSON.parse(jsonminify(fs.readFileSync('./config.json', 'utf-8')));
-    }
-    
-    if (!config.node) {
-        exit(`Pool's config is wrong. ADM nodes are not set. Cannot start Pool.`);
-    }
-    if (!config.passPhrase) {
-        exit(`Pool's config is wrong. No passPhrase. Cannot start Pool.`);
-    }
+	if (isDev) {
+		config = JSON.parse(jsonminify(fs.readFileSync('./config.test', 'utf-8')));
+	} else {
+		config = JSON.parse(jsonminify(fs.readFileSync('./config.json', 'utf-8')));
+	}
 
-    let keysPair;
+	config.version = version;
+
+	if (!config.node) {
+		exit(`Pool's config is wrong. ADM nodes are not set. Cannot start Pool.`);
+	}
+	if (!config.passPhrase) {
+		exit(`Pool's config is wrong. No passPhrase. Cannot start Pool.`);
+	}
+
+	let keysPair;
 	try {
 		keysPair = keys.createKeypairFromPassPhrase(config.passPhrase);
 	} catch (e) {
-		exit(`Pool's config is wrong. Invalid passPhrase. Error: ${e}`);
+		exit(`Pool's config is wrong. Invalid passPhrase. Error: ${e}. Cannot start Pool.`);
 	}
-    const address = keys.createAddressFromPublicKey(keysPair.publicKey);
+	const address = keys.createAddressFromPublicKey(keysPair.publicKey);
 	config.publicKey = keysPair.publicKey.toString('hex');
 	config.address = address;
-
 
 	Object.keys(fields).forEach(f => {
 		if (!config[f] && fields[f].isRequired) {
@@ -88,9 +90,9 @@ try {
 		if (config[f] && fields[f].type !== config[f].__proto__.constructor) {
 			exit(`Pool's ${address} config is wrong. Field type _${f}_ is not valid, expected type is _${fields[f].type.name}_. Cannot start Pool.`);
 		}
-	});    
+	});
 
-    log.log(`The pool ${address} successfully read the config-file${isDev ? ' (dev)' : ''}.`);
+	log.log(`Pool ${address} successfully read a config-file${isDev ? ' (dev)' : ''}.`);
 
 } catch (e) {
 	log.error('Error reading config: ' + e);
@@ -100,6 +102,6 @@ config.isDev = isDev;
 module.exports = config;
 
 function exit(msg) {
-    log.error(msg);
-    process.exit(-1);
+	log.error(msg);
+	process.exit(-1);
 }

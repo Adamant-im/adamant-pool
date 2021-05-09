@@ -12,7 +12,7 @@ module.exports = (message, type, silent_mode = false) => {
 
 	try {
 
-		log[type](message.replace(/\*/g, '').replace(/_/g, ''));
+		log[type](message.replace(/\* /g, ' ').replace(/ \*/g, ' ').replace(/_ /g, ' ').replace(/ _/g, ' '));
 
 		if (!silent_mode) {
 			
