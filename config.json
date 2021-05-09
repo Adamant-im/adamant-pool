@@ -25,14 +25,14 @@
     "maintenancewallet": "",
 
     /** How often pool will do payouts. All at 00:00.
-        1 h - > every hour
-        1 d - > every day
-        5 d - > days 1, 5, 10, 15, 20, 25 of the month
-        10 d - > days 1, 10, 20 of the month
-        15 d - > days 1, 15 of the month
-        30 d - > 30th of each month
+        1d -> every day
+        5d -> days 1, 5, 10, 15, 20, 25 of the month
+        10d -> days 1, 10, 20 of the month
+        15d -> days 1, 15 of the month
+        30d -> 30th of each month
+        Monday, Tuesday, Wednesday, Thursday, Friday, Saturday or Sunday -> every week
       **/
-    "payoutperiod": "5d",
+    "payoutperiod": "Sunday",
 
     /** Periods to store history data. Greater value needs more RAM.
         If store_history is 10 and payoutperiod is 5d, data will be stored for last 50 days.

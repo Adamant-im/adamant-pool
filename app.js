@@ -11,8 +11,8 @@ let lastForg = unixTime(),
 	delegateForged;
 // Init
 setTimeout(async () => {
-	await initDelegate();
 	require('./helpers/cron');
+	await initDelegate();
 	require('./server');
 	// console.log('config', config)
 	// delegateForged = + (await adamant.get('delegate_forged', Store.delegate.publicKey)).forged;
@@ -34,7 +34,7 @@ async function initDelegate() {
 		exit(`Failed to get delegate for ${config.address}, ${pool.error}. Message: ${pool.message}. Cannot start Pool.`);
 	}
 	config.logName = `_${config.poolName}_ (${config.address})`
-	notifier(`Pool ${config.logName} started on v${config.version} software.`, 'info');
+	notifier(`Pool ${config.logName} started on v${config.version} software. Payouts every ${config.payoutperiod}`, 'info');
 }
 
 function exit(msg) {

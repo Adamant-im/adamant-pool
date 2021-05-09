@@ -84,13 +84,15 @@ try {
 	Object.keys(fields).forEach(f => {
 		if (!config[f] && fields[f].isRequired) {
 			exit(`Pool's ${address} config is wrong. Field _${f}_ is not valid. Cannot start Pool.`);
-		} else if (!config[f] && config[f] != 0 && fields[f].default) {
+		} else if (!config[f] && config[f] !== 0 && fields[f].default) {
 			config[f] = fields[f].default;
 		}
 		if (config[f] && fields[f].type !== config[f].__proto__.constructor) {
 			exit(`Pool's ${address} config is wrong. Field type _${f}_ is not valid, expected type is _${fields[f].type.name}_. Cannot start Pool.`);
 		}
 	});
+
+	config.payoutperiod = config.payoutperiod[0].toUpperCase() + config.payoutperiod.slice(1).toLowerCase();
 
 	log.log(`Pool ${address} successfully read a config-file${isDev ? ' (dev)' : ''}.`);
 
