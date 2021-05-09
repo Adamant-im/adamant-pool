@@ -34,7 +34,8 @@ async function initDelegate() {
 		exit(`Failed to get delegate for ${config.address}, ${pool.error}. Message: ${pool.message}. Cannot start Pool.`);
 	}
 	config.logName = `_${config.poolName}_ (${config.address})`
-	notifier(`Pool ${config.logName} started on v${config.version} software. Payouts every ${config.payoutperiod}`, 'info');
+	config.infoString = `distributes _${config.reward_percentage}_% rewards with payouts every _${config.payoutperiod}_. Minimum payout is _${config.minpayout}_ ADM.`
+	notifier(`Pool ${config.logName} started on v${config.version} software. It ${config.infoString}`, 'info');
 }
 
 function exit(msg) {

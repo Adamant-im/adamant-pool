@@ -7,12 +7,11 @@ const {
 	slack
 } = config;
 
-
 module.exports = (message, type, silent_mode = false) => {
 
 	try {
 
-		log[type](message.replace(/\* /g, ' ').replace(/ \*/g, ' ').replace(/_ /g, ' ').replace(/ _/g, ' '));
+		log[type](removeMarkdown(message));
 
 		if (!silent_mode) {
 			
@@ -34,23 +33,12 @@ module.exports = (message, type, silent_mode = false) => {
 				color = '#FFFFFF';
 				break;
 			}
-			// const opts = {
-			// 	json: true,
-			// 	timeout: 10000,
-			// 	body: {
-			// 		'attachments': [{
-			// 			'fallback': message,
-			// 			'color': color,
-			// 			'text': message,
-			// 			'mrkdwn_in': ['text']
-			// 		}]
-			// 	}
-			// };
+
 			const params = {
 				'attachments': [{
 					'fallback': message,
 					'color': color,
-					'text': message,
+					'text': makeBoldForSlack(message),
 					'mrkdwn_in': ['text']
 				}]
 			};
@@ -62,7 +50,7 @@ module.exports = (message, type, silent_mode = false) => {
 					});
 			}
 			if (adamant_notify && adamant_notify.length > 5 && adamant_notify.startsWith('U') && config.passPhrase && config.passPhrase.length > 30) {
-				api.send(config.passPhrase, adamant_notify, `${type}| ${message.replace(/\*/g, '**')}`, 'message');
+				api.send(config.passPhrase, adamant_notify, `${type}| ${makeBoldForMarkdown(message)}`, 'message');
 			}
 
 		}
@@ -72,3 +60,23 @@ module.exports = (message, type, silent_mode = false) => {
 	}
 
 };
+
+function removeMarkdown (text) {
+	return doubleAsterisksToSingle(text).replace(/([_*]\b|\b[_*])/g, '');
+}
+
+function doubleAsterisksToSingle (text) {
+	return text.replace(/(\*\*\b|\b\*\*)/g, '*');
+}
+
+function singleAsteriskToDouble (text) {
+	return text.replace(/(\*\b|\b\*)/g, '**');
+}
+
+function makeBoldForMarkdown (text) {
+	return singleAsteriskToDouble(doubleAsterisksToSingle(text))
+}
+
+function makeBoldForSlack (text) {
+	return doubleAsterisksToSingle(text)
+}
