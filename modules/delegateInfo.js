@@ -2,6 +2,10 @@ const api = require('../helpers/api');
 const rewardUsers = require('../helpers/rewardUsers');
 
 module.exports = {
+
+  forgedByDelegate : {
+
+  },
   async updateVotersList() {
     const resp = await api.get('uri', 'delegates/voters?publicKey=' + this.delegate.publicKey);
     if (resp && resp.success) {

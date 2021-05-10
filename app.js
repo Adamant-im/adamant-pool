@@ -1,6 +1,6 @@
-const { TIME_RATE, SAT } = require('./helpers/const');
+const { UPDATE_FORGE_INTERVAL, SAT } = require('./helpers/const');
 const config = require('./helpers/configReader');
-const adamant = require('./helpers/api');
+const api = require('./helpers/api');
 const rewardUsers = require('./helpers/rewardUsers');
 const log = require('./helpers/log');
 const notifier = require('./helpers/notify');
@@ -22,7 +22,8 @@ setTimeout(async () => {
 }, 000);
 
 async function initDelegate() {
-	const pool = await delegateInfo.getDelegate(config.publicKey)
+	// const pool = await delegateInfo.getDelegate(config.publicKey)
+	const pool = await api.get('delegates/get', { publicKey: config.publicKey });
 	if (pool.success) {
 		if (pool.result.success) {
 			config.poolName = pool.result.delegate.username;
@@ -46,7 +47,7 @@ function exit(msg) {
 function iterat() {
 	setTimeout(async () => {
 		try {
-			const newForged = + (await adamant.get('delegate_forged', Store.delegate.publicKey)).forged;
+			const newForged = + (await api.get('delegate_forged', Store.delegate.publicKey)).forged;
 			if (isNaN(newForged)) {
 				const msg = `Pool ${Store.poolname} _newForged_ value _isNaN_! Please check Internet connection.`;
 				notifier(msg, 'error');
@@ -69,7 +70,7 @@ function iterat() {
 			log.error('Get new Forged!');
 		}
 		iterat();
-	}, TIME_RATE * 1000);
+	}, UPDATE_FORGE_INTERVAL);
 }
 
 // refresh dbVoters if no forged

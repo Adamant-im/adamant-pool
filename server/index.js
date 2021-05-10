@@ -36,4 +36,4 @@ app.get('/api/get-config', async (req, res) => res.send({
 	payoutperiodStart: periodData.startPeriod
 }));
 
-app.listen(config.port, () => log.info(`Pool server started.`));
+app.listen(config.port, () => log.log(`Pool ${config.address} successfully started a web server.`));

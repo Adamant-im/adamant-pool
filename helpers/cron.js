@@ -5,8 +5,6 @@ const log = require('./log');
 
 let pattern;
 
-console.log(config.payoutperiod);
-
 // sec(optional) min(0-59) hours(0-23) d_mon(1-31) mon(1-12/names) d_week(0-7/names)
 switch (config.payoutperiod) {
 
