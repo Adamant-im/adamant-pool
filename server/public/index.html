@@ -61,7 +61,7 @@
                     </div>
                 </h1>
                 <a :href="'https://explorer.adamant.im/delegate/' + delegate.delegate.address"
-                    target="_blank">{{delegate.poolname}}</a>
+                    target="_blank">{{delegate.delegate.username}}</a>
             </div>
         </div>
         <div class="content main ">
@@ -75,7 +75,7 @@
                         Total forged: {{(delegate.delegate.totalForged / 100000000).toFixed(1) || 0 | numberFormat}}
                         ADM<br>
                         Votes: {{(delegate.delegate.votesWeight / 100000000).toFixed(0) || 0 | numberFormat}} ADM<br>
-                        Votes count: {{delegate.delegate.voters ? delegate.delegate.voters.length : 0 | numberFormat}}
+                        Voters: {{delegate.delegate.voters ? delegate.delegate.voters.length : 0 | numberFormat}}
                     </span></div>
                 <div class="card" style="background-color: rgb(221, 221, 221);"><span>
                         <div v-if="delegate.delegate.rank <= 101">Productivity: {{delegate.delegate.productivity}}%

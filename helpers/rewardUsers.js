@@ -9,9 +9,9 @@ const Store = require('../modules/Store');
 
 module.exports = async (forged, delegateForged) => {
 	try {
-		
+
 		const timeStamp = new Date().getTime();
-		const { poolname } = Store;
+		const { poolName: poolname } = Store;
 		const { voters, balance, votesWeight, address } = Store.delegate;
 		let blockId;
 

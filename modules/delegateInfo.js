@@ -50,6 +50,6 @@ module.exports = {
   },
 };
 
-setInterval(() => {
-  module.exports.updateDelegate(true);
-}, 60 * 1000);
+// setInterval(() => {
+//   module.exports.updateDelegate(true);
+// }, 60 * 1000);

@@ -16,7 +16,7 @@ module.exports = async () => {
     log.info('Pay out period!');
     try {
         let balance = Store.delegate.balance / SAT;
-        const {poolname} = Store;
+        const {poolName: poolname} = Store;
 
         if (!config.passPhrase) {
             let msg = 'Pool ' + poolname + ' is in read-only mode. To enable payouts, set _passPhrase_ in config.';

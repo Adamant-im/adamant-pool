@@ -14,6 +14,7 @@ setTimeout(async () => {
 	require('./helpers/cron');
 	require('./server');
 	await initDelegate();
+	require('./modules/blocksChecker');
 	// console.log('config', config)
 	// delegateForged = + (await adamant.get('delegate_forged', Store.delegate.publicKey)).forged;
 	// await Store.updateDelegate(true);
@@ -22,17 +23,12 @@ setTimeout(async () => {
 }, 000);
 
 async function initDelegate() {
-	// const pool = await delegateInfo.getDelegate(config.publicKey)
-	const pool = await api.get('delegates/get', { publicKey: config.publicKey });
-	if (pool.success) {
-		if (pool.result.success) {
-			config.poolName = pool.result.delegate.username;
-			// config.poolInfo = Object.assign(config.delegate, pool.result.delegate);
-		} else {
-			exit(`Unable to get delegate for ${config.address}. Node's reply: ${pool.result.error}. Cannot start Pool.`);
-		}
+	const pool = await Store.updateDelegate();
+	if (pool) {
+		config.poolName = pool.username;
 	} else {
-		exit(`Failed to get delegate for ${config.address}, ${pool.error}. Message: ${pool.message}. Cannot start Pool.`);
+		log.error(`Failed to get delegate for ${config.address}. Cannot start Pool.`);
+		process.exit(-1);
 	}
 	config.logName = `_${config.poolName}_ (${config.address})`
 	config.infoString = `distributes _${config.reward_percentage}_% rewards with payouts every _${config.payoutperiod}_. Minimum payout is _${config.minpayout}_ ADM.`
@@ -49,7 +45,7 @@ function iterat() {
 		try {
 			const newForged = + (await api.get('delegate_forged', Store.delegate.publicKey)).forged;
 			if (isNaN(newForged)) {
-				const msg = `Pool ${Store.poolname} _newForged_ value _isNaN_! Please check Internet connection.`;
+				const msg = `Pool ${Store.poolName} _newForged_ value _isNaN_! Please check Internet connection.`;
 				notifier(msg, 'error');
 				log.error(msg);
 				iterat();
