@@ -17,7 +17,6 @@ setTimeout(async () => {
 	require('./modules/blocksChecker');
 	// console.log('config', config)
 	// delegateForged = + (await adamant.get('delegate_forged', Store.delegate.publicKey)).forged;
-	// await Store.updateDelegate(true);
 	// notifier(`Pool ${Store.poolname} started for address _${Store.delegate.address}_ (ver. ${Store.version}).`, 'info');
 	// iterat();
 }, 000);
@@ -33,41 +32,38 @@ async function initDelegate() {
 	config.logName = `_${config.poolName}_ (${config.address})`
 	config.infoString = `distributes _${config.reward_percentage}_% rewards with payouts every _${config.payoutperiod}_. Minimum payout is _${config.minpayout}_ ADM.`
 	notifier(`Pool ${config.logName} started on v${config.version} software and listens port ${config.port}. It ${config.infoString}`, 'info');
+	Store.updateBalance();
+	Store.updateVoters();
 }
 
-function exit(msg) {
-	log.error(msg);
-	process.exit(-1);
-}
+// function iterat() {
+// 	setTimeout(async () => {
+// 		try {
+// 			const newForged = + (await api.get('delegate_forged', Store.delegate.publicKey)).forged;
+// 			if (isNaN(newForged)) {
+// 				const msg = `Pool ${Store.poolName} _newForged_ value _isNaN_! Please check Internet connection.`;
+// 				notifier(msg, 'error');
+// 				log.error(msg);
+// 				iterat();
+// 				return;
+// 			}
+// 			Store.delegate.totalForged = delegateForged;
+// 			if (delegateForged < newForged) {
+// 				lastForg = unixTime();
+// 				const forged = newForged - delegateForged;
+// 				log.info('New Forged: ' + forged / SAT + ' ADM.');
+// 				const resRewards = rewardUsers(forged, delegateForged);
+// 				if (resRewards) {
+// 					delegateForged = newForged;
+// 				}
+// 			}
 
-function iterat() {
-	setTimeout(async () => {
-		try {
-			const newForged = + (await api.get('delegate_forged', Store.delegate.publicKey)).forged;
-			if (isNaN(newForged)) {
-				const msg = `Pool ${Store.poolName} _newForged_ value _isNaN_! Please check Internet connection.`;
-				notifier(msg, 'error');
-				log.error(msg);
-				iterat();
-				return;
-			}
-			Store.delegate.totalForged = delegateForged;
-			if (delegateForged < newForged) {
-				lastForg = unixTime();
-				const forged = newForged - delegateForged;
-				log.info('New Forged: ' + forged / SAT + ' ADM.');
-				const resRewards = rewardUsers(forged, delegateForged);
-				if (resRewards) {
-					delegateForged = newForged;
-				}
-			}
-
-		} catch (e) {
-			log.error('Get new Forged!');
-		}
-		iterat();
-	}, UPDATE_FORGE_INTERVAL);
-}
+// 		} catch (e) {
+// 			log.error('Get new Forged!');
+// 		}
+// 		iterat();
+// 	}, UPDATE_FORGE_INTERVAL);
+// }
 
 // refresh dbVoters if no forged
 setTimeout(() => {

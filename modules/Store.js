@@ -1,5 +1,8 @@
 const api = require('../helpers/api');
+const utils = require('../helpers/utils');
 const config = require('../helpers/configReader');
+const log = require('../helpers/log');
+const { UPDATE_DELEGATE_INTERVAL } = require('../helpers/const');
 
 module.exports = {
 
@@ -17,7 +20,8 @@ module.exports = {
 			const voters = await api.get('delegates/voters', { publicKey: config.publicKey });
 			if (voters.success) {
 				if (voters.result.success) {
-					this.delegate.voters = voters.result.accounts;					
+					this.delegate.voters = voters.result.accounts;
+					log.log(`Updated voters: ${this.delegate.voters.length} accounts`);
 				} else {
 					log.warn(`Unable to get voters for ${config.address}. Node's reply: ${voters.result.error}.`);
 				}
@@ -38,6 +42,7 @@ module.exports = {
 				if (account.result.success) {
 					this.delegate = Object.assign(this.delegate, account.result.account);
 					this.delegate.balance = +this.delegate.balance;
+					log.log(`Updated balance: ${utils.satsToADM(this.delegate.balance)} ADM`);
 				} else {
 					log.warn(`Unable to get account data for ${config.address}. Node's reply: ${account.result.error}.`);
 				}
@@ -58,6 +63,7 @@ module.exports = {
 				if (delegate.result.success) {
 					this.delegate = Object.assign(this.delegate, delegate.result.delegate);
 					this.delegate.votesWeight = +this.delegate.votesWeight;
+					log.log(`Updated delegate ${this.delegate.username}: rank ${this.delegate.rank}, productivity ${this.delegate.productivity}%, votesWeight ${utils.satsToADM(this.delegate.votesWeight)} ADM`);
 					return this.delegate
 				} else {
 					log.warn(`Unable to get delegate for ${config.address}. Node's reply: ${delegate.result.error}.`);
@@ -73,14 +79,10 @@ module.exports = {
 
 };
 
-module.exports.updateDelegate();
-module.exports.updateVoters();
-module.exports.updateBalance();
-
 setInterval(() => {
 
 	module.exports.updateDelegate();
 	module.exports.updateVoters();
 	module.exports.updateBalance();
 
-}, 60 * 1000);
+}, UPDATE_DELEGATE_INTERVAL);
