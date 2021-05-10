@@ -14,6 +14,27 @@ module.exports = {
 		votesWeight: 0
 	},
 
+	async updateVotes(voter) {
+		try {
+
+			const votes = await api.get('accounts/delegates', { address: voter.address });
+			if (votes.success) {
+				if (votes.result.success) {
+					let votesCount = votes.result.delegates.length;
+					// log.log(`Updated votes for ${voter.address}: ${votesCount} votes`);
+					return votesCount
+				} else {
+					log.warn(`Unable to get votes for ${voter.address}. Node's reply: ${votes.result.error}.`);
+				}
+			} else {
+				log.warn(`Failed to get votes for ${voter.address}, ${votes.error}. Message: ${votes.message}.`);
+			}
+
+		} catch (e) {
+			log.error('Error while updating votes count:', e);
+		}
+	},
+
 	async updateVoters() {
 		try {
 
@@ -21,6 +42,9 @@ module.exports = {
 			if (voters.success) {
 				if (voters.result.success) {
 					this.delegate.voters = voters.result.accounts;
+					this.delegate.voters.forEach(async (voter) => {
+						voter.votesCount = await this.updateVotes(voter)
+					})
 					log.log(`Updated voters: ${this.delegate.voters.length} accounts`);
 				} else {
 					log.warn(`Unable to get voters for ${config.address}. Node's reply: ${voters.result.error}.`);
