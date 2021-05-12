@@ -6,6 +6,8 @@ const { UPDATE_DELEGATE_INTERVAL } = require('../helpers/const');
 
 module.exports = {
 
+	isUpdatingVoters: false,
+
 	delegate: {
 		address: config.address,
 		publicKey: config.publicKey,
@@ -36,15 +38,16 @@ module.exports = {
 	},
 
 	async updateVoters() {
+		this.isUpdatingVoters = true;
 		try {
 
 			const voters = await api.get('delegates/voters', { publicKey: config.publicKey });
 			if (voters.success) {
 				if (voters.result.success) {
 					this.delegate.voters = voters.result.accounts;
-					this.delegate.voters.forEach(async (voter) => {
+					for (const voter of this.delegate.voters) {
 						voter.votesCount = await this.updateVotes(voter)
-					})
+					}
 					log.log(`Updated voters: ${this.delegate.voters.length} accounts`);
 				} else {
 					log.warn(`Unable to get voters for ${config.address}. Node's reply: ${voters.result.error}.`);
@@ -56,6 +59,7 @@ module.exports = {
 		} catch (e) {
 			log.error('Error while updating voters:', e);
 		}
+		this.isUpdatingVoters = false;
 	},
 
 	async updateBalance() {

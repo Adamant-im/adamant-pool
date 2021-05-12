@@ -26,7 +26,7 @@ async function getBlocks() {
 	}
 }
 
-getBlocks();
 module.exports = () => {
+  getBlocks();
 	setInterval(getBlocks, UPDATE_BLOCKS_INTERVAL);
 };

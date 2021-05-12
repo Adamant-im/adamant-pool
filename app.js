@@ -1,20 +1,20 @@
 const { UPDATE_FORGE_INTERVAL, SAT } = require('./helpers/const');
 const config = require('./helpers/configReader');
 const api = require('./helpers/api');
-const rewardUsers = require('./helpers/rewardUsers');
 const log = require('./helpers/log');
 const notifier = require('./helpers/notify');
 const Store = require('./modules/Store');
 const delegateInfo = require('./modules/delegateInfo');
+const blocksChecker = require('./modules/blocksChecker');
 
-let lastForg = unixTime(),
-	delegateForged;
+// let lastForg = unixTime(),
+// 	delegateForged;
 // Init
 setTimeout(async () => {
 	require('./helpers/cron');
 	require('./server');
 	await initDelegate();
-	require('./modules/blocksChecker');
+	blocksChecker();
 	// console.log('config', config)
 	// delegateForged = + (await adamant.get('delegate_forged', Store.delegate.publicKey)).forged;
 	// notifier(`Pool ${Store.poolname} started for address _${Store.delegate.address}_ (ver. ${Store.version}).`, 'info');
@@ -66,16 +66,16 @@ async function initDelegate() {
 // }
 
 // refresh dbVoters if no forged
-setTimeout(() => {
-	rewardUsers(0);
-}, 10000);
+// setTimeout(() => {
+// 	rewardUsers(0);
+// }, 10000);
 
-setInterval(() => {
-	if (unixTime() - lastForg > 600) {
-		rewardUsers(0);
-	}
-}, 600 * 1000);
+// setInterval(() => {
+// 	if (unixTime() - lastForg > 600) {
+// 		rewardUsers(0);
+// 	}
+// }, 600 * 1000);
 
-function unixTime() {
-	return new Date().getTime() / 1000;
-}
+// function unixTime() {
+// 	return new Date().getTime() / 1000;
+// }
