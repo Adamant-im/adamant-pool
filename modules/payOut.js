@@ -27,17 +27,9 @@ module.exports = {
 
       console.log('payout')
 
-      // if (Store.isUpdatingVoters) {
-      //   log.info(`Delegate is updating voters. To do payouts, I'll wait for ${Math.round(RETRY_WHEN_UPDATING_VOTERS_TIMEOUT / 1000)} seconds.`);
-      //   setTimeout(() => {
-      //     module.exports.payOut(retryNo);
-      //     }, RETRY_DISTRIBUTE_REWERDS_TIMEOUT);
-      //   return;
-      // }
-
       let isPayoutComplete = false;
 
-      const balance = Store.delegate.balance / SAT;
+      let balance = Store.delegate.balance / SAT;
       const periodTotalForged = Store.periodInfo.totalForged;
       const periodUserRewards = Store.periodInfo.userRewards;
       const periodForgedBlocks = Store.periodInfo.forgedBlocks;
@@ -91,6 +83,8 @@ module.exports = {
           const address = voter.address;
           const received = voter.received;
 
+          console.log(`Processing payment of ${amount.toFixed(8)} ADM reward to ${address}…`);
+
           const payment = await api.send(config.passPhrase, address, amount);
           if (payment.success) {
             if (payment.result.success) {
@@ -140,20 +134,70 @@ module.exports = {
 
       } // for (const voter of votersToReward)
 
-      if (isDistributionComplete) {
-        if (distributedVotersCount === eligibleVotersCount) {
-          log.info(`Block ${block.id} (height ${block.height}) rewards successfully updated: ${distributedVotersCount} of ${eligibleVotersCount} eligible voters, distributedRewards: ${distributedRewardsADM.toFixed(4)} ADM (${distributedPercent.toFixed(2)}%).`);
-        } else {
-          notifier(`Rewards on block ${block.id} (height ${block.height}) distributed partially: ${distributedVotersCount} of ${eligibleVotersCount} eligible voters, distributedRewards: ${distributedRewardsADM.toFixed(4)} of ${utils.satsToADM(blockTotalForged * config.reward_percentage / 100, 4)} ADM.`, 'warn');
+      // Wait 1 minute to update pool's balance and notify
+      setTimeout(async () => {
+        try {
+
+          await Store.updateBalance();
+          balance = Store.delegate.balance / SAT;
+    
+          let payoutInfo = '';
+          let notifyType = '';
+
+          if (payedCount === votersToReward.length) {
+    
+            if (updatedVoters === payedCount && savedTransactions === payedCount) {
+              payoutInfo = `I've successfully payed and saved all of ${payedCount} payouts, ${payedUserRewards.toFixed(4)} ADM plus ${paymentFees.toFixed(1)} ADM fees in total.`;
+              notifyType = 'info';
+            } else {
+              payoutInfo = `I've successfully payed of ${payedCount} payouts, ${payedUserRewards.toFixed(4)} ADM plus ${paymentFees.toFixed(1)} ADM fees in total.`;
+              payoutInfo += `\nThere is an issue.`
+              if (updatedVoters < payedCount) {
+                payoutInfo += ` I've updated only ${updatedVoters} voters.`
+              } 
+              if (savedTransactions < payedCount) {
+                payoutInfo += ` I've saved only ${savedTransactions} transactions.`
+              }
+              payoutInfo += ` You better do these updates in database manually. Check log file for details.`
+              notifyType = 'warn';
+            }
+    
+            payoutInfo += `\nThe pool's balance — ${balance.toFixed(4)} ADM.`;
+            notifier(`Pool ${config.logName}: ${payoutInfo}`, notifyType);
+    
+          } else {
+    
+            if (updatedVoters === payedCount && savedTransactions === payedCount) {
+              payoutInfo = `I've payed and saved only ${payedCount} of ${votersToReward.length} payouts, ${(payedUserRewards + paymentFees).toFixed(4)} of ${pendingUserRewards.toFixed(4)} ADM.`;
+              notifyType = 'log';
+            } else {
+              payoutInfo = `I've payed only ${payedCount} of ${votersToReward.length} payouts, ${(payedUserRewards + paymentFees).toFixed(4)} of ${pendingUserRewards.toFixed(4)} ADM.`;
+              payoutInfo += `\nThere is an issue with database also.`
+              if (updatedVoters < payedCount) {
+                payoutInfo += ` I've updated only ${updatedVoters} voters.`
+              } 
+              if (savedTransactions < payedCount) {
+                payoutInfo += ` I've saved only ${savedTransactions} transactions.`
+              }
+              payoutInfo += ` You better do these updates in database manually. Check log file for details.`
+              notifyType = 'warn';
+            }
+    
+            payoutInfo += `\nThe pool's balance — ${balance.toFixed(4)} ADM.`;
+            payoutInfo += `\nI'll re-try to pay the rest of voters in ${((++retryNo * RETRY_PAYOUTS_TIMEOUT) / 1000 / 60).toFixed(1)} minutes, retryNo: ${++retryNo}.`;
+            notifier(`Pool ${config.logName}: ${payoutInfo}`, notifyType);
+            doRetry(++retryNo, ++retryNo * RETRY_PAYOUTS_TIMEOUT);
+      
+          }
+
+        } catch (e) {
+          log.error(`Error in composing notification message for payOut(). Error: ${e}.`);
         }
-      } else {
-        notifier(`Failed to distribute rewards on block ${block.id} (height ${block.height}). Check logs.`, 'error');
-      }
+      }, 60 * 1000);
 
     } catch (e) {
       log.error(`Error in payOut(), retryNo: ${retryNo}. Error: ${e}.`);
       doRetry(++retryNo, ++retryNo * RETRY_PAYOUTS_TIMEOUT);
-      return
     }
     
   }
