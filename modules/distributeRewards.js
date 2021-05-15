@@ -1,21 +1,22 @@
-const { SAT, DEVIATION, RETRY_DISTRIBUTE_REWERDS_TIMEOUT } = require('../helpers/const');
-const { dbVoters, dbBlocks, dbRewards } = require('../helpers/DB');
+const { SAT, DEVIATION, RETRY_WHEN_UPDATING_VOTERS_TIMEOUT } = require('../helpers/const');
+const { dbVoters, dbBlocks } = require('../helpers/DB');
 const log = require('../helpers/log');
 const api = require('../helpers/api');
 const config = require('../helpers/configReader');
-const notify = require('../helpers/notify');
+const notifier = require('../helpers/notify');
 const Store = require('./Store');
 const utils = require('../helpers/utils');
+const { payOut } = require('./payOut');
 
 module.exports = {
 
   async distributeRewards(block) {
 
     if (Store.isUpdatingVoters) {
-      log.info(`Delegate is updating voters. To distribute rewards on block ${block.id} (height ${block.height}), I'll wait for ${Math.round(RETRY_DISTRIBUTE_REWERDS_TIMEOUT / 1000)} seconds.`);
+      log.info(`Delegate is updating voters. To distribute rewards on block ${block.id} (height ${block.height}), I'll wait for ${Math.round(RETRY_WHEN_UPDATING_VOTERS_TIMEOUT / 1000)} seconds.`);
       setTimeout(() => {
         module.exports.distributeRewards(block);
-        }, RETRY_DISTRIBUTE_REWERDS_TIMEOUT);
+        }, RETRY_WHEN_UPDATING_VOTERS_TIMEOUT);
       return;
     }
 
@@ -27,7 +28,10 @@ module.exports = {
 
     const voters = Store.delegate.voters;
     const votesWeight = Store.delegate.votesWeight;
-    const totalForged = +block.totalForged;
+    const blockTotalForged = +block.totalForged;
+
+    Store.periodInfo.totalForged += blockTotalForged / SAT;
+    Store.periodInfo.forgedBlocks += 1;
 
     for (const voter of voters) {
       try {
@@ -50,7 +54,7 @@ module.exports = {
           if (addVoter) {
             log.info(`Successfully added new voter ${voter.address} on block ${block.id} (height ${block.height}).`);
           } else {
-            notify(log.warn(`Failed to add voter ${voter.address} on block ${block.id} (height ${block.height}).`, 'error'));
+            notifier(`Pool ${config.logName}: Failed to add voter ${voter.address} on block ${block.id} (height ${block.height}).`, 'error');
             continue;
           }
     
@@ -60,13 +64,14 @@ module.exports = {
 
         const userWeight = voterBalance / voter.votesCount;
         const userPercent = userWeight / votesWeight * config.reward_percentage * Store.delegate.productivity / 100;
-        const userReward = totalForged * userPercent / 100 / SAT;
+        const userReward = blockTotalForged * userPercent / 100 / SAT;
         // usertotalreward += userReward;
         pending += userReward;
 
-        const updateVoter = await dbVoters.syncUpdate({
-        address: voter.address
-          }, {
+        Store.periodInfo.userRewards += userReward;
+
+        const updateVoter = await dbVoters.syncUpdate({ address: voter.address },
+          {
             $set: {
               pending,
               userWeight: userWeight / SAT,
@@ -107,21 +112,23 @@ module.exports = {
         }
 
       } catch (e) {
-        log.error(`Error while distributing rewards for ${voter.address} on block ${block.id} (height ${block.height}). Error: ${e}.`);
+        log.error(`Error while distributing rewards for ${voter.address} on block ${block.id} (height ${block.height}): ${e}.`);
         continue;
       }
 
-    }
+    } // for (const voter of voters)
 
     if (isDistributionComplete) {
       if (distributedVotersCount === eligibleVotersCount) {
-        log.info(`Block ${block.id} (height ${block.height}) rewards successfully updated: ${distributedVotersCount} of ${eligibleVotersCount} eligible voters, distributedRewards: ${distributedRewardsADM.toFixed(4)} ADM (${distributedPercent.toFixed(2)}%).`);
+        log.info(`Block ${block.id} (height ${block.height}) rewards successfully updated — ${distributedVotersCount} of ${eligibleVotersCount} eligible voters, distributedRewards: ${distributedRewardsADM.toFixed(4)} ADM (${distributedPercent.toFixed(2)}%).`);
       } else {
-        notify(`Rewards on block ${block.id} (height ${block.height}) distributed partially: ${distributedVotersCount} of ${eligibleVotersCount} eligible voters, distributedRewards: ${distributedRewardsADM.toFixed(4)} of ${utils.satsToADM(totalForged * config.reward_percentage / 100, 4)} ADM.`, 'warn');
+        notifier(`Pool ${config.logName}: Rewards on block ${block.id} (height ${block.height}) distributed partially — ${distributedVotersCount} of ${eligibleVotersCount} eligible voters, distributedRewards: ${distributedRewardsADM.toFixed(4)} of ${utils.satsToADM(blockTotalForged * config.reward_percentage / 100, 4)} ADM.`, 'warn');
       }
     } else {
-      notify(`Failed to distribute rewards on block ${block.id} (height ${block.height}). Check logs.`, 'error');
+      notifier(`Pool ${config.logName}: Failed to distribute rewards on block ${block.id} (height ${block.height}). Check logs.`, 'error');
     }
+
+    payOut();
 
   }
 

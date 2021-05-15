@@ -40,8 +40,9 @@
       **/
     "store_history": 10,
 
-    /** Minimum amount in ADM for payouts.
+    /** Minimum amount in ADM for payouts. Must be not less, than 0.51.
     	If at the end of payoutperiod a voter's reward is less than minpayout, it will be pending for next period.
+      Voter pays a transaction fee.
       **/
     "minpayout": 10,
 

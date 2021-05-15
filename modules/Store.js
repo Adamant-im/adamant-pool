@@ -8,6 +8,12 @@ module.exports = {
 
 	isUpdatingVoters: false,
 
+	periodInfo: {
+		totalForged: 0,
+		userRewards: 0,
+		forgedBlocks: 0
+	},
+
 	delegate: {
 		address: config.address,
 		publicKey: config.publicKey,

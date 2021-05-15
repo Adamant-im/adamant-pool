@@ -1,4 +1,4 @@
-const { dbVoters, dbBlocks, dbRewards } = require('../helpers/DB');
+const { dbBlocks } = require('../helpers/DB');
 const log = require('../helpers/log');
 const api = require('../helpers/api');
 const config = require('../helpers/configReader');

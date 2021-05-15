@@ -4,6 +4,7 @@ const log = require('./log');
 const keys = require('adamant-api/helpers/keys');
 const isDev = process.argv.includes('dev');
 const { version } = require('../package.json');
+const { MIN_PAYOUT } = require('./const');
 let config = {};
 
 // Validate config fields
@@ -91,6 +92,10 @@ try {
 			exit(`Pool's ${address} config is wrong. Field type _${f}_ is not valid, expected type is _${fields[f].type.name}_. Cannot start Pool.`);
 		}
 	});
+
+	if (config.minpayout < MIN_PAYOUT) {
+		exit(`Pool's ${address} config is wrong. Parameter minpayout cannot be less, than ${MIN_PAYOUT} (ADM). Cannot start Pool.`);
+	}
 
 	config.payoutperiod = config.payoutperiod[0].toUpperCase() + config.payoutperiod.slice(1).toLowerCase();
 
