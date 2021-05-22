@@ -85,7 +85,7 @@ module.exports = {
 
           console.log(`Processing payment of ${amount.toFixed(8)} ADM reward to ${address}…`);
 
-          const payment = await api.send(config.passPhrase, address, amount);
+          const payment = await api.sendTokens(config.passPhrase, address, amount);
           if (payment.success) {
             if (payment.result.success) {
               payedUserRewards += amount;

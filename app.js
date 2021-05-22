@@ -13,6 +13,22 @@ const blocksChecker = require('./modules/blocksChecker');
 setTimeout(async () => {
 	require('./helpers/cron');
 	require('./server');
+
+	// let address = 'U14984117450827398783'
+	// let amount = 0.00114
+	// const payment = await api.sendTokens(config.passPhrase, address, amount);
+	// if (payment.success) {
+	// 	if (payment.result.success) {
+	// 		log.log(`Successfully payed ${amount.toFixed(8)} ADM reward to ${address}.`);
+
+	// 	} else {
+	// 		log.warn(`Unable to pay ${amount} ADM reward to ${address}. Node's reply: ${payment.result.error}.`);
+	// 	}
+	// } else {
+	// 	log.warn(`Failed to process payment of ${amount} ADM reward to ${address}, ${payment.error}. Message: ${payment.message}.`);
+	// }
+	// process.exit(-1)
+	
 	await initDelegate();
 	blocksChecker();
 	// console.log('config', config)
