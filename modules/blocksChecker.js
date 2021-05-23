@@ -7,7 +7,7 @@ const config = require('../helpers/configReader');
 async function getBlocks() {
 	try {
 
-    const blocks = await api.get('blocks');
+    const blocks = await api.get('blocks', { limit: 100 });
 		if (blocks.success) {
       if (blocks.result.success) {
         const delegateBlocks = blocks.result.blocks.filter(block => block.generatorPublicKey === config.publicKey);

@@ -1,4 +1,4 @@
-const { SAT, RETRY_PAYOUTS_TIMEOUT, RETRY_PAYOUTS_COUNT, FEE } = require('../helpers/const');
+const { SAT, RETRY_PAYOUTS_TIMEOUT, RETRY_PAYOUTS_COUNT, UPDATE_AFTER_PAYMENT_DELAY, FEE } = require('../helpers/const');
 const { dbVoters, dbTrans } = require('../helpers/DB');
 const log = require('../helpers/log');
 const api = require('../helpers/api');
@@ -12,9 +12,10 @@ module.exports = {
   async payOut(retryNo = 0) {
 
     function doRetry(retry, timeout) {
-      console.log('retry payout')
       if (retry > RETRY_PAYOUTS_COUNT) {
-        notifier(`Pool ${config.logName}: After ${RETRY_PAYOUTS_COUNT} re-tries, I didn't finished with payouts. Check the log file.`, 'error')
+        setTimeout(() => {
+          notifier(`Pool ${config.logName}: After ${RETRY_PAYOUTS_COUNT+1} tries, I didn't finished with payouts. Check the log file.`, 'error')
+        }, 1000);
       } else {
         log.log(`Re-trying payouts ${retry} time in ${timeout / 1000} seconds.`)
         setTimeout(() => {
@@ -43,7 +44,7 @@ module.exports = {
 
       let infoString = `Pending ${pendingUserRewards.toFixed(4)} ADM rewards for ${votersToReward.length} voters.`;
       infoString += `\n${votersBelowMin.length} voters forged less, than minimum ${config.minpayout} ADM, their pending rewards are ${belowMinRewards.toFixed(4)} ADM.`;
-      infoString += `\nThe pool forged ${periodTotalForged.toFixed(4)} ADM from ${periodForgedBlocks} blocks this period; ${periodUserRewards.toFixed(4)} ADM distributed to users.`;
+      infoString += `\nThe pool forged ${periodTotalForged.toFixed(4)} ADM from ${periodForgedBlocks} blocks this period; ${periodUserRewards.toFixed(4)} ADM distributed to users (these values are correct only if the program has not been restarted).`;
       infoString += `\nThe pool's balance — ${balance.toFixed(4)} ADM.`;
 
       if (!votersToReward.length) {
@@ -52,14 +53,14 @@ module.exports = {
         return;
       }
 
-      if (pendingUserRewards < balance) {
-        notifier(`Pool ${config.logName}: Unable to do payouts, retryNo: ${retryNo}. Balance of the pool is less, then pending payouts. Top up the pool's balance.\n${infoString}`, 'error');
-        doRetry(++retryNo, ++retryNo * RETRY_PAYOUTS_TIMEOUT);
+      if (pendingUserRewards > balance) {
+        notifier(`Pool ${config.logName}: Unable to do payouts, retryNo: ${retryNo}. Balance of the pool is less, than pending payouts. Top up the pool's balance.\n${infoString}`, 'error');
+        doRetry(retryNo+1, (retryNo+1) * RETRY_PAYOUTS_TIMEOUT);
         return;
       }
 
       if (retryNo) {
-        notifier(`Pool ${config.logName}: Re-tying (${retryNo+1} of ${RETRY_PAYOUTS_COUNT}) to do payouts.`, 'log');
+        notifier(`Pool ${config.logName}: Re-tying (${retryNo+1} of ${RETRY_PAYOUTS_COUNT+1}) to do payouts.`, 'log');
       } else {
         notifier(`Pool ${config.logName}: Ready to do periodical payouts.\n${infoString}`, 'log');
       }
@@ -78,14 +79,14 @@ module.exports = {
       for (const voter of votersToReward) {
         try {
 
-          const pending = voter.pending;
-          const amount = voter.pending - FEE;
-          const address = voter.address;
-          const received = voter.received;
+          let pending = voter.pending;
+          let amount = voter.pending - FEE;
+          let address = voter.address;
+          let received = voter.received;
 
           console.log(`Processing payment of ${amount.toFixed(8)} ADM reward to ${address}…`);
 
-          const payment = await api.sendTokens(config.passPhrase, address, amount);
+          let payment = await api.sendTokens(config.passPhrase, address, amount);
           if (payment.success) {
             if (payment.result.success) {
               payedUserRewards += amount;
@@ -102,7 +103,7 @@ module.exports = {
               transaction.payoutcount = pending; // user received this time, including Tx fee
               transaction.received = received; // user received in total, including fees
 
-              const updateVoter = await dbVoters.syncUpdate({ address }, {
+              let updateVoter = await dbVoters.syncUpdate({ address }, {
                 $set: {pending: 0, received}
               });
               if (updateVoter) {
@@ -112,12 +113,12 @@ module.exports = {
                 log.error(`Failed to update rewards for ${address} after successful payout. Do it manually: ${received.toFixed(8)} ADM received in total, 0 ADM pending.`);
               }
 
-              const insertTransaction = await dbTrans.syncInsert(transaction);
+              let insertTransaction = await dbTrans.syncInsert(transaction);
               if (insertTransaction) {
-                log.log(`Successfully saved transaction ${transaction.id} after payout: ${pending.toFixed(8)} ADM payed to ${address}.`);      
+                log.log(`Successfully saved transaction ${transaction.transactionId} after payout: ${pending.toFixed(8)} ADM payed to ${address}.`);      
                 savedTransactions += 1;
               } else {
-                log.error(`Failed to save transaction ${transaction.id} after successful payout. Do it manually: ${pending.toFixed(8)} ADM payed to ${address}.`);
+                log.error(`Failed to save transaction ${transaction.transactionId} after successful payout. Do it manually: ${pending.toFixed(8)} ADM payed to ${address}.`);
               }
 
             } else {
@@ -134,7 +135,7 @@ module.exports = {
 
       } // for (const voter of votersToReward)
 
-      // Wait 1 minute to update pool's balance and notify
+      // Wait to update pool's balance and notify
       setTimeout(async () => {
         try {
 
@@ -184,20 +185,20 @@ module.exports = {
             }
     
             payoutInfo += `\nThe pool's balance — ${balance.toFixed(4)} ADM.`;
-            payoutInfo += `\nI'll re-try to pay the rest of voters in ${((++retryNo * RETRY_PAYOUTS_TIMEOUT) / 1000 / 60).toFixed(1)} minutes, retryNo: ${++retryNo}.`;
+            payoutInfo += `\nI'll re-try to pay the remaining voters in ${(((retryNo+1) * RETRY_PAYOUTS_TIMEOUT) / 1000 / 60).toFixed(1)} minutes, retryNo: ${retryNo+1}.`;
             notifier(`Pool ${config.logName}: ${payoutInfo}`, notifyType);
-            doRetry(++retryNo, ++retryNo * RETRY_PAYOUTS_TIMEOUT);
+            doRetry(retryNo+1, (retryNo+1) * RETRY_PAYOUTS_TIMEOUT);
       
           }
 
         } catch (e) {
           log.error(`Error in composing notification message for payOut(). Error: ${e}.`);
         }
-      }, 60 * 1000);
+      }, UPDATE_AFTER_PAYMENT_DELAY);
 
     } catch (e) {
       log.error(`Error in payOut(), retryNo: ${retryNo}. Error: ${e}.`);
-      doRetry(++retryNo, ++retryNo * RETRY_PAYOUTS_TIMEOUT);
+      doRetry(retryNo+1, (retryNo+1) * RETRY_PAYOUTS_TIMEOUT);
     }
     
   }
