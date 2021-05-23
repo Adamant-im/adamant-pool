@@ -34,6 +34,7 @@ switch (config.payoutperiod) {
 		break;
 	default:
 		exit();
+		
 }
 
 if (!cron.validate(pattern))

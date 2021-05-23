@@ -26,10 +26,6 @@ module.exports = {
 
     try {
 
-      console.log('payout')
-
-      let isPayoutComplete = false;
-
       let balance = Store.delegate.balance / SAT;
       const periodTotalForged = Store.periodInfo.totalForged;
       const periodUserRewards = Store.periodInfo.userRewards;
@@ -49,7 +45,6 @@ module.exports = {
 
       if (!votersToReward.length) {
         notifier(`Pool ${config.logName}: No pending payouts.\n${infoString}`, 'warn');
-        isPayoutComplete = true;
         return;
       }
 
@@ -68,10 +63,6 @@ module.exports = {
       let payedUserRewards = 0;
       let payedCount = 0;
       let paymentFees = 0;
-      // let payment;
-      // let transaction;
-      // let amount = 0;
-      // let address = '';
 
       let updatedVoters = 0;
       let savedTransactions = 0;

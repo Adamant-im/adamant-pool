@@ -128,8 +128,6 @@ module.exports = {
       notifier(`Pool ${config.logName}: Failed to distribute rewards on block ${block.id} (height ${block.height}). Check logs.`, 'error');
     }
 
-    payOut();
-
   }
 
 }
