@@ -9,16 +9,12 @@ async function getBlocks() {
 
     const blocks = await api.get('blocks', { limit: 100 });
 		if (blocks.success) {
-      if (blocks.result.success) {
-        const delegateBlocks = blocks.result.blocks.filter(block => block.generatorPublicKey === config.publicKey);
-        delegateBlocks.forEach(block => {
-          blockParser(block)
-        });
-      } else {
-        log.warn(`Failed to get blocks. Node's reply: ${blocks.result.error}.`);
-      }
+      const delegateBlocks = blocks.data.blocks.filter(block => block.generatorPublicKey === config.publicKey);
+      delegateBlocks.forEach(block => {
+        blockParser(block)
+      });
 		} else {
-      log.warn(`Failed to get blocks, ${blocks.error}. Message: ${blocks.message}.`);
+      log.warn(`Failed to get blocks. ${blocks.errorMessage}.`);
     }
 
 	} catch (e) {

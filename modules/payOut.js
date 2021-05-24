@@ -79,44 +79,39 @@ module.exports = {
 
           let payment = await api.sendTokens(config.passPhrase, address, amount);
           if (payment.success) {
-            if (payment.result.success) {
-              payedUserRewards += amount;
-              paymentFees += FEE;
-              payedCount += 1;
-              log.log(`Successfully payed ${amount.toFixed(8)} ADM reward to ${address}.`);
+            payedUserRewards += amount;
+            paymentFees += FEE;
+            payedCount += 1;
+            log.log(`Successfully payed ${amount.toFixed(8)} ADM reward to ${address}.`);
 
-              let transaction = payment.result;
-              delete transaction.success;
+            let transaction = payment.data;
+            delete transaction.success;
 
-              received += pending;
-              transaction.timeStamp = new Date().getTime();
-              transaction.address = address;
-              transaction.payoutcount = pending; // user received this time, including Tx fee
-              transaction.received = received; // user received in total, including fees
+            received += pending;
+            transaction.timeStamp = new Date().getTime();
+            transaction.address = address;
+            transaction.payoutcount = pending; // user received this time, including Tx fee
+            transaction.received = received; // user received in total, including fees
 
-              let updateVoter = await dbVoters.syncUpdate({ address }, {
-                $set: {pending: 0, received}
-              });
-              if (updateVoter) {
-                log.log(`Voter's rewards successfully updated after payout: ${received.toFixed(8)} ADM received in total, 0 ADM pending for ${address}.`);      
-                updatedVoters += 1;
-              } else {
-                log.error(`Failed to update rewards for ${address} after successful payout. Do it manually: ${received.toFixed(8)} ADM received in total, 0 ADM pending.`);
-              }
-
-              let insertTransaction = await dbTrans.syncInsert(transaction);
-              if (insertTransaction) {
-                log.log(`Successfully saved transaction ${transaction.transactionId} after payout: ${pending.toFixed(8)} ADM payed to ${address}.`);      
-                savedTransactions += 1;
-              } else {
-                log.error(`Failed to save transaction ${transaction.transactionId} after successful payout. Do it manually: ${pending.toFixed(8)} ADM payed to ${address}.`);
-              }
-
+            let updateVoter = await dbVoters.syncUpdate({ address }, {
+              $set: {pending: 0, received}
+            });
+            if (updateVoter) {
+              log.log(`Voter's rewards successfully updated after payout: ${received.toFixed(8)} ADM received in total, 0 ADM pending for ${address}.`);
+              updatedVoters += 1;
             } else {
-              log.warn(`Unable to pay ${amount} ADM reward to ${address}. Node's reply: ${payment.result.error}.`);
+              log.error(`Failed to update rewards for ${address} after successful payout. Do it manually: ${received.toFixed(8)} ADM received in total, 0 ADM pending.`);
+            }
+
+            let insertTransaction = await dbTrans.syncInsert(transaction);
+            if (insertTransaction) {
+              log.log(`Successfully saved transaction ${transaction.transactionId} after payout: ${pending.toFixed(8)} ADM payed to ${address}.`);      
+              savedTransactions += 1;
+            } else {
+              log.error(`Failed to save transaction ${transaction.transactionId} after successful payout. Do it manually: ${pending.toFixed(8)} ADM payed to ${address}.`);
             }
           } else {
-            log.warn(`Failed to process payment of ${amount} ADM reward to ${address}, ${payment.error}. Message: ${payment.message}.`);
+            log.warn(`Failed to process payment of ${amount} ADM reward to ${address}. ${payment.errorMessage}.`);
           }
 
         } catch (e) {

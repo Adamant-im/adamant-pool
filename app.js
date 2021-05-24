@@ -33,16 +33,11 @@ setTimeout(async () => {
 
 	let payment = await api.sendMessage(config.passPhrase, address, '{"type":"eth_transaction","amount":"0.002","hash":"0xfa46db3c99878f1f9863fcbdb0bc27d220d7065c6528543cbb83ced84487deb","comments":"I like to send it, send it"}');
 	if (payment.success) {
-		if (payment.result.success) {
 			log.log(`Successfully sent message to ${address}.`);
-
-		} else {
-			log.warn(`Unable to sent message to ${address}. Node's reply: ${payment.result.error}.`);
-		}
 	} else {
-		log.warn(`Failed to sent message to ${address}, ${payment.error}. Message: ${payment.message}.`);
+		log.warn(`Failed to sent message to ${address}. ${payment.errorMessage}`);
 	}
-	process.exit(-1)
+	// process.exit(-1)
 	
 	await initDelegate();
 	blocksChecker();
