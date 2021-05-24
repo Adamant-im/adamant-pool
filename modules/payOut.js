@@ -82,7 +82,7 @@ module.exports = {
             payedUserRewards += amount;
             paymentFees += FEE;
             payedCount += 1;
-            log.log(`Successfully payed ${amount.toFixed(8)} ADM reward to ${address}.`);
+            log.log(`Successfully payed ${amount.toFixed(8)} ADM reward to ${address} with Tx ${payment.data.transactionId}.`);
 
             let transaction = payment.data;
             delete transaction.success;

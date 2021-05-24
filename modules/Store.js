@@ -67,7 +67,7 @@ module.exports = {
 	async updateDelegate() {
 			const delegate = await api.get('delegates/get', { publicKey: config.publicKey });
 			if (delegate.success) {
-				this.delegate = Object.assign(this.delegate, delegate.result.delegate);
+				this.delegate = Object.assign(this.delegate, delegate.data.delegate);
 				this.delegate.votesWeight = +this.delegate.votesWeight;
 				log.log(`Updated delegate ${this.delegate.username}: rank ${this.delegate.rank}, productivity ${this.delegate.productivity}%, votesWeight ${utils.satsToADM(this.delegate.votesWeight)} ADM`);
 				return this.delegate
