@@ -14,8 +14,8 @@ setTimeout(async () => {
 	require('./helpers/cron');
 	require('./server');
 
-	// let address = 'U14984117450827398783'
-	// let amount = 0.00114
+	let address = 'U14984117450827398783'
+	let amount = 0.0000000114
 	// const payment = await api.sendTokens(config.passPhrase, address, amount);
 	// if (payment.success) {
 	// 	if (payment.result.success) {
@@ -27,7 +27,22 @@ setTimeout(async () => {
 	// } else {
 	// 	log.warn(`Failed to process payment of ${amount} ADM reward to ${address}, ${payment.error}. Message: ${payment.message}.`);
 	// }
-	// process.exit(-1)
+
+	let pub = await api.getPublicKey(address);
+	console.log('pub', pub)
+
+	let payment = await api.sendMessage(config.passPhrase, address, '{"type":"eth_transaction","amount":"0.002","hash":"0xfa46db3c99878f1f9863fcbdb0bc27d220d7065c6528543cbb83ced84487deb","comments":"I like to send it, send it"}');
+	if (payment.success) {
+		if (payment.result.success) {
+			log.log(`Successfully sent message to ${address}.`);
+
+		} else {
+			log.warn(`Unable to sent message to ${address}. Node's reply: ${payment.result.error}.`);
+		}
+	} else {
+		log.warn(`Failed to sent message to ${address}, ${payment.error}. Message: ${payment.message}.`);
+	}
+	process.exit(-1)
 	
 	await initDelegate();
 	blocksChecker();

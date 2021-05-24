@@ -65,7 +65,6 @@ module.exports = {
         const userWeight = voterBalance / voter.votesCount;
         const userPercent = userWeight / votesWeight * config.reward_percentage * Store.delegate.productivity / 100;
         const userReward = blockTotalForged * userPercent / 100 / SAT;
-        // usertotalreward += userReward;
         pending += userReward;
 
         Store.periodInfo.userRewards += userReward;
