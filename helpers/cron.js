@@ -1,6 +1,6 @@
-const cron = require('node-cron');
+const cron = require('cron');
 const config = require('./configReader');
-const payOut = require('./payOut');
+const payOut = require('../modules/payOut');
 const log = require('./log');
 
 let pattern;
@@ -23,13 +23,13 @@ switch (config.payoutperiod) {
 	case '30d':
 		pattern = '0 0 1 * *';
 		break;
-	case 'Monday':
-	case 'Tuesday':
-	case 'Wednesday':
-	case 'Thursday':
-	case 'Friday':
-	case 'Saturday':
-	case 'Sunday':
+	case 'Mon':
+	case 'Tue':
+	case 'Wed':
+	case 'Thu':
+	case 'Fri':
+	case 'Sat':
+	case 'Sun':
 		pattern = `0 0 * * ${config.payoutperiod}`;
 		break;
 	default:
@@ -37,14 +37,16 @@ switch (config.payoutperiod) {
 		
 }
 
-if (!cron.validate(pattern))
-	exit();
+try {
+	let payoutCronJob = new cron.CronJob(pattern, function() {
+		payOut();
+	});
+	payoutCronJob.start();	
+} catch (e) {
+	exit(e);
+}
 
-cron.schedule(pattern, () => {
-	payOut();
-});
-
-function exit () {
-	log.error(`Pool's ${config.address} config is wrong. Failed to validate payoutperiod: ${config.payoutperiod}. Cannot start Pool.`);		
+function exit (additionalInfo) {
+	log.error(`Pool's ${config.address} config is wrong. Failed to validate payoutperiod: ${config.payoutperiod}${additionalInfo ? ', ' + additionalInfo : ''}. Cannot start Pool.`);		
 	process.exit(-1);
 }

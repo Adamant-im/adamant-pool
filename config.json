@@ -30,9 +30,9 @@
         10d -> days 1, 10, 20 of the month
         15d -> days 1, 15 of the month
         30d -> 30th of each month
-        Monday, Tuesday, Wednesday, Thursday, Friday, Saturday or Sunday -> every week
+        Mon, Tue, Wed, Thu, Fri, Sat or Sun -> every week
       **/
-    "payoutperiod": "Sunday",
+    "payoutperiod": "Sun",
 
     /** Periods to store history data. Greater value needs more RAM.
         If store_history is 10 and payoutperiod is 5d, data will be stored for last 50 days.

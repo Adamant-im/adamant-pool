@@ -22,6 +22,25 @@ module.exports = {
 		votesWeight: 0
 	},
 
+	async updateStats() {
+		try {
+
+			const delegateForgedInfo = await api.get('delegates/forging/getForgedByAccount', { generatorPublicKey: config.publicKey });
+			if (delegateForgedInfo.success) {
+				this.delegate = Object.assign(this.delegate, delegateForgedInfo.data.delegate);
+				this.delegate.forged = +this.delegate.forged;
+				this.delegate.rewards = +this.delegate.rewards;
+				this.delegate.fees = +this.delegate.fees;
+				log.log(`Updated forged info for delegate ${this.delegate.username}: total ${utils.satsToADM(this.delegate.forged)} ADM, block rewards ${utils.satsToADM(this.delegate.rewards)}, fees ${utils.satsToADM(this.delegate.fees)} ADM.`);
+			} else {
+				log.warn(`Failed to get forged info for delegate for ${config.address}. ${delegateForgedInfo.errorMessage}.`);
+			}
+			
+		} catch (e) {
+
+		}
+	},
+
 	async updateVotes(voter) {
 			const votes = await api.get('accounts/delegates', { address: voter.address });
 			if (votes.success) {
@@ -83,5 +102,6 @@ setInterval(() => {
 	module.exports.updateDelegate();
 	module.exports.updateVoters();
 	module.exports.updateBalance();
+	module.exports.updateStats();
 
 }, UPDATE_DELEGATE_INTERVAL);

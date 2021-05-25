@@ -1,10 +1,8 @@
 const { UPDATE_FORGE_INTERVAL, SAT } = require('./helpers/const');
 const config = require('./helpers/configReader');
-const api = require('./helpers/api');
 const log = require('./helpers/log');
 const notifier = require('./helpers/notify');
 const Store = require('./modules/Store');
-const delegateInfo = require('./modules/delegateInfo');
 const blocksChecker = require('./modules/blocksChecker');
 
 // let lastForg = unixTime(),
