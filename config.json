@@ -34,12 +34,6 @@
       **/
     "payoutperiod": "Sun",
 
-    /** Periods to store history data. Greater value needs more RAM.
-        If store_history is 10 and payoutperiod is 5d, data will be stored for last 50 days.
-        Payout transactions are stored forever, independent from store_history value.
-      **/
-    "store_history": 10,
-
     /** Minimum amount in ADM for payouts. Must be not less, than 0.51.
     	If at the end of payoutperiod a voter's reward is less than minpayout, it will be pending for next period.
       Voter pays a transaction fee.
