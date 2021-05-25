@@ -2,7 +2,7 @@
     /** List of nodes to fetch forging information, needed to count rewards.
         If one become unavailable, pool will choose live one.
       **/
-    "node": [
+    "node_ADM": [
         "http://localhost:36666",
         "https://endless.adamant.im",
         "https://clown.adamant.im",
@@ -55,6 +55,11 @@
     /** Slack key for monitoring notifications **/
     "slack": "https://hooks.slack.com/services/..",
 
+    /** The software will use verbosity according to log_level.
+    	It can be none < error < warn < info < log.
+      **/
+    "log_level": "log",
+    
     /** Port for pool's public Web panel **/
     "port": 36667
 }

@@ -1,8 +1,8 @@
 const { UPDATE_BLOCKS_INTERVAL } = require('../helpers/const');
 const api = require('../helpers/api');
 const blockParser = require('./blockParser');
-const log = require('../helpers/log');
 const config = require('../helpers/configReader');
+const log = require('../helpers/log');
 
 async function getBlocks() {
 	try {

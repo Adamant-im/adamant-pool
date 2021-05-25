@@ -1,6 +1,5 @@
 const jsonminify = require('jsonminify');
 const fs = require('fs');
-const log = require('./log');
 const keys = require('adamant-api/helpers/keys');
 const isDev = process.argv.includes('dev');
 const { version } = require('../package.json');
@@ -13,7 +12,7 @@ const fields = {
 		type: String,
 		isRequired: true
 	},
-	node: {
+	node_ADM: {
 		type: Array,
 		isRequired: true
 	},
@@ -49,6 +48,10 @@ const fields = {
 		type: String,
 		default: null
 	},
+	log_level: {
+		type: String,
+		default: 'log'
+	},
 	silent_mode: {
 		type: Boolean,
 		default: false
@@ -65,7 +68,7 @@ try {
 
 	config.version = version;
 
-	if (!config.node) {
+	if (!config.node_ADM) {
 		exit(`Pool's config is wrong. ADM nodes are not set. Cannot start Pool.`);
 	}
 	if (!config.passPhrase) {
@@ -99,16 +102,16 @@ try {
 
 	config.payoutperiod = config.payoutperiod[0].toUpperCase() + config.payoutperiod.slice(1).toLowerCase();
 
-	log.log(`Pool ${address} successfully read a config-file${isDev ? ' (dev)' : ''}.`);
+	console.error(`Pool ${address} successfully read a config-file${isDev ? ' (dev)' : ''}.`);
 
 } catch (e) {
-	log.error('Error reading config: ' + e);
+	console.error('Error reading config: ' + e);
 }
 
 config.isDev = isDev;
 module.exports = config;
 
 function exit(msg) {
-	log.error(msg);
+	console.error(msg);
 	process.exit(-1);
 }

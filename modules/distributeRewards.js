@@ -1,12 +1,10 @@
 const { SAT, DEVIATION, RETRY_WHEN_UPDATING_VOTERS_TIMEOUT } = require('../helpers/const');
 const { dbVoters, dbBlocks } = require('../helpers/DB');
-const log = require('../helpers/log');
-const api = require('../helpers/api');
 const config = require('../helpers/configReader');
+const log = require('../helpers/log');
 const notifier = require('../helpers/notify');
 const Store = require('./Store');
 const utils = require('../helpers/utils');
-const { payOut } = require('./payOut');
 
 module.exports = {
 

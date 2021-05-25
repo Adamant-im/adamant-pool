@@ -1,3 +1,3 @@
-const log = require('./log');
 const config = require('./configReader');
-module.exports = require('adamant-api')(config, log);
+const log = require('./log');
+module.exports = require('adamant-api')({passPhrase: config.passPhrase, node: config.node_ADM, logLevel: config.log_level}, log);
