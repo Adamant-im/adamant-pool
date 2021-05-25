@@ -72,9 +72,9 @@
 
             <div id="cards" class="row">
                 <div class="card" style="background-color: rgb(238, 238, 238);"> <span>
-                        Total forged: {{(delegate.delegate.totalForged / 100000000).toFixed(1) || 0 | numberFormat}}
+                        Total forged: {{(delegate.delegate.forged / 100000000).toFixed(2) || 0 | numberFormat}}
                         ADM<br>
-                        Votes: {{(delegate.delegate.votesWeight / 100000000).toFixed(0) || 0 | numberFormat}} ADM<br>
+                        Vote weight: {{(delegate.delegate.votesWeight / 100000000).toFixed(0) || 0 | numberFormat}} ADM<br>
                         Voters: {{delegate.delegate.voters ? delegate.delegate.voters.length : 0 | numberFormat}}
                     </span></div>
                 <div class="card" style="background-color: rgb(221, 221, 221);"><span>
@@ -85,14 +85,14 @@
                         Rank: {{delegate.delegate.rank | numberFormat}}
                     </span></div>
                 <div class="card" style="background-color: rgb(238, 238, 238);"> <span>
-                        Balance: {{(delegate.delegate.balance / 100000000 || 0).toFixed(3) | numberFormat}} ADM<br>
-                        Forged this period: {{(system.payoutperiodForged || 0).toFixed(1) | numberFormat}}<br>
-                        Pending rewards: {{(system.payoutperiodRewards || 0).toFixed(1) | numberFormat}}
+                        Balance: {{(delegate.delegate.balance / 100000000 || 0).toFixed(2) | numberFormat}} ADM<br>
+                        Forged this period: {{(system.payoutperiodForged || 0).toFixed(2) | numberFormat}} ADM<br>
+                        Pending rewards: {{(system.payoutperiodRewards || 0).toFixed(2) | numberFormat}} ADM
                     </span></div>
                 <div class="card" style="background-color: rgb(221, 221, 221);"> <span>
                         Last payout: {{lastPayOut}}<br>
                         Next payout: {{nextPayOut}}<br>
-                        Payout period: {{system.payoutperiod}}
+                        Payout period: every {{system.payoutperiod}}
                     </span>
                 </div>
             </div>

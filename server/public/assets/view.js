@@ -76,13 +76,11 @@ var panel = new Vue({
                 if (typeof res === 'object') {
                     panel.transactions = res;
                 }
-                // console.log(res);
                 panel.sortRows('transactions', panel.sorted_field_transactions, 1);
-                if (this_.system.payoutperiodStart) {
-                    let start = this_.system.payoutperiodStart;
-                    this_.lastPayOut = moment(start).format(FORMAT_PAYOUT);
-                    this_.nextPayOut = moment(start + parseInt(this_.system.payoutperiod) * 3600 * 24 * 1000).format(FORMAT_PAYOUT);
-                }
+                if (this_.system.payoutperiodPreviousRunTimestamp) 
+                    this_.lastPayOut = moment(this_.system.payoutperiodPreviousRunTimestamp).format(FORMAT_PAYOUT);
+                if (this_.system.payoutperiodNextRunTimestamp) 
+                    this_.nextPayOut = moment(this_.system.payoutperiodNextRunTimestamp).format(FORMAT_PAYOUT);
             });
         },
         getVoters: function () {

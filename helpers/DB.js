@@ -8,11 +8,6 @@ module.exports = {
 		autoload: true
 	})),
 
-	dbRewards: syncNedb(new Datastore({
-		filename: 'db/rewards',
-		autoload: true
-	})),
-
 	dbBlocks: syncNedb(new Datastore({
 		filename: 'db/blocks',
 		autoload: true

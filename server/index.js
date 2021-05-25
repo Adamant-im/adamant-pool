@@ -3,7 +3,6 @@ const express = require('express');
 const app = express();
 const { dbVoters, dbTrans } = require('../helpers/DB');
 const log = require('../helpers/log');
-const periodData = require('../helpers/periodData');
 const DIR_NAME = __dirname + '/public/';
 const Store = require('../modules/Store');
 
@@ -24,16 +23,17 @@ app.get('/api/get-voters', (req, res) => {
 	dbVoters.find({}, (err, docs) => res.send(docs));
 });
 
-app.get('/api/get-delegate', async (req, res) => res.send(Store));// TODO: send Store
+app.get('/api/get-delegate', async (req, res) => res.send(Store));
 
 app.get('/api/get-config', async (req, res) => res.send({
 	version: config.version,
 	reward_percentage: config.reward_percentage,
 	minpayout: config.minpayout,
 	payoutperiod: config.payoutperiod,
-	payoutperiodForged: periodData.forged,
-	payoutperiodRewards: periodData.rewards,
-	payoutperiodStart: periodData.startPeriod
+	payoutperiodForged: Store.periodInfo.totalForgedADM,
+	payoutperiodRewards: Store.delegate.pendingRewardsADM,
+	payoutperiodPreviousRunTimestamp: Store.periodInfo.previousRunTimestamp,
+	payoutperiodNextRunTimestamp: Store.periodInfo.nextRunTimestamp
 }));
 
 app.listen(config.port, () => log.log(`Pool ${config.address} successfully started a web server.`));

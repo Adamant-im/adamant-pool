@@ -18,6 +18,7 @@ module.exports = {
 		previousRunTimestamp: 0,
 		previousRunEpochtime: 0,
 		nextRunMoment: {},
+		nextRunTimestamp: 0,
 		nextRunDateString: ''
 	},
 
@@ -38,24 +39,16 @@ module.exports = {
 
 			const delegateForgedInfo = await api.get('delegates/forging/getForgedByAccount', { generatorPublicKey: config.publicKey });
 			if (delegateForgedInfo.success) {
-				this.delegate = Object.assign(this.delegate, delegateForgedInfo.data.delegate);
-				this.delegate.forged = +this.delegate.forged;
-				this.delegate.rewards = +this.delegate.rewards;
-				this.delegate.fees = +this.delegate.fees;
-				log.log(`Updated forged info for delegate ${this.delegate.username}: total ${utils.satsToADM(this.delegate.forged)} ADM, block rewards ${utils.satsToADM(this.delegate.rewards)}, fees ${utils.satsToADM(this.delegate.fees)} ADM.`);
+				this.delegate.forged = +delegateForgedInfo.data.forged;
+				this.delegate.rewards = +delegateForgedInfo.data.rewards;
+				this.delegate.fees = +delegateForgedInfo.data.fees;
+				log.log(`Updated forged info for delegate ${this.delegate.username}: total ${utils.satsToADM(this.delegate.forged)} ADM, block rewards ${utils.satsToADM(this.delegate.rewards)} ADM, fees ${utils.satsToADM(this.delegate.fees)} ADM.`);
 			} else {
 				log.warn(`Failed to get forged info for delegate for ${config.address}. ${delegateForgedInfo.errorMessage}.`);
 			}
 
-			console.log('cron.nextDate().format(FORMAT_PAYOUT)')
-			console.log(cron.nextDate().format(FORMAT_PAYOUT))
-			// console.log(payoutCronJob.nextDate().toDate())
-			// console.log(payoutCronJob.nextDate().toString())
-			// console.log(payoutCronJob.nextDate().unix())
-			// console.log(Date.now())
-			// console.log(payoutCronJob.nextDate().format(FORMAT_PAYOUT))
-
 			this.periodInfo.nextRunMoment = cron.nextDate();
+			this.periodInfo.nextRunTimestamp = this.periodInfo.nextRunMoment.valueOf();
 			this.periodInfo.nextRunDateString = this.periodInfo.nextRunMoment.format(FORMAT_PAYOUT);
 
 			// Assume previous run is the last saved transaction
@@ -80,13 +73,6 @@ module.exports = {
 
 			const voters = await dbVoters.syncFind({});
       this.delegate.pendingRewardsADM = voters.reduce((sum, voter) => { return sum + voter.pending; }, 0);
-
-			console.log('this.periodInfo.previousRunTimestamp', this.periodInfo.previousRunTimestamp)
-			console.log('this.periodInfo.previousRunEpochtime', this.periodInfo.previousRunEpochtime)
-			console.log('this.periodInfo.forgedBlocks', this.periodInfo.forgedBlocks)
-			console.log('this.periodInfo.totalForged', this.periodInfo.totalForgedADM)
-			console.log('this.periodInfo.userRewards', this.periodInfo.userRewardsADM)
-			console.log('this.delegate.pendingRewards', this.delegate.pendingRewardsADM)
 
 		} catch (e) {
 			log.error(`Error while updating forging and period stats: ` + e);
@@ -148,8 +134,6 @@ module.exports = {
 	}
 
 };
-
-module.exports.updateStats();
 
 setInterval(() => {
 
