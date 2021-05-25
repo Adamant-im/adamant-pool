@@ -28,9 +28,6 @@ module.exports = {
     const votesWeight = Store.delegate.votesWeight;
     const blockTotalForged = +block.totalForged;
 
-    Store.periodInfo.totalForged += blockTotalForged / SAT;
-    Store.periodInfo.forgedBlocks += 1;
-
     for (const voter of voters) {
       try {
 
@@ -64,8 +61,6 @@ module.exports = {
         const userPercent = userWeight / votesWeight * config.reward_percentage * Store.delegate.productivity / 100;
         const userReward = blockTotalForged * userPercent / 100 / SAT;
         pending += userReward;
-
-        Store.periodInfo.userRewards += userReward;
 
         const updateVoter = await dbVoters.syncUpdate({ address: voter.address },
           {

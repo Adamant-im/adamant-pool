@@ -3,18 +3,22 @@ const utils = require('../helpers/utils');
 const config = require('../helpers/configReader');
 const log = require('../helpers/log');
 const cron = require('../helpers/cron');
-const { UPDATE_DELEGATE_INTERVAL } = require('../helpers/const');
+const { dbVoters, dbTrans, dbBlocks } = require('../helpers/DB');
+const { UPDATE_DELEGATE_INTERVAL, FORMAT_PAYOUT } = require('../helpers/const');
 
 module.exports = {
 
 	isUpdatingVoters: false,
 
 	periodInfo: {
-		totalForged: 0,
-		userRewards: 0,
+		totalForgedSats: 0,
+		totalForgedADM: 0,
+		userRewardsADM: 0,
 		forgedBlocks: 0,
-		previousRun: 0,
-		nextRun: 0
+		previousRunTimestamp: 0,
+		previousRunEpochtime: 0,
+		nextRunMoment: {},
+		nextRunDateString: ''
 	},
 
 	delegate: {
@@ -22,7 +26,11 @@ module.exports = {
 		publicKey: config.publicKey,
 		balance: 0,
 		voters: [],
-		votesWeight: 0
+		votesWeight: 0,
+		forged: 0,
+		rewards: 0,
+		fees: 0,
+		pendingRewardsADM: 0
 	},
 
 	async updateStats() {
@@ -38,7 +46,48 @@ module.exports = {
 			} else {
 				log.warn(`Failed to get forged info for delegate for ${config.address}. ${delegateForgedInfo.errorMessage}.`);
 			}
-			
+
+			console.log('cron.nextDate().format(FORMAT_PAYOUT)')
+			console.log(cron.nextDate().format(FORMAT_PAYOUT))
+			// console.log(payoutCronJob.nextDate().toDate())
+			// console.log(payoutCronJob.nextDate().toString())
+			// console.log(payoutCronJob.nextDate().unix())
+			// console.log(Date.now())
+			// console.log(payoutCronJob.nextDate().format(FORMAT_PAYOUT))
+
+			this.periodInfo.nextRunMoment = cron.nextDate();
+			this.periodInfo.nextRunDateString = this.periodInfo.nextRunMoment.format(FORMAT_PAYOUT);
+
+			// Assume previous run is the last saved transaction
+			const lastTransaction = (await dbTrans.syncFind({})).sort((a, b) => b.timeStamp - a.timeStamp)[0];
+			if (lastTransaction) {
+				this.periodInfo.previousRunTimestamp = lastTransaction.timeStamp;
+				this.periodInfo.previousRunEpochtime = utils.epochTime(this.periodInfo.previousRunTimestamp);
+			}
+
+			const periodBlocks = (await dbBlocks.syncFind({
+				timestamp: {
+						$gte: this.periodInfo.previousRunEpochtime
+				}
+			}));
+
+			if (periodBlocks) {
+				this.periodInfo.forgedBlocks = periodBlocks.length;
+				this.periodInfo.totalForgedSats = periodBlocks.reduce((sum, block) => { return sum + +block.totalForged; }, 0);
+				this.periodInfo.totalForgedADM = utils.satsToADM(this.periodInfo.totalForgedSats)
+				this.periodInfo.userRewardsADM = periodBlocks.reduce((sum, block) => { return sum + (block.distributedRewardsADM ? +block.distributedRewardsADM : 0); }, 0);
+			}
+
+			const voters = await dbVoters.syncFind({});
+      this.delegate.pendingRewardsADM = voters.reduce((sum, voter) => { return sum + voter.pending; }, 0);
+
+			console.log('this.periodInfo.previousRunTimestamp', this.periodInfo.previousRunTimestamp)
+			console.log('this.periodInfo.previousRunEpochtime', this.periodInfo.previousRunEpochtime)
+			console.log('this.periodInfo.forgedBlocks', this.periodInfo.forgedBlocks)
+			console.log('this.periodInfo.totalForged', this.periodInfo.totalForgedADM)
+			console.log('this.periodInfo.userRewards', this.periodInfo.userRewardsADM)
+			console.log('this.delegate.pendingRewards', this.delegate.pendingRewardsADM)
+
 		} catch (e) {
 			log.error(`Error while updating forging and period stats: ` + e);
 		}
@@ -99,6 +148,8 @@ module.exports = {
 	}
 
 };
+
+module.exports.updateStats();
 
 setInterval(() => {
 

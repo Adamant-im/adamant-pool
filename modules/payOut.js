@@ -26,8 +26,8 @@ module.exports = {
     try {
 
       let balance = Store.delegate.balance / SAT;
-      const periodTotalForged = Store.periodInfo.totalForged;
-      const periodUserRewards = Store.periodInfo.userRewards;
+      const periodTotalForged = Store.periodInfo.totalForgedADM;
+      const periodUserRewards = Store.periodInfo.userRewardsADM;
       const periodForgedBlocks = Store.periodInfo.forgedBlocks;
       
       const voters = await dbVoters.syncFind({});
@@ -39,7 +39,7 @@ module.exports = {
 
       let infoString = `Pending ${pendingUserRewards.toFixed(4)} ADM rewards for ${votersToReward.length} voters.`;
       infoString += `\n${votersBelowMin.length} voters forged less, than minimum ${config.minpayout} ADM, their pending rewards are ${belowMinRewards.toFixed(4)} ADM.`;
-      infoString += `\nThe pool forged ${periodTotalForged.toFixed(4)} ADM from ${periodForgedBlocks} blocks this period; ${periodUserRewards.toFixed(4)} ADM distributed to users (these values are correct only if the program has not been restarted).`;
+      infoString += `\nThe pool forged ${periodTotalForged.toFixed(4)} ADM from ${periodForgedBlocks} blocks this period; ${periodUserRewards.toFixed(4)} ADM distributed to users.`;
       infoString += `\nThe pool's balance — ${balance.toFixed(4)} ADM.`;
 
       if (!votersToReward.length) {

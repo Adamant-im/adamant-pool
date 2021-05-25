@@ -10,6 +10,8 @@ module.exports = {
 	DEVIATION: 100000, // consider balance is zero when it is lower, then 0.001 ADM
 	FEE: 0.5, // Transfer (Type 0) Tx fee,
 	MIN_PAYOUT: 0.51, // check minpayout in config to be not less, than 0.51 ADM,
-	EPOCH: Date.UTC(2017, 8, 2, 17, 0, 0, 0) // ADAMANT's epoch time
+	EPOCH: Date.UTC(2017, 8, 2, 17, 0, 0, 0), // ADAMANT's epoch time
+	FORMAT_TRANS: 'YYYY-MM-DD HH:mm',
+	FORMAT_PAYOUT: 'YYYY-MM-DD'
 
 }
