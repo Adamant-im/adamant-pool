@@ -2,6 +2,7 @@ const api = require('../helpers/api');
 const utils = require('../helpers/utils');
 const config = require('../helpers/configReader');
 const log = require('../helpers/log');
+const cron = require('../helpers/cron');
 const { UPDATE_DELEGATE_INTERVAL } = require('../helpers/const');
 
 module.exports = {
@@ -11,7 +12,9 @@ module.exports = {
 	periodInfo: {
 		totalForged: 0,
 		userRewards: 0,
-		forgedBlocks: 0
+		forgedBlocks: 0,
+		previousRun: 0,
+		nextRun: 0
 	},
 
 	delegate: {
@@ -37,7 +40,7 @@ module.exports = {
 			}
 			
 		} catch (e) {
-
+			log.error(`Error while updating forging and period stats: ` + e);
 		}
 	},
 
@@ -67,7 +70,7 @@ module.exports = {
 			}
 
 		} catch (e) {
-			log.error('Error while updating voters:', e);
+			log.error('Error while updating voters: ' + e);
 		}
 		this.isUpdatingVoters = false;
 	},

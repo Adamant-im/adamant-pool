@@ -37,8 +37,9 @@ switch (config.payoutperiod) {
 		
 }
 
+let payoutCronJob;
 try {
-	let payoutCronJob = new cron.CronJob(pattern, function() {
+	payoutCronJob = new cron.CronJob(pattern, function() {
 		payOut();
 	});
 	payoutCronJob.start();	
@@ -50,3 +51,5 @@ function exit (additionalInfo) {
 	log.error(`Pool's ${config.address} config is wrong. Failed to validate payoutperiod: ${config.payoutperiod}${additionalInfo ? ', ' + additionalInfo : ''}. Cannot start Pool.`);		
 	process.exit(-1);
 }
+
+module.exports = payoutCronJob;

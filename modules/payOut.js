@@ -114,7 +114,7 @@ module.exports = {
           }
 
         } catch (e) {
-          log.error(`Error while doing payouts for ${address}: ${e}.`);
+          log.error(`Error while doing payouts for ${address}: ` + e);
           continue;
         }
 
@@ -177,12 +177,12 @@ module.exports = {
           }
 
         } catch (e) {
-          log.error(`Error in composing notification message for payOut(). Error: ${e}.`);
+          log.error(`Error in composing notification message for payOut(): ` + e);
         }
       }, UPDATE_AFTER_PAYMENT_DELAY);
 
     } catch (e) {
-      log.error(`Error in payOut(), retryNo: ${retryNo}. Error: ${e}.`);
+      log.error(`Error in payOut(), retryNo: ${retryNo}. ` + e);
       doRetry(retryNo+1, (retryNo+1) * RETRY_PAYOUTS_TIMEOUT);
     }
     

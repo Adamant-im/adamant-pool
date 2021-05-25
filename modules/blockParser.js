@@ -30,6 +30,6 @@ module.exports = async (block) => {
     }
 
   } catch (e) {
-    log.error(`Error while processing ${block.id} (height ${block.height}).`, e);
+    log.error(`Error while processing ${block.id} (height ${block.height}): ` + e);
   }
 }

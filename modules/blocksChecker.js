@@ -18,7 +18,7 @@ async function getBlocks() {
     }
 
 	} catch (e) {
-		log.error('Error while checking new blocks:', e);
+		log.error('Error while checking new blocks: ' + e);
 	}
 }
 

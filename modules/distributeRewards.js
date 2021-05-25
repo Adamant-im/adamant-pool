@@ -109,7 +109,7 @@ module.exports = {
         }
 
       } catch (e) {
-        log.error(`Error while distributing rewards for ${voter.address} on block ${block.id} (height ${block.height}): ${e}.`);
+        log.error(`Error while distributing rewards for ${voter.address} on block ${block.id} (height ${block.height}): ` + e);
         continue;
       }
 
