@@ -1,6 +1,27 @@
-const { SAT } = require('./const');
+const { SAT, EPOCH } = require('./const');
 
 module.exports = {
+
+  /**
+   * Converts provided `time` to ADAMANT's epoch timestamp
+   * @param {number=} time timestamp to convert
+   * @returns {number}
+   */
+  epochTime(time) {
+    if (!time) {
+      time = Date.now()
+    }
+    return Math.floor((time - EPOCH) / 1000)
+  },
+
+  /**
+   * Converts ADAMANT's epoch timestamp to a Unix timestamp
+   * @param {number} epochTime timestamp to convert
+   * @returns {number}
+   */
+  toTimestamp(epochTime) {
+    return epochTime * 1000 + EPOCH
+  },
 
   satsToADM(sats, decimals = 8) {
     try {
@@ -43,7 +64,7 @@ module.exports = {
   getPrecision(decimals) {
     return +(Math.pow(10, -decimals).toFixed(decimals))
   },
-  
+
   getModuleName(id) {
     let n = id.lastIndexOf("\\");
     if (n === -1)
