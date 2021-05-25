@@ -40,13 +40,6 @@ module.exports = {
     return output;
   },
 
-  randomValue(low, high, doRound = false) {
-    let random = Math.random() * (high - low) + low;
-    if (doRound)
-      random = Math.round(random);
-    return random;
-  },
-
   getPrecision(decimals) {
     return +(Math.pow(10, -decimals).toFixed(decimals))
   },

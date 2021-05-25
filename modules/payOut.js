@@ -5,7 +5,6 @@ const api = require('../helpers/api');
 const config = require('../helpers/configReader');
 const notifier = require('../helpers/notify');
 const Store = require('./Store');
-const utils = require('../helpers/utils');
 
 module.exports = {
 
