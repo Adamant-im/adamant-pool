@@ -74,7 +74,7 @@ module.exports = {
           let address = voter.address;
           let received = voter.received;
 
-          console.log(`Processing payment of ${amount.toFixed(8)} ADM reward to ${address}…`);
+          log.log(`Processing payment of ${amount.toFixed(8)} ADM reward to ${address}…`);
 
           let payment = await api.sendTokens(config.passPhrase, address, amount);
           if (payment.success) {

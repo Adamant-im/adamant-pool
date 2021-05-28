@@ -50,7 +50,11 @@ module.exports = (message, type, silent_mode = false) => {
 					});
 			}
 			if (adamant_notify && adamant_notify.length > 5 && adamant_notify.startsWith('U') && config.passPhrase && config.passPhrase.length > 30) {
-				api.sendMessage(config.passPhrase, adamant_notify, `${type}| ${makeBoldForMarkdown(message)}`);
+				let mdMessage = makeBoldForMarkdown(message);
+				api.sendMessage(config.passPhrase, adamant_notify, `${type}| ${mdMessage}`).then(response => {
+					if (!response.success)
+						log.warn(`Failed to send notification messsage '${mdMessage}' to ${adamant_notify}. ${response.errorMessage}.`);
+				});
 			}
 
 		}
