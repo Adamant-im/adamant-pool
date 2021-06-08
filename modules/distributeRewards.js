@@ -24,9 +24,15 @@ module.exports = {
     let distributedPercent = 0;
     let isDistributionComplete = false;
 
-    const voters = Store.delegate.voters;
-    const votesWeight = Store.delegate.votesWeight;
+    let voters = Store.delegate.voters;
+    let votesWeight = Store.delegate.votesWeight;
     const blockTotalForged = +block.totalForged;
+
+    const onwVote = voters.find(voter => voter.address === config.address);
+    if (!config.considerownvote && onwVote) {
+      votesWeight -= (+onwVote.balance / onwVote.votesCount);
+      voters = voters.filter(voter => voter.address !== config.address);
+    }
 
     for (const voter of voters) {
       try {
