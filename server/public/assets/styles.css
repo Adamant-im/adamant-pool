@@ -3,6 +3,13 @@ body {
     margin: 0px;
 }
 
+.icon {
+    /*
+    Unfortunately, it changes z-index
+    filter: saturate(0.5);
+    */
+}
+
 .preloader {
     font-weight: 200;
     font-size: 1.5em;
@@ -208,6 +215,7 @@ th.is-sorted.active {
     width: 55px;
     height: 55px;
     border-radius: 50%;
+    filter: drop-shadow(0px 0px 5px grey);
 }
 
 ul {

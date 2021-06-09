@@ -53,7 +53,7 @@
                     <div class="header_text">
                         ADAMANT Forging Pool<br><small>v.{{system.version}}</small>
                     </div>
-                    <div class="refresh" @click="fRefresh">🔄</div>
+                    <div class="refresh icon" @click="fRefresh">🔄</div>
                 </h1>
                 <a :href="'https://explorer.adamant.im/delegate/' + delegate.delegate.address"
                     target="_blank">{{delegate.delegate.username}}</a>
@@ -92,7 +92,7 @@
             </div>
 
             <div class="container row">
-                <h2><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> Voters ({{voters.length}})</h2>
+                <h2><span class="icon">🤙</span> Voters ({{voters.length}})</h2>
                 <div class="table-holder">
                     <table>
                         <tr>
@@ -124,7 +124,7 @@
                 <pagin :options="{rows:voters, visible_count:15}"></pagin>
             </div>
             <div class="container row">
-                <h2><i class="fa fa-diamond" aria-hidden="true"></i> Transactions ({{transactions.length}})</h2>
+                <h2><span class="icon">💰</span> Transactions ({{transactions.length}})</h2>
                 <div class="table-holder">
                     <table id="transactions">
                         <tr>
