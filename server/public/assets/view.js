@@ -4,12 +4,10 @@ var panel = new Vue({
         setTimeout(function () {
             $('.preloader').fadeOut(1000);
         }, 2000);
-
         this.refresh();
         setInterval(function () {
             panel.refresh();
         }, 300 * 1000);
-
     },
     data: {
         transactions: [],
@@ -66,7 +64,6 @@ var panel = new Vue({
     },
     methods: {
         getTransactions: function () {
-            var this_ = this;
             $.get('/api/get-transactions', function (res) {
                 if (typeof res === 'object') {
                     panel.transactions = res;
@@ -90,7 +87,6 @@ var panel = new Vue({
                 if (typeof res === 'object') {
                     panel.delegate = res;
                 }
-                // console.log(panel.delegate);
                 panel.votersApi = res.delegate.voters.map(v => v.address).toString();
                 panel.getVoters();
             });
@@ -120,6 +116,5 @@ var panel = new Vue({
             }
             panel[table].sort((a, b) => (a[field] - b[field]) * this['sorted_' + table]);
         }
-        // moment: moment
     }
 });
