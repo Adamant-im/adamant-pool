@@ -20,12 +20,13 @@ body {
     letter-spacing: .15em;
     font-size: 1.5em;
     font-variant: petite-caps;
+    width: 90%;
     margin: auto;
     text-align: center;
 }
 
 .preloader img {
-    width: 450px;
+    width: 80%;
     margin: auto;
 }
 
@@ -49,26 +50,29 @@ a:hover {
 }
 
 .topnav {
-    background: #fafafa;
     position: fixed;
     right: 0;
     top: 0;
     border-bottom: 1px solid #eee;
-    box-shadow: 0 0 3px rgba(0, 0, 0, 0.4);
     width: 100%;
     height: 60px;
+    box-shadow: 0px -10px 30px 0px rgb(0 0 0 / 40%);
+    background-image: url(/assets/images/triagle-back.svg);
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-position: 100% 100%;
+    background-size: cover;
 }
 
 .topnav h1 {
     font-size: 1.6em;
-    line-height: 60px;
     text-align: left;
     font-weight: 300;
+    line-height: 25px;
 }
 
 .topnav a {
     font-size: 20px;
-    line-height: 60px;
     font-weight: 400;
     color: rgb(49, 112, 143);
     margin-top: 10px;
@@ -115,12 +119,16 @@ th.is-sorted.active {
 }
 
 .bottomnav {
-    background: #fafafa;
     position: relative;
     border-bottom: 1px solid #eee;
     box-shadow: 0 0 3px rgba(0, 0, 0, 0.4);
     width: 100%;
     height: 60px;
+    background-image: url(/assets/images/triagle-back.svg);
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-position: 100% 100%;
+    background-size: cover;
 }
 
 .bottomnav a {
@@ -159,6 +167,11 @@ th.is-sorted.active {
     justify-content: space-between;
     align-items: center;
     padding: 20px 0;
+    margin: 0 15px;
+}
+
+.header_text {
+    margin-left: 10px;
 }
 
 #cards {
@@ -219,6 +232,8 @@ ul li.active {
 .refresh {
     cursor: pointer;
     transition: .7s;
+    opacity: 0.5;
+    margin-left: 20px;
 }
 
 .refresh:active {
@@ -277,7 +292,7 @@ ul li.active {
     }
 
     .topnav h1 {
-        line-height: 0;
+        line-height: 1;
         margin: 0;
     }
 
@@ -336,7 +351,6 @@ ul li.active {
     }
 
     .header_text{
-        display: flex;
         flex-direction: column;
         align-items: center;
     }

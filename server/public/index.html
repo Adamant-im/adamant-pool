@@ -51,10 +51,9 @@
                 <h1 class="h1_header">
                     <img src="/assets/images/adamant-logo-transparent-512x512.png" class="logo" />
                     <div class="header_text">
-                        <span>ADAMANT Forging Pool<small>&nbsp;(ver. {{system.version}})&nbsp;&nbsp;</small><i class="fa fa-refresh refresh" style="font-size: 20px; color: rgb(221, 221, 221);"
-                                aria-hidden="true" @click="fRefresh"></i>
-                        </small>
+                        ADAMANT Forging Pool<br><small>v.{{system.version}}</small>
                     </div>
+                    <div class="refresh" @click="fRefresh">🔄</div>
                 </h1>
                 <a :href="'https://explorer.adamant.im/delegate/' + delegate.delegate.address"
                     target="_blank">{{delegate.delegate.username}}</a>
