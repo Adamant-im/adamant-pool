@@ -100,9 +100,7 @@
                             <th>Address</th>
                             <th v-for="th in th_voters" @click="sortRows('voters',th.field)"
                                 :class="{'active':sorted_field_voters==th.field}" class="is-sorted">
-                                {{th.title}} <i class="fa"
-                                    :class="{'fa-sort-asc':sorted_field_voters==th.field && sorted_voters>0, 'fa-sort-desc':sorted_field_voters==th.field && sorted_voters < 0}"
-                                    aria-hidden="true"></i>
+                                {{th.title}} <span v-if="sorted_field_voters==th.field && sorted_voters > 0">⌃</span><span v-if="sorted_field_voters==th.field && sorted_voters < 0">⌄</span>
                             </th>
                         </tr>
                         <tr v-for="(v,i) in voters" :key="i" v-if="v.isPaginVisible!==false">
@@ -133,9 +131,7 @@
                             <th>TransactionId</th>
                             <th v-for="th in th_trans" @click="sortRows('transactions',th.field)"
                                 :class="{'active':sorted_field_transactions==th.field}" class="is-sorted">
-                                {{th.title}} <i class="fa"
-                                    :class="{'fa-sort-asc':sorted_field_transactions==th.field && sorted_transactions>0, 'fa-sort-desc':sorted_field_transactions==th.field && sorted_transactions<0}"
-                                    aria-hidden="true"></i>
+                                {{th.title}} <span v-if="sorted_field_transactions==th.field && sorted_transactions > 0">⌃</span><span v-if="sorted_field_transactions==th.field && sorted_transactions < 0">⌄</span>
                             </th>
                         </tr>
                         <tr v-for="(t,i) in transactions" :key="i" v-if="t.isPaginVisible!==false">
