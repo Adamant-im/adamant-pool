@@ -2,7 +2,6 @@ const api = require('../helpers/api');
 const utils = require('../helpers/utils');
 const config = require('../helpers/configReader');
 const log = require('../helpers/log');
-const cron = require('../helpers/cron');
 const { dbVoters, dbTrans, dbBlocks } = require('../helpers/DB');
 const { UPDATE_DELEGATE_INTERVAL, FORMAT_PAYOUT } = require('../helpers/const');
 
@@ -47,6 +46,7 @@ module.exports = {
 				log.warn(`Failed to get forged info for delegate for ${config.address}. ${delegateForgedInfo.errorMessage}.`);
 			}
 
+			const cron = require('../helpers/cron').payoutCronJob;
 			this.periodInfo.nextRunMoment = cron.nextDate();
 			this.periodInfo.nextRunTimestamp = this.periodInfo.nextRunMoment.valueOf();
 			this.periodInfo.nextRunDateString = this.periodInfo.nextRunMoment.format(FORMAT_PAYOUT);

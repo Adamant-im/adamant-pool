@@ -8,9 +8,9 @@ const Store = require('./Store');
 
 module.exports = {
 
-  async payOut(retryNo = 0) {
+  async payOut(retryNo = 0, periodInfo) {
 
-    function doRetry(retry, timeout) {
+    function doRetry(retry, timeout, periodInfo) {
       if (retry > RETRY_PAYOUTS_COUNT) {
         setTimeout(() => {
           notifier(`Pool ${config.logName}: After ${RETRY_PAYOUTS_COUNT+1} tries, I didn't finished with payouts. Check the log file.`, 'error')
@@ -18,7 +18,7 @@ module.exports = {
       } else {
         log.log(`Re-trying payouts ${retry} time in ${timeout / 1000} seconds.`)
         setTimeout(() => {
-          module.exports.payOut(retry);
+          module.exports.payOut(retry, periodInfo);
           }, timeout);
       }
     }
@@ -26,9 +26,18 @@ module.exports = {
     try {
 
       let balance = Store.delegate.balance / SAT;
-      const periodTotalForged = Store.periodInfo.totalForgedADM;
-      const periodUserRewards = Store.periodInfo.userRewardsADM;
-      const periodForgedBlocks = Store.periodInfo.forgedBlocks;
+      let periodTotalForged, periodUserRewards, periodForgedBlocks;
+      if (!periodInfo) {
+        periodInfo = {};
+        periodInfo.periodTotalForged = Store.periodInfo.totalForgedADM;
+        periodInfo.periodUserRewards = Store.periodInfo.userRewardsADM;
+        periodInfo.periodForgedBlocks = Store.periodInfo.forgedBlocks;
+        periodInfo.maintenancePaid = false;
+        periodInfo.donatePaid = false;
+      }
+      periodTotalForged = periodInfo.periodTotalForged;
+      periodUserRewards = periodInfo.periodUserRewards;
+      periodForgedBlocks = periodInfo.periodForgedBlocks;
       
       const voters = await dbVoters.syncFind({});
       const votersToReward = voters.filter((voter) => voter.pending >= config.minpayout);
@@ -39,7 +48,7 @@ module.exports = {
 
       let infoString = `Pending ${pendingUserRewards.toFixed(4)} ADM rewards for ${votersToReward.length} voters.`;
       infoString += `\n${votersBelowMin.length} voters forged less, than minimum ${config.minpayout} ADM, their pending rewards are ${belowMinRewards.toFixed(4)} ADM.`;
-      infoString += `\nThe pool forged ${periodTotalForged.toFixed(4)} ADM from ${periodForgedBlocks} blocks this period; ${periodUserRewards.toFixed(4)} ADM distributed to users.`;
+      infoString += `\nThis period the pool forged ${periodTotalForged.toFixed(4)} ADM from ${periodForgedBlocks} blocks; ${periodUserRewards.toFixed(4)} ADM distributed to users.`;
       infoString += `\nThe pool's balance — ${balance.toFixed(4)} ADM.`;
 
       if (!votersToReward.length) {
@@ -49,7 +58,7 @@ module.exports = {
 
       if (pendingUserRewards > balance) {
         notifier(`Pool ${config.logName}: Unable to do payouts, retryNo: ${retryNo}. Balance of the pool is less, than pending payouts. Top up the pool's balance.\n${infoString}`, 'error');
-        doRetry(retryNo+1, (retryNo+1) * RETRY_PAYOUTS_TIMEOUT);
+        doRetry(retryNo+1, (retryNo+1) * RETRY_PAYOUTS_TIMEOUT, periodInfo);
         return;
       }
 
@@ -120,6 +129,63 @@ module.exports = {
 
       } // for (const voter of votersToReward)
 
+      // If we paid to all voters successfully, we can pay donation and maintenance
+      const donateADM = config.donate_percentage * periodTotalForged / 100;
+      let donateString = '';
+      const maintenanceADM = periodTotalForged - periodUserRewards - donateADM;
+      let maintenanceString = '';
+      if (payedCount === votersToReward.length) {
+
+        if (config.maintenancewallet) {
+          if (!periodInfo.maintenancePaid) {
+            if (maintenanceADM - FEE > 0) {
+
+              log.log(`Processing payment of ${maintenanceADM.toFixed(8)} ADM (${config.poolsShare.toFixed(2)}%) pool's share to maintenance wallet ${config.maintenancewallet}…`);
+
+              let paymentMaintenance = await api.sendTokens(config.passPhrase, config.maintenancewallet, maintenanceADM - FEE);
+              if (paymentMaintenance.success) {
+                periodInfo.maintenancePaid = true;
+                log.log(`Successfully payed ${maintenanceADM.toFixed(8)} ADM (${config.poolsShare.toFixed(2)}%) pool's share to maintenance wallet ${config.maintenancewallet} with Tx ${paymentMaintenance.data.transactionId}.`);
+                maintenanceString = `\nSent ${maintenanceADM.toFixed(4)} ADM (${config.poolsShare.toFixed(2)}%) pool's share to maintenance wallet ${config.maintenancewallet}.`;
+              } else {
+                maintenanceString = `\nUnable to send ${maintenanceADM.toFixed(4)} ADM (${config.poolsShare.toFixed(2)}%) pool's share to maintenance wallet ${config.maintenancewallet}, do it manually. ${paymentMaintenance.errorMessage}.`;
+              }
+
+            } else {
+              maintenanceString = `\nPool's share ${maintenanceADM.toFixed(4)} ADM (${config.poolsShare.toFixed(2)}%) is less, than Tx fee.`;
+            }
+          }
+        } else {
+          if (maintenanceADM > 0) {
+            maintenanceString = `\nMaintenance wallet is not set. Leaving pool's share of ${maintenanceADM.toFixed(4)} ADM (${config.poolsShare.toFixed(2)}%) on the pool's wallet ${config.address}.`;
+          } else {
+            maintenanceString = `\nMaintenance wallet is not set; Pool's share ${maintenanceADM.toFixed(4)} ADM (${config.poolsShare.toFixed(2)}%) is less, than Tx fee.`;
+          }
+        }
+  
+        if (config.donatewallet && config.donate_percentage) {
+          if (!periodInfo.donatePaid) {
+            if (donateADM - FEE > 0) {
+
+              log.log(`Processing payment of ${donateADM.toFixed(8)} ADM (${config.donate_percentage.toFixed(2)}%) donation to ${config.donatewallet}…`);
+
+              let paymentDonate = await api.sendTokens(config.passPhrase, config.donatewallet, donateADM - FEE);
+              if (paymentDonate.success) {
+                periodInfo.danatePaid = true;
+                log.log(`Successfully payed ${donateADM.toFixed(8)} ADM (${config.donate_percentage.toFixed(2)}%) donation to ${config.donatewallet} with Tx ${paymentDonate.data.transactionId}.`);
+                donateString = `\nSent ${donateADM.toFixed(4)} ADM (${config.donate_percentage.toFixed(2)}%) donation to ${config.donatewallet}.`;
+              } else {
+                donateString = `\nUnable to send ${donateADM.toFixed(4)} ADM (${config.donate_percentage.toFixed(2)}%) donation to ${config.donatewallet}, do it manually. ${paymentDonate.errorMessage}.`;
+              }
+
+            } else {
+              donateString = `\nDonation amount ${donateADM.toFixed(4)} ADM (${config.donate_percentage.toFixed(2)}%) is less, than Tx fee.`;
+            }
+          }
+        }
+
+      }
+
       // Wait to update pool's balance and notify
       setTimeout(async () => {
         try {
@@ -134,9 +200,13 @@ module.exports = {
     
             if (updatedVoters === payedCount && savedTransactions === payedCount) {
               payoutInfo = `I've successfully payed and saved all of ${payedCount} payouts, ${payedUserRewards.toFixed(4)} ADM plus ${paymentFees.toFixed(1)} ADM fees in total.`;
+              payoutInfo += maintenanceString;
+              payoutInfo += donateString;
               notifyType = 'info';
             } else {
               payoutInfo = `I've successfully payed of ${payedCount} payouts, ${payedUserRewards.toFixed(4)} ADM plus ${paymentFees.toFixed(1)} ADM fees in total.`;
+              payoutInfo += maintenanceString;
+              payoutInfo += donateString;
               payoutInfo += `\nThere is an issue.`
               if (updatedVoters < payedCount) {
                 payoutInfo += ` I've updated only ${updatedVoters} voters.`
@@ -172,7 +242,7 @@ module.exports = {
             payoutInfo += `\nThe pool's balance — ${balance.toFixed(4)} ADM.`;
             payoutInfo += `\nI'll re-try to pay the remaining voters in ${(((retryNo+1) * RETRY_PAYOUTS_TIMEOUT) / 1000 / 60).toFixed(1)} minutes, retryNo: ${retryNo+1}.`;
             notifier(`Pool ${config.logName}: ${payoutInfo}`, notifyType);
-            doRetry(retryNo+1, (retryNo+1) * RETRY_PAYOUTS_TIMEOUT);
+            doRetry(retryNo+1, (retryNo+1) * RETRY_PAYOUTS_TIMEOUT, periodInfo);
       
           }
 
@@ -183,7 +253,7 @@ module.exports = {
 
     } catch (e) {
       log.error(`Error in payOut(), retryNo: ${retryNo}. ` + e);
-      doRetry(retryNo+1, (retryNo+1) * RETRY_PAYOUTS_TIMEOUT);
+      doRetry(retryNo+1, (retryNo+1) * RETRY_PAYOUTS_TIMEOUT, periodInfo);
     }
     
   }

@@ -16,10 +16,18 @@
       **/
     "passPhrase": "",
 
-    /** Percentage of rewards to distribute to pool's voters. Pool will send the rest to the maintenance wallet, if set **/
+    /** Percentage of rewards to distribute to pool's voters **/
     "reward_percentage": 80,
 
-    /** Maintenance wallet to receive (100-reward_percentage) rewards
+    /** Percentage of rewards to donate to ADAMANT Foundation **/
+    "donate_percentage": 0,
+
+    /** Wallet for donation.
+        Make sure it is the same as on https://adamant.im/donate
+      **/
+    "donatewallet": "U380651761819723095",
+
+    /** Maintenance wallet to receive (100 - reward_percentage - donate_percentage) rewards
         If you wish to leave it on the pool's wallet, set to empty string
       **/
     "maintenancewallet": "",

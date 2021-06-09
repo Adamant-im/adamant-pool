@@ -1,14 +1,12 @@
 const config = require('./helpers/configReader');
+require('./helpers/cron').initCron();
 const log = require('./helpers/log');
 const notifier = require('./helpers/notify');
 const Store = require('./modules/Store');
 const blocksChecker = require('./modules/blocksChecker');
+require('./server');
 
 setTimeout(async () => {
-
-	require('./helpers/cron');
-	require('./server');
-
 
 	// const api = require('./helpers/api');
 
@@ -43,7 +41,6 @@ setTimeout(async () => {
 	// } else {
 	// 	log.warn(`Failed to sent message to ${address}. ${payment.errorMessage}`);
 	// }
-
 
 	await initDelegate();
 	blocksChecker();

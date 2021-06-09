@@ -20,6 +20,10 @@ const fields = {
 		type: Number,
 		default: 80
 	},
+	donate_percentage: {
+		type: Number,
+		default: 0
+	},
 	minpayout: {
 		type: Number,
 		default: 10
@@ -33,6 +37,10 @@ const fields = {
 		default: '10d'
 	},
 	maintenancewallet: {
+		type: String,
+		default: ''
+	},
+	donatewallet: {
 		type: String,
 		default: ''
 	},
@@ -100,9 +108,14 @@ try {
 		exit(`Pool's ${address} config is wrong. Parameter minpayout cannot be less, than ${MIN_PAYOUT} (ADM). Cannot start Pool.`);
 	}
 
+	config.poolsShare = 100 - config.reward_percentage - config.donate_percentage;
+	if (config.poolsShare < 0) {
+		exit(`Pool's ${address} config is wrong. reward_percentage + donate_percentage must be <= 100. Cannot start Pool.`);
+	}
+
 	config.payoutperiod = config.payoutperiod[0].toUpperCase() + config.payoutperiod.slice(1).toLowerCase();
 
-	console.error(`Pool ${address} successfully read a config-file${isDev ? ' (dev)' : ''}.`);
+	console.info(`Pool ${address} successfully read a config-file${isDev ? ' (dev)' : ''}.`);
 
 } catch (e) {
 	console.error('Error reading config: ' + e);
