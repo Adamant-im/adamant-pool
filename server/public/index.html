@@ -61,9 +61,8 @@
         </div>
         <div class="content main ">
             <div class="row delegate-info">Delegate <i>{{delegate.delegate.username}}</i> distributes
-                <i>{{system.reward_percentage}}%</i>
-                rewards with payouts every <i>{{system.payoutperiod}}</i>. Minimum payout is <i>{{system.minpayout}}</i>
-                ADM.</div>
+                <i>{{system.reward_percentage}}%</i> rewards to voters<span v-if="system.donate_percentage"> and donates <i>{{system.donate_percentage}}%</i> to ADAMANT Foundation</span> with payouts every <i>{{system.payoutperiod}}</i>.
+                Minimum payout is <i>{{system.minpayout}}</i> ADM.</div>
 
             <div id="cards" class="row">
                 <div class="card" style="background-color: rgb(238, 238, 238);"> <span>

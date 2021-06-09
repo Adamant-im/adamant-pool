@@ -28,6 +28,7 @@ app.get('/api/get-delegate', async (req, res) => res.send(Store));
 app.get('/api/get-config', async (req, res) => res.send({
 	version: config.version,
 	reward_percentage: config.reward_percentage,
+	donate_percentage: config.donate_percentage,
 	minpayout: config.minpayout,
 	payoutperiod: config.payoutperiod,
 	payoutperiodForged: Store.periodInfo.totalForgedADM,

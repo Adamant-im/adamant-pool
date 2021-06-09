@@ -27,6 +27,7 @@ body {
 
 .preloader img {
     width: 80%;
+    max-width: 450px;
     margin: auto;
 }
 
