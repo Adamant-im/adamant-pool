@@ -17,14 +17,15 @@ body {
 }
 
 .preloader span {
+    letter-spacing: .15em;
     font-size: 1.5em;
+    font-variant: petite-caps;
     margin: auto;
     text-align: center;
 }
 
 .preloader img {
-    width: 250px;
-    height: 250px;
+    width: 450px;
     margin: auto;
 }
 

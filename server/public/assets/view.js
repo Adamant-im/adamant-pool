@@ -1,6 +1,3 @@
-var FORMAT_TRANS = 'YYYY/MM/DD HH:mm';
-var FORMAT_PAYOUT = 'YYYY/MM/DD';
-
 var panel = new Vue({
     el: '#panel',
     created: function () {
@@ -15,8 +12,6 @@ var panel = new Vue({
 
     },
     data: {
-        FORMAT_TRANS: FORMAT_TRANS,
-        FORMAT_PAYOUT: FORMAT_PAYOUT,
         transactions: [],
         voters: [],
         votersApi: '',
@@ -77,10 +72,6 @@ var panel = new Vue({
                     panel.transactions = res;
                 }
                 panel.sortRows('transactions', panel.sorted_field_transactions, 1);
-                if (this_.system.payoutperiodPreviousRunTimestamp) 
-                    this_.lastPayOut = moment(this_.system.payoutperiodPreviousRunTimestamp).format(FORMAT_PAYOUT);
-                if (this_.system.payoutperiodNextRunTimestamp) 
-                    this_.nextPayOut = moment(this_.system.payoutperiodNextRunTimestamp).format(FORMAT_PAYOUT);
             });
         },
         getVoters: function () {
@@ -128,7 +119,7 @@ var panel = new Vue({
                 this['sorted_' + table] *= -1;
             }
             panel[table].sort((a, b) => (a[field] - b[field]) * this['sorted_' + table]);
-        },
-        moment: moment
+        }
+        // moment: moment
     }
 });
