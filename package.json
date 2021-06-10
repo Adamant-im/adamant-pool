@@ -9,7 +9,7 @@
 	"author": "ADAMANT Tech Labs <devs@adamant.im>",
 	"license": "GPL-3.0",
 	"dependencies": {
-		"adamant-api": "git://github.com/Adamant-im/adamant-api-jsclient.git#dev",
+		"adamant-api": "^1.0.0",
 		"axios": "^0.21.1",
 		"cron": "^1.8.2",
 		"express": "^4.17.1",
