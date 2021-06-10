@@ -1,21 +1,27 @@
 Vue.filter('dateFormat', value => {
-  var date_ob = new Date(value);
-  var year = date_ob.getFullYear();
-  var month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
-  var date = ("0" + date_ob.getDate()).slice(-2);
-  var hours = ("0" + date_ob.getHours()).slice(-2);
-  var minutes = ("0" + date_ob.getMinutes()).slice(-2);
-  var seconds = ("0" + date_ob.getSeconds()).slice(-2);
-  return year + "-" + month + "-" + date;
+  let formattedDate = formatDate(value);
+  if (!formattedDate) return 'None';
+  return formattedDate.YYYY_MM_DD;
 });
 
 Vue.filter('dateFormatFull', value => {
-  var date_ob = new Date(value);
-  var year = date_ob.getFullYear();
-  var month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
-  var date = ("0" + date_ob.getDate()).slice(-2);
-  var hours = ("0" + date_ob.getHours()).slice(-2);
-  var minutes = ("0" + date_ob.getMinutes()).slice(-2);
-  var seconds = ("0" + date_ob.getSeconds()).slice(-2);
-  return year + "-" + month + "-" + date + " " + hours + ":" + minutes;
+  let formattedDate = formatDate(value);
+  if (!formattedDate) return 'None';
+  return formattedDate.YYYY_MM_DD_hh_mm;
 });
+
+function formatDate(timestamp) {
+  if (!timestamp) return false;
+  let formattedDate = { };
+  let dateObject = new Date(timestamp);
+  formattedDate.year = dateObject.getFullYear();
+  formattedDate.month = ("0" + (dateObject.getMonth() + 1)).slice(-2);
+  formattedDate.date = ("0" + dateObject.getDate()).slice(-2);
+  formattedDate.hours = ("0" + dateObject.getHours()).slice(-2);
+  formattedDate.minutes = ("0" + dateObject.getMinutes()).slice(-2);
+  formattedDate.seconds = ("0" + dateObject.getSeconds()).slice(-2);
+  formattedDate.YYYY_MM_DD = formattedDate.year + "-" + formattedDate.month + "-" + formattedDate.date;
+  formattedDate.YYYY_MM_DD_hh_mm = formattedDate.year + "-" + formattedDate.month + "-" + formattedDate.date + " " + formattedDate.hours + ":" + formattedDate.minutes;
+  formattedDate.hh_mm_ss = formattedDate.hours + ":" + formattedDate.minutes + ":" + formattedDate.seconds;
+  return formattedDate
+};

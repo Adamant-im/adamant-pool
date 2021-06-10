@@ -56,7 +56,7 @@ async function initDelegate() {
 		process.exit(-1);
 	}
 	config.logName = `_${config.poolName}_ (${config.address})`
-	config.infoString = `distributes _${config.reward_percentage}_% rewards with payouts every _${config.payoutperiod}_. Minimum payout is _${config.minpayout}_ ADM.`
+	config.infoString = `distributes _${config.reward_percentage}_% rewards to voters${config.donate_percentage ? ' and donates ' + config.donate_percentage + '% to ADAMANT Foundation' : ''} with payouts every _${config.payoutperiod}_. Minimum payout is _${config.minpayout}_ ADM.`
 	notifier(`Pool ${config.logName} started on v${config.version} software and listens port ${config.port}. It ${config.infoString}`, 'info');
 	Store.updateBalance();
 	Store.updateVoters();

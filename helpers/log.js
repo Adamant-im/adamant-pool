@@ -1,4 +1,5 @@
 const config = require('./configReader');
+const utils = require('./utils');
 
 let fs = require('fs');
 if (!fs.existsSync('./logs')) {
@@ -39,22 +40,11 @@ module.exports = {
 };
 
 function time() {
-	var options = {
-		hour: 'numeric',
-		minute: 'numeric',
-		second: 'numeric'
-	};
-
-	return new Date().toLocaleString('en-GB', options);
+	return utils.formatDate(Date.now()).hh_mm_ss;
 }
 
 function date() {
-	var options = {
-		year: 'numeric',
-		month: 'numeric',
-		day: 'numeric'
-	};
-	return (new Date().toLocaleString('fr-CA', options)).replace(/\//g, '-');
+	return utils.formatDate(Date.now()).YYYY_MM_DD;
 }
 
 function fullTime() {
