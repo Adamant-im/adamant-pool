@@ -27,5 +27,13 @@
 		"blockchain",
 		"crypto",
 		"cryptocurrency"
-	]
+	],
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Adamant-im/adamant-pool.git"
+	},
+	"bugs": {
+		"url": "https://github.com/Adamant-im/adamant-pool/issues"
+	},
+	"homepage": "https://github.com/Adamant-im/adamant-pool#readme"	
 }
