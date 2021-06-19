@@ -114,7 +114,7 @@
                             </td> 
                             <td>{{~votersApi.indexOf(v.address) && v.userWeight ? v.userWeight.toFixed(0) : '&mdash;' | numberFormat}}
                             </td>
-                            <td>{{~votersApi.indexOf(v.address) && v.userWeightPercent ? v.userWeightPercent : '&mdash;'}}%</td>
+                            <td>{{~votersApi.indexOf(v.address) && v.userWeightPercent ? v.userWeightPercent + '%' : '&mdash;'}}</td>
                         </tr>
 
                     </table>

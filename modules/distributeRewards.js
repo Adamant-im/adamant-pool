@@ -53,9 +53,7 @@ module.exports = {
             const addVoter = await dbVoters.syncInsert({
               address: voter.address,
               pending: 0,
-              received: 0,
-              userWeight: 0,
-              userVotesNumber
+              received: 0
             });
 
             if (addVoter) {
