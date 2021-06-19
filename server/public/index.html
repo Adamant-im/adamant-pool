@@ -109,12 +109,12 @@
                                     target="_blank">{{v.address}}</a></td>
                             <td>{{v.pending.toFixed(4) | numberFormat}}</td>
                             <td>{{v.received.toFixed(4) | numberFormat}}</td>
-                            <td>{{~votersApi.indexOf(v.address) ? v.userADM.toFixed(0) : '&mdash;' | numberFormat}}</td>
-                            <td>{{~votersApi.indexOf(v.address) ? v.userVotesNumber.toFixed(0) : '&mdash;' | numberFormat}}
+                            <td>{{~votersApi.indexOf(v.address) && v.userADM ? v.userADM.toFixed(0) : '&mdash;' | numberFormat}}</td>
+                            <td>{{~votersApi.indexOf(v.address) && v.userVotesNumber ? v.userVotesNumber.toFixed(0) : '&mdash;' | numberFormat}}
+                            </td> 
+                            <td>{{~votersApi.indexOf(v.address) && v.userWeight ? v.userWeight.toFixed(0) : '&mdash;' | numberFormat}}
                             </td>
-                            <td>{{~votersApi.indexOf(v.address) ? v.userWeight.toFixed(0) : '&mdash;' | numberFormat}}
-                            </td>
-                            <td>{{~votersApi.indexOf(v.address) ? v.userWeightPercent : '&mdash;'}}%</td>
+                            <td>{{~votersApi.indexOf(v.address) && v.userWeightPercent ? v.userWeightPercent : '&mdash;'}}%</td>
                         </tr>
 
                     </table>
