@@ -1,7 +1,7 @@
 {
 	"name": "adamant-pool",
-	"version": "1.6.1",
-	"description": "\"ADAMANT Messenger Forging Pool\"",
+	"version": "2.0.0",
+	"description": "Forging Pool for ADAMANT blockchain",
 	"main": "index.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1"
@@ -9,12 +9,31 @@
 	"author": "ADAMANT Tech Labs <devs@adamant.im>",
 	"license": "GPL-3.0",
 	"dependencies": {
-		"adamant-api": "^0.1.22",
-		"express": "^4.16.4",
+		"adamant-api": "^1.0.0",
+		"axios": "^0.21.1",
+		"cron": "^1.8.2",
+		"express": "^4.17.1",
 		"jsonminify": "^0.4.1",
-		"lodash": "^4.17.13",
-		"nedb": "^1.8.0",
-		"node-cron": "^2.0.3",
-		"request": "^2.88.0"
-	}
+		"nedb": "^1.8.0"
+	},
+	"keywords": [
+		"forging",
+		"pool",
+		"mining",
+		"rewards",
+		"dpos",
+		"adm",
+		"adamant",
+		"blockchain",
+		"crypto",
+		"cryptocurrency"
+	],
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Adamant-im/adamant-pool.git"
+	},
+	"bugs": {
+		"url": "https://github.com/Adamant-im/adamant-pool/issues"
+	},
+	"homepage": "https://github.com/Adamant-im/adamant-pool#readme"	
 }

@@ -1,56 +1,52 @@
+const config = require('./configReader');
+const utils = require('./utils');
+
 let fs = require('fs');
 if (!fs.existsSync('./logs')) {
 	fs.mkdirSync('./logs');
 }
 
 let infoStr = fs.createWriteStream('./logs/' + date() + '.log', {
-	flags: "a"
+	flags: 'a'
 });
 
-infoStr.write(`
-_________________${fullTime()}_________________
-
-`);
+infoStr.write(`\n\n[The pool started] _________________${fullTime()}_________________\n`);
 
 module.exports = {
 	error(str) {
-		infoStr.write(`
-		` + 'error|' + time() + '|' + str);
-		console.log('\x1b[31m', 'error|' + time(), "\x1b[0m", str);
-	},
-	info(str) {
-		console.log('\x1b[32m', 'info|' + time(), "\x1b[0m", str);
-		
-		infoStr.write(`
-		` + 'info|' + time() + '|' + str);
+		if (['error', 'warn', 'info', 'log'].includes(config.log_level)) {
+			infoStr.write(`\n ` + 'error|' + fullTime() + '|' + str);
+			console.log('\x1b[31m', 'error|' + fullTime(), '\x1b[0m', str);
+		}
 	},
 	warn(str) {
-		console.log('\x1b[33m', 'warn|' + time(), "\x1b[0m", str);
-		
-		infoStr.write(`
-		` + 'warn|' + time() + '|' + str);
+		if (['warn', 'info', 'log'].includes(config.log_level)) {
+			console.log('\x1b[33m', 'warn|' + fullTime(), '\x1b[0m', str);
+			infoStr.write(`\n ` + 'warn|' + fullTime() + '|' + str);
+		}
 	},
-}
+	info(str) {
+		if (['info', 'log'].includes(config.log_level)) {
+			console.log('\x1b[32m', 'info|' + fullTime(), '\x1b[0m', str);
+			infoStr.write(`\n ` + 'info|' + fullTime() + '|' + str);
+		}
+	},
+	log(str) {
+		if (['log'].includes(config.log_level)) {
+			console.log('\x1b[34m', 'log|' + fullTime(), '\x1b[0m', str);
+			infoStr.write(`\n ` + 'log|[' + fullTime() + '|' + str);
+		}
+	}
+};
 
 function time() {
-	var options = {
-		hour: 'numeric',
-		minute: 'numeric',
-		second: 'numeric'
-	};
-	
-	return new Date().toLocaleString("en", options);
+	return utils.formatDate(Date.now()).hh_mm_ss;
 }
 
 function date() {
-	var options = {
-		day: 'numeric',
-		month: 'numeric',
-		year: 'numeric'
-	};	
-	return (new Date().toLocaleString("en", options)).replace(/\//g, '-');
+	return utils.formatDate(Date.now()).YYYY_MM_DD;
 }
 
-function fullTime(){
-	return date()+' '+time();
+function fullTime() {
+	return date() + ' ' + time();
 }

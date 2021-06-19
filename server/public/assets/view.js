@@ -1,22 +1,15 @@
-var FORMAT_TRANS = 'YYYY/MM/DD HH:mm';
-var FORMAT_PAYOUT = 'YYYY/MM/DD';
-
 var panel = new Vue({
     el: '#panel',
     created: function () {
         setTimeout(function () {
             $('.preloader').fadeOut(1000);
         }, 2000);
-
         this.refresh();
         setInterval(function () {
             panel.refresh();
         }, 300 * 1000);
-
     },
     data: {
-        FORMAT_TRANS: FORMAT_TRANS,
-        FORMAT_PAYOUT: FORMAT_PAYOUT,
         transactions: [],
         voters: [],
         votersApi: '',
@@ -71,18 +64,11 @@ var panel = new Vue({
     },
     methods: {
         getTransactions: function () {
-            var this_ = this;
             $.get('/api/get-transactions', function (res) {
                 if (typeof res === 'object') {
                     panel.transactions = res;
                 }
-                // console.log(res);
                 panel.sortRows('transactions', panel.sorted_field_transactions, 1);
-                if (this_.system.payoutperiodStart) {
-                    let start = this_.system.payoutperiodStart;
-                    this_.lastPayOut = moment(start).format(FORMAT_PAYOUT);
-                    this_.nextPayOut = moment(start + parseInt(this_.system.payoutperiod) * 3600 * 24 * 1000).format(FORMAT_PAYOUT);
-                }
             });
         },
         getVoters: function () {
@@ -101,7 +87,6 @@ var panel = new Vue({
                 if (typeof res === 'object') {
                     panel.delegate = res;
                 }
-                // console.log(panel.delegate);
                 panel.votersApi = res.delegate.voters.map(v => v.address).toString();
                 panel.getVoters();
             });
@@ -130,7 +115,6 @@ var panel = new Vue({
                 this['sorted_' + table] *= -1;
             }
             panel[table].sort((a, b) => (a[field] - b[field]) * this['sorted_' + table]);
-        },
-        moment: moment
+        }
     }
 });

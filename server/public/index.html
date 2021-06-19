@@ -3,17 +3,14 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="description" content="Welcome to ADAMANT Forging Pool. Join to earn ADM and support decentralization.">
+    <meta name="description" content="Welcome to ADAMANT Forging Pool. Vote, earn ADM, and support decentralization.">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+
     <title>ADAMANT Forging Pool</title>
-    <link rel="stylesheet"
-        href="//fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
-    <script type="text/javascript" src="//use.fontawesome.com/ecd0a414f6.js"></script>
-    <script type="text/javascript" src="//code.jquery.com/jquery-3.2.1.min.js"></script>
-    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.min.js"></script>
-    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/underscore@1.9.1/underscore.min.js"></script>
-    <script type="text/javascript" src="./assets/components/moment-with-locales.min.js"></script>
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
     <link rel="stylesheet" href="/assets/styles.css">
+    <script type="text/javascript" src="./assets/components/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="./assets/components/vue-2.6.14.min.js"></script>
 
     <link rel="apple-touch-icon-precomposed" sizes="57x57" href="assets/icons/apple-touch-icon-57x57.png" />
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/icons/apple-touch-icon-114x114.png" />
@@ -44,7 +41,7 @@
 <body>
     <div class="preloader">
         <span>
-            <img src="https://msg.adamant.im/img/adamant-logo-transparent-512x512.png" />
+            <img src="assets/images/bet-icon.svg" />
             <div>ADAMANT Forging Pool</div>
         </span>
     </div>
@@ -52,30 +49,27 @@
         <div class="topnav content">
             <div class="row header">
                 <h1 class="h1_header">
-                    <img src="https://msg.adamant.im/img/adamant-logo-transparent-512x512.png" class="logo" />
+                    <img src="/assets/images/adamant-logo-transparent-512x512.png" class="logo" />
                     <div class="header_text">
-                        <span>ADAMANT Forging Pool<small>&nbsp;(ver. {{system.version}})&nbsp;&nbsp;</small><i class="fa fa-refresh refresh" style="font-size: 20px; color: rgb(221, 221, 221);"
-                                aria-hidden="true" @click="fRefresh"></i>
-                        </small>
-
+                        ADAMANT Forging Pool<br><small>v.{{system.version}}</small>
                     </div>
+                    <div class="refresh icon" @click="fRefresh">🔄</div>
                 </h1>
                 <a :href="'https://explorer.adamant.im/delegate/' + delegate.delegate.address"
-                    target="_blank">{{delegate.poolname}}</a>
+                    target="_blank">{{delegate.delegate.username}}</a>
             </div>
         </div>
         <div class="content main ">
             <div class="row delegate-info">Delegate <i>{{delegate.delegate.username}}</i> distributes
-                <i>{{system.reward_percentage}}%</i>
-                rewards with payouts every <i>{{system.payoutperiod}}</i>. Minimum payout is <i>{{system.minpayout}}</i>
-                ADM.</div>
+                <i>{{system.reward_percentage}}%</i> rewards to voters<span v-if="system.donate_percentage"> and donates <i>{{system.donate_percentage}}%</i> to ADAMANT Foundation</span> with payouts every <i>{{system.payoutperiod}}</i>.
+                Minimum payout is <i>{{system.minpayout}}</i> ADM.</div>
 
             <div id="cards" class="row">
                 <div class="card" style="background-color: rgb(238, 238, 238);"> <span>
-                        Total forged: {{(delegate.delegate.totalForged / 100000000).toFixed(1) || 0 | numberFormat}}
+                        Total forged: {{(delegate.delegate.forged / 100000000).toFixed(2) || 0 | numberFormat}}
                         ADM<br>
-                        Votes: {{(delegate.delegate.votesWeight / 100000000).toFixed(0) || 0 | numberFormat}} ADM<br>
-                        Votes count: {{delegate.delegate.voters ? delegate.delegate.voters.length : 0 | numberFormat}}
+                        Vote weight: {{(delegate.delegate.votesWeight / 100000000).toFixed(0) || 0 | numberFormat}} ADM<br>
+                        Voters: {{delegate.delegate.voters ? delegate.delegate.voters.length : 0 | numberFormat}}
                     </span></div>
                 <div class="card" style="background-color: rgb(221, 221, 221);"><span>
                         <div v-if="delegate.delegate.rank <= 101">Productivity: {{delegate.delegate.productivity}}%
@@ -85,20 +79,20 @@
                         Rank: {{delegate.delegate.rank | numberFormat}}
                     </span></div>
                 <div class="card" style="background-color: rgb(238, 238, 238);"> <span>
-                        Balance: {{(delegate.delegate.balance / 100000000 || 0).toFixed(3) | numberFormat}} ADM<br>
-                        Forged this period: {{(system.payoutperiodForged || 0).toFixed(1) | numberFormat}}<br>
-                        Pending rewards: {{(system.payoutperiodRewards || 0).toFixed(1) | numberFormat}}
+                        Balance: {{(delegate.delegate.balance / 100000000 || 0).toFixed(2) | numberFormat}} ADM<br>
+                        Forged this period: {{(system.payoutperiodForged || 0).toFixed(2) | numberFormat}} ADM<br>
+                        Pending rewards: {{(system.payoutperiodRewards || 0).toFixed(2) | numberFormat}} ADM
                     </span></div>
                 <div class="card" style="background-color: rgb(221, 221, 221);"> <span>
-                        Last payout: {{lastPayOut}}<br>
-                        Next payout: {{nextPayOut}}<br>
-                        Payout period: {{system.payoutperiod}}
+                        Last payout: {{system.payoutperiodPreviousRunTimestamp | dateFormat}}<br>
+                        Next payout: {{system.payoutperiodNextRunTimestamp | dateFormat}}<br>
+                        Payout period: every {{system.payoutperiod}}
                     </span>
                 </div>
             </div>
 
             <div class="container row">
-                <h2><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> Voters ({{voters.length}})</h2>
+                <h2><span class="icon">🤙</span> Voters ({{voters.length}})</h2>
                 <div class="table-holder">
                     <table>
                         <tr>
@@ -106,9 +100,7 @@
                             <th>Address</th>
                             <th v-for="th in th_voters" @click="sortRows('voters',th.field)"
                                 :class="{'active':sorted_field_voters==th.field}" class="is-sorted">
-                                {{th.title}} <i class="fa"
-                                    :class="{'fa-sort-asc':sorted_field_voters==th.field && sorted_voters>0, 'fa-sort-desc':sorted_field_voters==th.field && sorted_voters < 0}"
-                                    aria-hidden="true"></i>
+                                {{th.title}} <span v-if="sorted_field_voters==th.field && sorted_voters > 0">⌃</span><span v-if="sorted_field_voters==th.field && sorted_voters < 0">⌄</span>
                             </th>
                         </tr>
                         <tr v-for="(v,i) in voters" :key="i" v-if="v.isPaginVisible!==false">
@@ -130,7 +122,7 @@
                 <pagin :options="{rows:voters, visible_count:15}"></pagin>
             </div>
             <div class="container row">
-                <h2><i class="fa fa-diamond" aria-hidden="true"></i> Transactions ({{transactions.length}})</h2>
+                <h2><span class="icon">💰</span> Transactions ({{transactions.length}})</h2>
                 <div class="table-holder">
                     <table id="transactions">
                         <tr>
@@ -139,9 +131,7 @@
                             <th>TransactionId</th>
                             <th v-for="th in th_trans" @click="sortRows('transactions',th.field)"
                                 :class="{'active':sorted_field_transactions==th.field}" class="is-sorted">
-                                {{th.title}} <i class="fa"
-                                    :class="{'fa-sort-asc':sorted_field_transactions==th.field && sorted_transactions>0, 'fa-sort-desc':sorted_field_transactions==th.field && sorted_transactions<0}"
-                                    aria-hidden="true"></i>
+                                {{th.title}} <span v-if="sorted_field_transactions==th.field && sorted_transactions > 0">⌃</span><span v-if="sorted_field_transactions==th.field && sorted_transactions < 0">⌄</span>
                             </th>
                         </tr>
                         <tr v-for="(t,i) in transactions" :key="i" v-if="t.isPaginVisible!==false">
@@ -151,7 +141,7 @@
                             <td><a :href="'https://explorer.adamant.im/tx/'+t.transactionId"
                                     target="_blank">{{t.transactionId}}</a></td>
                             <td>{{t.payoutcount.toFixed(4) | numberFormat}}</td>
-                            <td>{{moment(t.timeStamp).format(FORMAT_TRANS)}}</td>
+                            <td>{{t.timeStamp | dateFormatFull}}</td>
                         </tr>
                     </table>
                 </div>
@@ -165,17 +155,15 @@
             <a href="https://adamant.im/#adm-apps" target="_blank" title="Start Messaging">Messenger Apps</a>
             <a href="https://github.com/Adamant-im/adamant-pool" target="_blank"
                 title="ADAMANT Forging Pool GitHub">GitHub</a>
-            <a href="https://medium.com/adamant-im/join-the-official-adamant-pool-d3def33fb99c" target="_blank"
-                title="Join forging and earn ADM">Join
-                Pool</a>
+            <a href="https://medium.com/adamant-im/hodl-list-of-adamant-pools-join-in-and-get-rewards-491a98610f4b" target="_blank"
+                title="Join forging and earn ADM">Choose a Pool</a>
             <a href="https://medium.com/adamant-im/earning-money-on-adm-forging-4c7b6eb15516" target="_blank"
-                title="Create your own ADAMANT Forging Pool and earn ADM">Create
-                your Pool</a>
-
+                title="Create your own ADAMANT Forging Pool">Create a Pool</a>
         </div>
     </div>
     <script src="/assets/components/pagin.js"></script>
     <script src="/assets/filters/numberFormat.js"></script>
+    <script src="/assets/filters/dateFormat.js"></script>
     <script src="/assets/view.js"></script>
 
 </body>

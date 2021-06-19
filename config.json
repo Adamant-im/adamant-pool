@@ -1,60 +1,67 @@
 {
     /** List of nodes to fetch forging information, needed to count rewards.
-    If one become unavailable, pool will choose live one.
-    **/
-    "node": [
+        If one become unavailable, pool will choose live one.
+      **/
+    "node_ADM": [
         "http://localhost:36666",
         "https://endless.adamant.im",
         "https://clown.adamant.im",
-        "http://185.231.245.26:36666",
-        "http://80.211.177.181:36666",
+        "http://23.226.231.225:36666",
+        "http://88.198.156.44:36666",
         "https://lake.adamant.im"
     ],
 
-    /** Your delegete address. Used to fetch forging information, needed to count rewards **/
-    "address": "U9466395914658764774",
-
-    /** Put delegate's passPhrase to make payouts. If false, pool will be in read only mode, without payouts. **/
+    /** The pool's secret phrase. Pool's ADM address will correspond this passPhrase.
+      Must be a delegate of ADAMANT blockchain.
+      **/
     "passPhrase": "",
 
-    /** Percentage to distribute to voters. Amount left will go to maintenace wallet **/
+    /** Percentage of rewards to distribute to pool's voters **/
     "reward_percentage": 80,
 
-    /** Maintenace wallet to receive amount of (100-reward_percentage) to cover pool expenses
-    	Put false if you want to leave it on delegate's wallet.
-    **/
-    "maintenancewallet": false,
+    /** Percentage of rewards to donate to ADAMANT Foundation **/
+    "donate_percentage": 0,
+
+    /** Wallet for donation.
+        Make sure it is the same as on https://adamant.im/donate
+      **/
+    "donatewallet": "U380651761819723095",
+
+    /** Maintenance wallet to receive (100 - reward_percentage - donate_percentage) rewards
+        If you wish to leave it on the pool's wallet, set to empty string
+      **/
+    "maintenancewallet": "",
 
     /** How often pool will do payouts. All at 00:00.
-    	1 h - > every hour
-    	1 d - > every day
-    	5 d - > days 1, 5, 10, 15, 20, 25 of the month
-    	10 d - > days 1, 10, 20 of the month
-    	15 d - > days 1, 15 of the month
-    	30 d - > 30 th of each month
-    **/
-    "payoutperiod": "5d",
+        1d -> every day
+        5d -> days 1, 5, 10, 15, 20, 25 of the month
+        10d -> days 1, 10, 20 of the month
+        15d -> days 1, 15 of the month
+        30d -> 30th of each month
+        Mon, Tue, Wed, Thu, Fri, Sat or Sun -> every week
+      **/
+    "payoutperiod": "Sun",
 
-    /** How many payout periods to store history data. Greater value needs more RAM.
-    	If store_history is 10 and payoutperiod is 5d, data will be stored for last 50 days.
-        Payout transactions are stored forever independant from store_history value.
-    **/
-    "store_history": 10,
+    /** Minimum amount in ADM for payouts. Must be not less, than 0.51.
+    	If at the end of payoutperiod a voter's reward is less than minpayout, it will be pending for next period.
+      Voter pays a transaction fee.
+      **/
+    "minpayout": 10,
 
-    /** Minimum amount in ADM for payouts. 
-    	If at the end of payoutperiod voter forged less than minpayout, it will be stored as Pending for next period.
-    **/
-    "minpayout": 1,
+    /** If delegate can vote for himself and this will count in rewards distribution **/
+    "considerownvote": false,
 
-    /** Consider if delegate can vote for himself and this will count in rewards **/
-    "considerownvote": 0,
-
-    /** ADAMANT address for notifications and monitoring (if needed) **/
+    /** ADAMANT address for monitoring notifications **/
     "adamant_notify": "",
 
-    /** Slack key for notifications and monitoring (if needed) **/
-    "slack": "https://hooks.slack.com/services/",
+    /** Slack key for monitoring notifications **/
+    "slack": "https://hooks.slack.com/services/..",
 
+    /** The software will use verbosity according to log_level.
+    	It can be none < error < warn < info < log.
+      **/
+    "log_level": "log",
+    
     /** Port for pool's public Web panel **/
     "port": 36667
 }
