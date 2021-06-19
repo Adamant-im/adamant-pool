@@ -8,6 +8,7 @@ const { UPDATE_DELEGATE_INTERVAL, FORMAT_PAYOUT } = require('../helpers/const');
 module.exports = {
 
 	isUpdatingVoters: false,
+	isDistributingRewards: false,
 
 	periodInfo: {
 		totalForgedSats: 0,
