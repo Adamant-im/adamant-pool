@@ -9,7 +9,7 @@ require('./server');
 // Wait for first API health check
 setTimeout(async () => {
 	await initDelegate();
-	blocksChecker();	
+	blocksChecker();
 }, 5000);
 
 async function initDelegate() {
