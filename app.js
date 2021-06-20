@@ -6,10 +6,11 @@ const Store = require('./modules/Store');
 const blocksChecker = require('./modules/blocksChecker');
 require('./server');
 
+// Wait for first API health check
 setTimeout(async () => {
 	await initDelegate();
 	blocksChecker();	
-}, 0);
+}, 5000);
 
 async function initDelegate() {
 	const pool = await Store.updateDelegate();
