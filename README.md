@@ -1,9 +1,10 @@
+# ADAMANT Forging Pool
 
 ADAMANT Forging Pool is a software that helps you running a forging pool in ADAMANT blockchain, calculating and transferring voters’ rewards automatically.
 
 Read more about [Forging, delegates, Fair dPoS, and how to run your Forging pool](https://medium.com/adamant-im/earning-money-on-adm-forging-4c7b6eb15516).
 
-# Features and advantages
+## Features and advantages
 
 * Easy to install
 * Reliable, uses decentralized network advantages
@@ -16,14 +17,13 @@ Read more about [Forging, delegates, Fair dPoS, and how to run your Forging pool
 
 See [User-friendly description and installation instructions](https://medium.com/adamant-im/create-your-own-adamant-forging-pool-a8574f5da43b).
 
-# Installation
+## Installation
 
-## Requirements
+### Requirements
 
-* Ubuntu 16, 18, 20 (we didn't test others)
-* NodeJS v8+ (already installed if you have a node on your machine)
+* NodeJS v16.16.0+ (Active LTS)
 
-## Setup
+### Setup
 
 ```
 su - adamant
@@ -32,7 +32,7 @@ cd ./adamant-pool
 npm i
 ```
 
-## Pre-launch tuning
+### Pre-launch tuning
 
 ```
 nano config.json
@@ -40,15 +40,15 @@ nano config.json
 
 Parameters: see comments in `config.json`.
 
-## Launching
+### Launching
 
 You can start the pool with the `node app.js` command, but we recommend to use a process manager for this purpose.
 
 ```
-pm2 start --name adamantpool app.js 
+pm2 start --name adamantpool app.js
 ```
 
-## Add pool to cron
+### Add pool to cron
 
 ```
 crontab -e
