@@ -3,7 +3,6 @@
         If one become unavailable, pool will choose live one.
       **/
     "node_ADM": [
-        "http://localhost:36666",
         "https://endless.adamant.im",
         "https://clown.adamant.im",
         "http://23.226.231.225:36666",
@@ -55,13 +54,13 @@
     "adamant_notify": "",
 
     /** Slack key for monitoring notifications **/
-    "slack": "https://hooks.slack.com/services/..",
+    "slack": "",
 
     /** The software will use verbosity according to log_level.
     	It can be none < error < warn < info < log.
       **/
     "log_level": "log",
-    
+
     /** Port for pool's public Web panel **/
     "port": 36667
 }
