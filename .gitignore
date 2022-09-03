@@ -4,3 +4,4 @@ node_modules/
 config.test
 package-lock.json
 tests.js
+.vscode/
