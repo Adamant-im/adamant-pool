@@ -1,3 +1,4 @@
+> This is a deprecated software, replaced with [new Forging pool](https://github.com/Adamant-im/pool)
 
 ADAMANT Forging Pool is a software that helps you running a forging pool in ADAMANT blockchain, calculating and transferring voters’ rewards automatically.
 
